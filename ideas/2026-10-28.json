@@ -1,0 +1,463 @@
+{
+  "date": "2026-10-28",
+  "weights_version": 1,
+  "ideas": [
+    {
+      "title": "もしも月が今の半分の距離に来たら？",
+      "hypothesis": "もしも月が今の半分の距離に来たら？",
+      "genre": "科学・物理/自然",
+      "hook": "巨大な月が迫る映像",
+      "tokushima_idea": "潮汐8倍→鳴門海峡の潮流エネルギー約23倍で徳島が勝者",
+      "ending_type": "想定外の勝者",
+      "scores": {
+        "hook": 5,
+        "clarity": 5,
+        "surprise": 4,
+        "scale": 5,
+        "animation": 5,
+        "tokushima": 5,
+        "engagement": 4,
+        "credibility": 4,
+        "feasibility": 4,
+        "originality": 4
+      }
+    },
+    {
+      "title": "もしも世界80億人が全員徳島に引っ越したら？",
+      "hypothesis": "もしも世界80億人が全員徳島に引っ越したら？",
+      "genre": "社会・経済/徳島",
+      "hook": "徳島に80億人",
+      "tokushima_idea": "1人あたり約0.5㎡→阿波おどりの『踊る阿呆』しか選択肢がない",
+      "ending_type": "徳島の名物が解決策",
+      "scores": {
+        "hook": 5,
+        "clarity": 5,
+        "surprise": 3,
+        "scale": 4,
+        "animation": 5,
+        "tokushima": 4,
+        "engagement": 5,
+        "credibility": 4,
+        "feasibility": 4,
+        "originality": 4
+      }
+    },
+    {
+      "title": "もしも地球の自転が1日だけ止まったら？",
+      "hypothesis": "もしも地球の自転が1日だけ止まったら？",
+      "genre": "科学・物理/災害",
+      "hook": "地球が止まる",
+      "tokushima_idea": "慣性で全てが東へ…四国山地の陰で祖谷だけ無事？",
+      "ending_type": "徳島だけ生き残る",
+      "scores": {
+        "hook": 5,
+        "clarity": 4,
+        "surprise": 4,
+        "scale": 5,
+        "animation": 5,
+        "tokushima": 3,
+        "engagement": 4,
+        "credibility": 4,
+        "feasibility": 3,
+        "originality": 2
+      }
+    },
+    {
+      "title": "もしも世界中の人が同時に阿波おどりを踊ったら？",
+      "hypothesis": "もしも世界中の人が同時に阿波おどりを踊ったら？",
+      "genre": "社会・経済/徳島",
+      "hook": "80億人が同時に踊る",
+      "tokushima_idea": "地球規模の振動→最後は『同じ阿呆なら踊らにゃ損々』",
+      "ending_type": "前半の仮説が徳島で逆転",
+      "scores": {
+        "hook": 4,
+        "clarity": 5,
+        "surprise": 3,
+        "scale": 4,
+        "animation": 4,
+        "tokushima": 5,
+        "engagement": 5,
+        "credibility": 3,
+        "feasibility": 4,
+        "originality": 5
+      }
+    },
+    {
+      "title": "もしもすだちが世界通貨になったら？",
+      "hypothesis": "もしもすだちが世界通貨になったら？",
+      "genre": "社会・経済/食料",
+      "hook": "すだち1個=1ドル",
+      "tokushima_idea": "世界の中央銀行が徳島に",
+      "ending_type": "徳島の価値が急上昇",
+      "scores": {
+        "hook": 4,
+        "clarity": 4,
+        "surprise": 4,
+        "scale": 4,
+        "animation": 4,
+        "tokushima": 5,
+        "engagement": 4,
+        "credibility": 2,
+        "feasibility": 4,
+        "originality": 5
+      }
+    },
+    {
+      "title": "もしも地球の重力が2倍になったら？",
+      "hypothesis": "もしも地球の重力が2倍になったら？",
+      "genre": "科学・物理",
+      "hook": "体重が2倍",
+      "tokushima_idea": "かずら橋が最強の耐荷重テストに",
+      "ending_type": "徳島の名物が意外な解決策",
+      "scores": {
+        "hook": 4,
+        "clarity": 5,
+        "surprise": 3,
+        "scale": 4,
+        "animation": 4,
+        "tokushima": 3,
+        "engagement": 3,
+        "credibility": 4,
+        "feasibility": 4,
+        "originality": 2
+      }
+    },
+    {
+      "title": "もしも日本の人口が1日で10倍になったら？",
+      "hypothesis": "もしも日本の人口が1日で10倍になったら？",
+      "genre": "社会・経済",
+      "hook": "日本人12億人",
+      "tokushima_idea": "過疎の徳島の空き家が世界一の資産に",
+      "ending_type": "徳島の価値が急上昇",
+      "scores": {
+        "hook": 4,
+        "clarity": 5,
+        "surprise": 3,
+        "scale": 4,
+        "animation": 4,
+        "tokushima": 4,
+        "engagement": 4,
+        "credibility": 4,
+        "feasibility": 4,
+        "originality": 3
+      }
+    },
+    {
+      "title": "もしも世界中の海水が一瞬で消えたら？",
+      "hypothesis": "もしも世界中の海水が一瞬で消えたら？",
+      "genre": "自然・地球/災害",
+      "hook": "海が消える",
+      "tokushima_idea": "鳴門の渦潮の跡に巨大な穴だけ残る",
+      "ending_type": "壮大な矛盾",
+      "scores": {
+        "hook": 5,
+        "clarity": 4,
+        "surprise": 4,
+        "scale": 5,
+        "animation": 5,
+        "tokushima": 3,
+        "engagement": 3,
+        "credibility": 3,
+        "feasibility": 3,
+        "originality": 3
+      }
+    },
+    {
+      "title": "もしも人間が眠らなくてよくなったら？",
+      "hypothesis": "もしも人間が眠らなくてよくなったら？",
+      "genre": "人類・進化",
+      "hook": "睡眠ゼロ",
+      "tokushima_idea": "24時間営業の阿波おどりが始まる",
+      "ending_type": "徳島の日常に戻る",
+      "scores": {
+        "hook": 4,
+        "clarity": 5,
+        "surprise": 3,
+        "scale": 3,
+        "animation": 3,
+        "tokushima": 3,
+        "engagement": 4,
+        "credibility": 3,
+        "feasibility": 4,
+        "originality": 2
+      }
+    },
+    {
+      "title": "もしも世界中のコンビニが一斉に消えたら？",
+      "hypothesis": "もしも世界中のコンビニが一斉に消えたら？",
+      "genre": "食料・生活",
+      "hook": "コンビニ消滅",
+      "tokushima_idea": "道の駅と産直市が多い徳島が無傷",
+      "ending_type": "徳島だけ生き残る",
+      "scores": {
+        "hook": 4,
+        "clarity": 5,
+        "surprise": 3,
+        "scale": 3,
+        "animation": 3,
+        "tokushima": 4,
+        "engagement": 5,
+        "credibility": 3,
+        "feasibility": 4,
+        "originality": 3
+      }
+    },
+    {
+      "title": "もしもすべての仕事をAIが担当したら？",
+      "hypothesis": "もしもすべての仕事をAIが担当したら？",
+      "genre": "テクノロジー・AI",
+      "hook": "人類の仕事ゼロ",
+      "tokushima_idea": "AIが唯一真似できないのが阿波おどりの『ぞめき』",
+      "ending_type": "前半の仮説が徳島で逆転",
+      "scores": {
+        "hook": 4,
+        "clarity": 4,
+        "surprise": 3,
+        "scale": 3,
+        "animation": 3,
+        "tokushima": 4,
+        "engagement": 5,
+        "credibility": 3,
+        "feasibility": 4,
+        "originality": 2
+      }
+    },
+    {
+      "title": "もしも日本の全道路が川になったら？",
+      "hypothesis": "もしも日本の全道路が川になったら？",
+      "genre": "交通・物流",
+      "hook": "道路が川",
+      "tokushima_idea": "四国三郎・吉野川が日本の大動脈に",
+      "ending_type": "徳島の地理が世界規模の問題を左右",
+      "scores": {
+        "hook": 4,
+        "clarity": 4,
+        "surprise": 4,
+        "scale": 4,
+        "animation": 5,
+        "tokushima": 4,
+        "engagement": 4,
+        "credibility": 2,
+        "feasibility": 4,
+        "originality": 4
+      }
+    },
+    {
+      "title": "もしも四国が本州から毎年1km離れていったら？",
+      "hypothesis": "もしも四国が本州から毎年1km離れていったら？",
+      "genre": "自然・地球/徳島",
+      "hook": "四国漂流",
+      "tokushima_idea": "大鳴門橋が世界一長い橋に伸び続ける",
+      "ending_type": "壮大な矛盾",
+      "scores": {
+        "hook": 4,
+        "clarity": 4,
+        "surprise": 4,
+        "scale": 4,
+        "animation": 4,
+        "tokushima": 5,
+        "engagement": 4,
+        "credibility": 2,
+        "feasibility": 4,
+        "originality": 5
+      }
+    },
+    {
+      "title": "もしも鳴門の渦潮が止まらず広がり続けたら？",
+      "hypothesis": "もしも鳴門の渦潮が止まらず広がり続けたら？",
+      "genre": "自然・地球/徳島",
+      "hook": "渦が世界を飲み込む",
+      "tokushima_idea": "世界の海流の中心が鳴門に",
+      "ending_type": "徳島が予想外の原因",
+      "scores": {
+        "hook": 5,
+        "clarity": 4,
+        "surprise": 3,
+        "scale": 5,
+        "animation": 5,
+        "tokushima": 4,
+        "engagement": 4,
+        "credibility": 1,
+        "feasibility": 4,
+        "originality": 4
+      }
+    },
+    {
+      "title": "もしも世界の食料が全部徳島に集まったら？",
+      "hypothesis": "もしも世界の食料が全部徳島に集まったら？",
+      "genre": "食料・生活/徳島",
+      "hook": "世界の食料が一県に",
+      "tokushima_idea": "徳島ラーメンの生卵トッピングが世界標準に",
+      "ending_type": "徳島の名物が意外な解決策",
+      "scores": {
+        "hook": 4,
+        "clarity": 5,
+        "surprise": 3,
+        "scale": 4,
+        "animation": 4,
+        "tokushima": 5,
+        "engagement": 4,
+        "credibility": 3,
+        "feasibility": 4,
+        "originality": 4
+      }
+    },
+    {
+      "title": "もしも地球が1日だけ真っ暗になったら？",
+      "hypothesis": "もしも地球が1日だけ真っ暗になったら？",
+      "genre": "科学・物理",
+      "hook": "太陽が消える",
+      "tokushima_idea": "青色LEDの開発で知られる企業の本社がある徳島が「光の首都」に（※事実関係は制作時に要確認）",
+      "ending_type": "徳島の価値が急上昇",
+      "scores": {
+        "hook": 4,
+        "clarity": 4,
+        "surprise": 4,
+        "scale": 4,
+        "animation": 4,
+        "tokushima": 5,
+        "engagement": 4,
+        "credibility": 3,
+        "feasibility": 4,
+        "originality": 4
+      }
+    },
+    {
+      "title": "もしも世界中の電気が1時間止まったら？",
+      "hypothesis": "もしも世界中の電気が1時間止まったら？",
+      "genre": "テクノロジー・AI/災害",
+      "hook": "世界停電",
+      "tokushima_idea": "徳島のLED産業で真っ先に復旧（※事実関係は制作時に要確認）",
+      "ending_type": "唯一の解決策",
+      "scores": {
+        "hook": 4,
+        "clarity": 5,
+        "surprise": 3,
+        "scale": 4,
+        "animation": 4,
+        "tokushima": 4,
+        "engagement": 3,
+        "credibility": 3,
+        "feasibility": 4,
+        "originality": 3
+      }
+    },
+    {
+      "title": "もしも地球上の雲がすべて消えたら？",
+      "hypothesis": "もしも地球上の雲がすべて消えたら？",
+      "genre": "自然・地球",
+      "hook": "雲ゼロ",
+      "tokushima_idea": "日照が増えすだち・なると金時が爆増",
+      "ending_type": "徳島の日常に戻る",
+      "scores": {
+        "hook": 3,
+        "clarity": 4,
+        "surprise": 3,
+        "scale": 3,
+        "animation": 4,
+        "tokushima": 3,
+        "engagement": 3,
+        "credibility": 3,
+        "feasibility": 4,
+        "originality": 4
+      }
+    },
+    {
+      "title": "もしも徳島県が独立国になったら？",
+      "hypothesis": "もしも徳島県が独立国になったら？",
+      "genre": "社会・経済/徳島",
+      "hook": "徳島共和国",
+      "tokushima_idea": "国歌が『阿波よしこの』",
+      "ending_type": "徳島を知らないと分からない小ネタ",
+      "scores": {
+        "hook": 4,
+        "clarity": 5,
+        "surprise": 3,
+        "scale": 3,
+        "animation": 3,
+        "tokushima": 5,
+        "engagement": 5,
+        "credibility": 3,
+        "feasibility": 4,
+        "originality": 3
+      }
+    },
+    {
+      "title": "もしも人類の身長が10倍になったら？",
+      "hypothesis": "もしも人類の身長が10倍になったら？",
+      "genre": "人類・進化",
+      "hook": "身長17m",
+      "tokushima_idea": "かずら橋が靴ひも程度に",
+      "ending_type": "スケール比較の逆転",
+      "scores": {
+        "hook": 4,
+        "clarity": 5,
+        "surprise": 3,
+        "scale": 4,
+        "animation": 5,
+        "tokushima": 3,
+        "engagement": 3,
+        "credibility": 3,
+        "feasibility": 4,
+        "originality": 3
+      }
+    },
+    {
+      "title": "もしも世界の物流が全部船だけになったら？",
+      "hypothesis": "もしも世界の物流が全部船だけになったら？",
+      "genre": "交通・物流",
+      "hook": "飛行機・トラックゼロ",
+      "tokushima_idea": "鳴門海峡の潮流が世界物流のボトルネックに",
+      "ending_type": "徳島の地理が世界規模の問題を左右",
+      "scores": {
+        "hook": 3,
+        "clarity": 4,
+        "surprise": 4,
+        "scale": 4,
+        "animation": 4,
+        "tokushima": 4,
+        "engagement": 3,
+        "credibility": 3,
+        "feasibility": 3,
+        "originality": 4
+      }
+    },
+    {
+      "title": "もしも1年が100日になったら？",
+      "hypothesis": "もしも1年が100日になったら？",
+      "genre": "科学・物理",
+      "hook": "1年100日",
+      "tokushima_idea": "阿波おどりが年3回以上に",
+      "ending_type": "徳島の日常に戻る",
+      "scores": {
+        "hook": 3,
+        "clarity": 4,
+        "surprise": 3,
+        "scale": 3,
+        "animation": 3,
+        "tokushima": 4,
+        "engagement": 4,
+        "credibility": 3,
+        "feasibility": 4,
+        "originality": 3
+      }
+    }
+  ],
+  "decision": {
+    "comparison": "上位3案: (1)月が半分の距離 (2)80億人が徳島に引っ越し (3)世界中で阿波おどり/自転停止 が僅差。(1)は公的資料と物理法則で数値が組め（潮汐力∝1/距離³、ベルヌーイの式）、鳴門海峡が『潮位差で流れる』という実在の仕組みがオチに直結する。(2)は計算は容易（人口÷面積）だがオチが前提に含まれるため意外性が弱い。(3)阿波おどり案はコメント性は高いが、物理的な検証部分が薄く『AIならではの検証』要素が弱い。",
+    "selected": "もしも月が今の半分の距離に来たら？（IG-20261028-001）",
+    "reason": "冒頭の『月が迫る』映像が1秒で伝わり、距離→潮→世界→日本→徳島とスケールが自然に展開できる。数値の根拠（NASA・国交省資料）と仮定（潮位差8倍）を明確に分けられ、信頼性と面白さを両立できる。プログラム生成アニメーション（月・地図・渦）で制作費0円で作れる。",
+    "rejected": {
+      "80億人が徳島に引っ越し": "オチが前提に含まれ意外性が弱い。シリーズ第2弾以降の『徳島が題材の回』として温存。",
+      "地球の自転停止": "既出コンテンツが多く差別化が弱い。徳島オチの必然性も弱い。",
+      "世界中で阿波おどり": "検証パートが薄い。阿波おどりシーズン（8月）に合わせた投稿の方が効果的。",
+      "渦潮が広がり続ける": "物理的に成立しにくく信頼性が低い。"
+    },
+    "expected_reactions": [
+      "『見に行く』『命がけでも行く』などの二択コメント",
+      "『潮位差8倍は単純すぎ』という科学的ツッコミ（固定コメントで計算メモを提示し、議論を歓迎）",
+      "徳島・鳴門の人の『渦の道行ったことある』系コメント",
+      "月が近づいたら他に何が起きる？という続編リクエスト"
+    ]
+  }
+}

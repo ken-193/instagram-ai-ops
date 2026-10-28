@@ -1,0 +1,46 @@
+name: approval
+# Owner replies /approve, /revise ..., /reject ... on the approval issue (GitHub iPhone app).
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  decide:
+    if: >-
+      github.event.issue.pull_request == null &&
+      contains(github.event.issue.labels.*.name, 'approval') &&
+      startsWith(github.event.comment.body, '/')
+    runs-on: ubuntu-latest
+    concurrency:
+      group: post-state-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    outputs:
+      approved: ${{ steps.h.outputs.approved }}
+      post_id: ${{ steps.h.outputs.post_id }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      APPROVER_LOGIN: ${{ vars.APPROVER_LOGIN || github.repository_owner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install requests
+      - run: git config user.name "reel-bot" && git config user.email "reel-bot@users.noreply.github.com"
+      - id: h
+        run: python -m pipeline.approval
+      - name: Record decision
+        run: |
+          git add state
+          git diff --cached --quiet || (git commit -m "approval: ${{ steps.h.outputs.post_id }}" && git push)
+
+  publish:
+    needs: decide
+    if: needs.decide.outputs.approved == 'true'
+    uses: ./.github/workflows/publish.yml
+    with:
+      post_id: ${{ needs.decide.outputs.post_id }}
+    secrets: inherit

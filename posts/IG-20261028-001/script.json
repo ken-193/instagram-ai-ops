@@ -1,0 +1,531 @@
+{
+  "post_id": "IG-20261028-001",
+  "title": "もしも月が今の半分の距離に来たら？",
+  "summary": "月が半分の距離まで近づくと、月が起こす潮の力は単純計算で約8倍。世界中の海辺が潮に振り回される中、潮位差で渦を生む鳴門海峡だけは潮流エネルギーが約23倍になり、徳島が「世界のエネルギー首都」になる…かもしれない、という思考実験。",
+  "premise": "月の平均距離384,400kmが半分(192,200km)になったと仮定。月の軌道変化・地殻変動・太陽潮汐の寄与などは無視し、『月が起こす潮汐力は距離の3乗に反比例』という関係だけで潮の強さを単純計算する。鳴門海峡の潮位差も同じ倍率(8倍)で大きくなると仮定し、流速はベルヌーイの式 v=√(2gΔh)、潮流エネルギー(運動エネルギー流束)は流速の3乗に比例するとして概算する。",
+  "categories": [
+    "scientific",
+    "data_estimate",
+    "fiction"
+  ],
+  "genre": "科学・物理 / 自然・地球 / 徳島",
+  "target_audience": "宇宙・科学ネタが好きな10〜40代、雑学系リールをよく見る層、徳島・四国・関西の人",
+  "hook": "もしも、月が今の半分の距離に来たら？",
+  "tokushima_ending": {
+    "type": "徳島が想定外の勝者になる / 徳島の地理が世界規模の問題を左右する",
+    "description": "世界中が潮の暴走に困る中、潮位差で渦を生む鳴門海峡だけは潮流エネルギーが約23倍に。困りごとの潮を『稼ぐ力』に変えられるのは徳島だけ、という逆転。最後に『でも渦潮見物は命がけ』と日常（観光）に戻して、コメントを誘う。"
+  },
+  "bgm": {
+    "mood": "壮大・シネマティック、終盤で一段盛り上がる",
+    "bpm": 112,
+    "climax_scene": "s5"
+  },
+  "tts": {
+    "backend": "openjtalk",
+    "speed": 1.22
+  },
+  "scenes": [
+    {
+      "id": "s1",
+      "type": "moon_hook",
+      "narration": [
+        {
+          "text": "もしも、|月が今の|半分の距離に来たら？",
+          "tts": "もしも、月が今の半分の距離に来たら？"
+        }
+      ],
+      "emphasis": [
+        "半分の距離"
+      ],
+      "on_screen_text": [
+        "もしも月が",
+        "半分の距離に",
+        "来たら？"
+      ],
+      "params": {
+        "headline": [
+          "もしも月が",
+          "半分の距離に",
+          "来たら？"
+        ],
+        "emphasis": [
+          "半分の距離に",
+          "来たら？"
+        ],
+        "r_from": 140,
+        "r_to": 430
+      },
+      "animation": "暗い宇宙の中央で月が急接近して画面いっぱいに迫る。最後に軽い画面揺れ。",
+      "camera": "固定カメラ、月のスケールアップで接近感を出す",
+      "sfx": [
+        "rumble"
+      ],
+      "video_prompt": "Vertical 9:16 cinematic shot, a photorealistic full Moon rapidly approaching the camera in black starry space, filling the frame, subtle emerald green rim light, slight camera shake, dramatic, no text",
+      "min_duration": 3.2
+    },
+    {
+      "id": "s2",
+      "type": "distance_compare",
+      "narration": [
+        {
+          "text": "月までの距離は|約38万km。",
+          "tts": "月までの距離は、約38万キロ。"
+        },
+        {
+          "text": "これが半分になると、",
+          "tts": "これが半分になると、"
+        },
+        {
+          "text": "見た目は|約2倍の大きさに。",
+          "tts": "見た目は約2倍の大きさに。"
+        }
+      ],
+      "emphasis": [
+        "約2倍",
+        "半分",
+        "約38万km"
+      ],
+      "on_screen_text": [
+        "384,400 km → 192,200 km",
+        "見た目 約2倍"
+      ],
+      "params": {
+        "headline": [
+          "地球と月の距離"
+        ],
+        "emphasis": [],
+        "from_value": 384400,
+        "to_value": 192200,
+        "unit": "km",
+        "move_on_line": 1,
+        "label_on_line": 2,
+        "label": "見た目 約2倍",
+        "emphasis_label": [
+          "約2倍"
+        ]
+      },
+      "animation": "左に地球、右に月。距離の線と数字がカウントダウンしながら月が近づき、月が大きくなる。",
+      "camera": "横構図の固定、数字に視線誘導",
+      "sfx": [
+        "whoosh",
+        "tick"
+      ],
+      "video_prompt": "Vertical 9:16 infographic animation, Earth on the left and Moon on the right on black background, a measuring line between them shrinking to half, the Moon growing larger as it approaches, emerald green and yellow accents, clean flat motion graphics",
+      "min_duration": 5.0
+    },
+    {
+      "id": "s3",
+      "type": "formula_bars",
+      "narration": [
+        {
+          "text": "でも、ヤバいのは|潮の満ち引き。",
+          "tts": "でも、ヤバいのは潮の満ち引き。"
+        },
+        {
+          "text": "潮を起こす力は|距離の3乗に反比例。",
+          "tts": "潮を起こす力は、距離の3乗に反比例。"
+        },
+        {
+          "text": "つまり、約8倍！",
+          "tts": "つまり、約8倍！"
+        }
+      ],
+      "emphasis": [
+        "約8倍",
+        "3乗",
+        "潮の満ち引き"
+      ],
+      "on_screen_text": [
+        "月が潮を起こす力",
+        "∝ 1 / 距離³",
+        "×8"
+      ],
+      "params": {
+        "headline": [
+          "月が潮を起こす力"
+        ],
+        "emphasis": [],
+        "formula": "∝ 1 / 距離³  →  2³ = 8",
+        "ratio": 8,
+        "left_label": "今",
+        "right_label": "半分の距離"
+      },
+      "animation": "数式が表示され、2本の棒グラフのうち右の棒が1→8倍まで伸びる。×8の数字が光る。",
+      "camera": "正面固定、棒の伸びに合わせて数字がポップ",
+      "sfx": [
+        "whoosh",
+        "ding"
+      ],
+      "video_prompt": "Vertical 9:16 minimalist data animation on black, two bars labeled now and half distance, right bar growing to 8 times height in emerald green, big yellow x8 label popping, glowing formula text above",
+      "min_duration": 5.0
+    },
+    {
+      "id": "s4",
+      "type": "globe_tides",
+      "narration": [
+        {
+          "text": "潮位差も8倍と|仮定すると、",
+          "tts": "潮位差も8倍と仮定すると、"
+        },
+        {
+          "text": "世界中の海辺が|毎日、巨大な満ち引きに|襲われる。",
+          "tts": "世界中の海辺が、毎日巨大な満ち引きに襲われる。"
+        }
+      ],
+      "emphasis": [
+        "8倍",
+        "仮定",
+        "巨大な満ち引き"
+      ],
+      "on_screen_text": [
+        "世界中の海が",
+        "暴れ出す",
+        "※潮位差も8倍と仮定した単純計算"
+      ],
+      "params": {
+        "headline": [
+          "世界中の海が",
+          "暴れ出す"
+        ],
+        "emphasis": [
+          "暴れ出す"
+        ],
+        "ratio": 8,
+        "note": "※潮位差も8倍と仮定した単純計算"
+      },
+      "animation": "地球の周りの海（エメラルドの膜）が月の方向に大きく膨らみ、警告の黄色い波紋が広がる。",
+      "camera": "地球を中心に固定、月が周回",
+      "sfx": [
+        "whoosh",
+        "rumble"
+      ],
+      "video_prompt": "Vertical 9:16, stylized Earth from space with an exaggerated glowing emerald tidal bulge stretched toward a nearby Moon, yellow warning ripples spreading, dark background, motion graphics style",
+      "min_duration": 4.5
+    },
+    {
+      "id": "s5",
+      "type": "japan_zoom",
+      "narration": [
+        {
+          "text": "そんな中、|潮の力が集まる場所がある。",
+          "tts": "そんな中、潮の力が集まる場所がある。"
+        },
+        {
+          "text": "徳島、鳴門海峡。",
+          "tts": "とくしま、なると海峡。"
+        }
+      ],
+      "emphasis": [
+        "徳島",
+        "鳴門海峡"
+      ],
+      "on_screen_text": [
+        "潮の力が集まる場所",
+        "徳島",
+        "鳴門海峡"
+      ],
+      "params": {
+        "headline": [
+          "潮の力が集まる場所"
+        ],
+        "emphasis": [],
+        "highlight": "JP-36",
+        "zoom_on_line": 1,
+        "zoom_dur": 1.5,
+        "target": {
+          "lon": 134.45,
+          "lat": 34.05,
+          "scale": 420
+        },
+        "pin": {
+          "lon": 134.65,
+          "lat": 34.24,
+          "label": "鳴門海峡"
+        },
+        "big_label": "徳島"
+      },
+      "animation": "日本地図が描かれ、カメラが四国の徳島県へ急ズーム。徳島県がエメラルドに光り、鳴門海峡にピンが落ちる。",
+      "camera": "日本全体 → 徳島へ対数ズーム",
+      "sfx": [
+        "riser",
+        "impact"
+      ],
+      "video_prompt": "Vertical 9:16, dark stylized map of Japan with emerald outlines, camera rapidly zooming into Tokushima prefecture on Shikoku which lights up glowing emerald, a yellow pin drops on the Naruto Strait, cinematic",
+      "min_duration": 4.5
+    },
+    {
+      "id": "s6",
+      "type": "whirlpool",
+      "narration": [
+        {
+          "text": "今でも潮流は|最大時速20km。",
+          "tts": "今でも潮流は、最大時速20キロ。"
+        },
+        {
+          "text": "潮位差8倍なら|時速およそ55km。",
+          "tts": "潮位差8倍なら、時速およそ55キロ。"
+        },
+        {
+          "text": "エネルギーは|約23倍！",
+          "tts": "エネルギーは、約23倍！"
+        }
+      ],
+      "emphasis": [
+        "時速20km",
+        "時速およそ55km",
+        "約23倍"
+      ],
+      "on_screen_text": [
+        "潮流の速さ 時速20km → 55km",
+        "エネルギー 約23倍"
+      ],
+      "params": {
+        "speed": {
+          "label": "鳴門海峡の潮流（最大）",
+          "from": 20,
+          "to": 55,
+          "unit": "km",
+          "prefix": "時速"
+        },
+        "energy": {
+          "text": "エネルギー 約23倍",
+          "emphasis": [
+            "約23倍"
+          ]
+        }
+      },
+      "animation": "巨大な渦潮が回転を速めながら拡大。速度カウンターが20→55へ上昇し、最後にエネルギー約23倍のパネルが出る。",
+      "camera": "真上からの俯瞰、渦の加速に合わせて揺れ",
+      "sfx": [
+        "whoosh",
+        "riser"
+      ],
+      "video_prompt": "Vertical 9:16 top-down view of a massive ocean whirlpool spinning faster and growing, white foam spiral arms over deep teal water, emerald highlights, cinematic, no text",
+      "min_duration": 6.0
+    },
+    {
+      "id": "s7",
+      "type": "power_ochi",
+      "narration": [
+        {
+          "text": "世界が潮に困る中、",
+          "tts": "世界が潮に困る中、"
+        },
+        {
+          "text": "徳島だけは|潮で稼ぎ始める。",
+          "tts": "とくしまだけは、潮で稼ぎ始める。"
+        },
+        {
+          "text": "渦潮発電で、|世界の|エネルギー首都に！？",
+          "tts": "うずしお発電で、世界のエネルギー首都に！？"
+        }
+      ],
+      "emphasis": [
+        "徳島",
+        "世界のエネルギー首都",
+        "稼ぎ始める"
+      ],
+      "on_screen_text": [
+        "徳島だけ勝ち組",
+        "世界のエネルギー首都 TOKUSHIMA！？"
+      ],
+      "params": {
+        "headline": [
+          "世界が困る中",
+          "徳島だけ勝ち組"
+        ],
+        "emphasis": [
+          "徳島だけ勝ち組"
+        ],
+        "highlight": "JP-36",
+        "lon": 134.3,
+        "lat": 34.0,
+        "scale": 330,
+        "stamp": [
+          "世界のエネルギー首都",
+          "TOKUSHIMA！？"
+        ]
+      },
+      "animation": "徳島県が黄色く発光し、鳴門の渦から世界中へ稲妻のようなエネルギーの線が放射。『世界のエネルギー首都』スタンプ。",
+      "camera": "徳島中心の固定、エネルギー放射で画面を満たす",
+      "sfx": [
+        "impact",
+        "ding"
+      ],
+      "video_prompt": "Vertical 9:16, glowing Tokushima prefecture map at night, a giant whirlpool at Naruto emitting yellow lightning-like energy beams across the world, triumphant, emerald and yellow palette",
+      "min_duration": 5.0
+    },
+    {
+      "id": "s8",
+      "type": "outro_question",
+      "narration": [
+        {
+          "text": "ただし、|渦潮見物は命がけ。",
+          "tts": "ただし、うずしお見物は命がけ。"
+        },
+        {
+          "text": "あなたなら、|見に行く？",
+          "tts": "あなたなら、見に行く？"
+        }
+      ],
+      "emphasis": [
+        "命がけ"
+      ],
+      "on_screen_text": [
+        "ただし渦潮見物は",
+        "命がけ",
+        "あなたなら見に行く？"
+      ],
+      "params": {
+        "headline": [
+          "ただし渦潮見物は",
+          "命がけ"
+        ],
+        "emphasis": [
+          "命がけ"
+        ],
+        "question": "あなたなら見に行く？",
+        "footer": "もしもAI検証 ｜ 次回もラストは徳島"
+      },
+      "animation": "背景で渦潮がゆっくり回る中、『命がけ』がポップ。最後に質問パネルが出てコメントを誘導。",
+      "camera": "固定",
+      "sfx": [
+        "whoosh"
+      ],
+      "video_prompt": "Vertical 9:16, calm but huge whirlpool in the background, darkened, space for text overlay, emerald accent",
+      "min_duration": 3.5
+    }
+  ],
+  "fact_checks": [
+    {
+      "claim": "月までの平均距離は約384,400km",
+      "status": "verified",
+      "source_ids": [
+        "nasa_moon_facts",
+        "jpl_ld"
+      ]
+    },
+    {
+      "claim": "月が起こす潮汐力は距離の3乗に反比例する（距離が半分なら8倍）",
+      "status": "verified",
+      "source_ids": [
+        "tidal_textbook"
+      ],
+      "note": "月による地球の潮汐の起潮力についての関係。太陽による潮汐は変わらないため、潮汐全体がちょうど8倍になるわけではない。"
+    },
+    {
+      "claim": "見た目の大きさ(視直径)は距離に反比例するので約2倍",
+      "status": "estimate",
+      "method": "視直径 ≈ 直径/距離。距離1/2 → 視直径2倍。",
+      "source_ids": []
+    },
+    {
+      "claim": "潮位差も8倍になる",
+      "status": "assumption",
+      "note": "実際の潮位差は海の形・共鳴・摩擦で決まり、起潮力に比例するとは限らない。動画内で『仮定すると』と明示。",
+      "source_ids": []
+    },
+    {
+      "claim": "鳴門海峡の潮流は最大時速約20km、播磨灘と紀伊水道の間に最大約1.5mの水位差ができる",
+      "status": "verified",
+      "source_ids": [
+        "mlit_naruto"
+      ]
+    },
+    {
+      "claim": "潮位差8倍なら流れは約時速55km",
+      "status": "estimate",
+      "method": "ベルヌーイの式 v=√(2gΔh)。Δh=1.5m → v≈5.4m/s≈19.6km/h（観測の約20km/hと整合）。Δh=12m → v≈15.3m/s≈55km/h。摩擦・地形・流量制約は無視。",
+      "source_ids": [
+        "mlit_naruto"
+      ]
+    },
+    {
+      "claim": "潮流エネルギーは約23倍",
+      "status": "estimate",
+      "method": "運動エネルギー流束は流速の3乗に比例。(55/19.6)^3 ≈ (√8)^3 = 8^1.5 ≈ 22.6 → 約23倍。",
+      "source_ids": []
+    },
+    {
+      "claim": "渦潮の直径は大潮時に最大20〜30m程度とされる（動画内では数値を使用せず）",
+      "status": "verified",
+      "source_ids": [
+        "naruto_city_pdf",
+        "ana_naruto"
+      ]
+    },
+    {
+      "claim": "徳島が渦潮発電で世界のエネルギー首都になる",
+      "status": "fiction",
+      "note": "オチのためのフィクション。『！？』を付け、キャプションでも思考実験と明記。",
+      "source_ids": []
+    }
+  ],
+  "sources": [
+    {
+      "id": "nasa_moon_facts",
+      "title": "NASA Science - Moon Facts",
+      "url": "https://science.nasa.gov/moon/facts/",
+      "accessed": "2026-10-28",
+      "used_for": "月の平均距離 384,400 km"
+    },
+    {
+      "id": "jpl_ld",
+      "title": "NASA JPL CNEOS - LD (Lunar Distance)",
+      "url": "https://cneos.jpl.nasa.gov/glossary/LD.html",
+      "accessed": "2026-10-28",
+      "used_for": "1月距離(LD)=平均半長径384,400 km"
+    },
+    {
+      "id": "tidal_textbook",
+      "title": "Universe (Freedman et al.) Box 10-1 Calculating Tidal Forces",
+      "url": "https://digfir-published.macmillanusa.com/universe10e/asset/boxes/10_1.html",
+      "accessed": "2026-10-28",
+      "used_for": "潮汐力は距離の3乗に反比例（距離2倍で1/8）"
+    },
+    {
+      "id": "mlit_naruto",
+      "title": "国土交通省 観光庁 多言語解説文データベース（鳴門海峡の渦潮）PDF",
+      "url": "https://www.mlit.go.jp/tagengo-db/common/001555540.pdf",
+      "accessed": "2026-10-28",
+      "used_for": "最大時速約20km、最大1.5mの水位差、海峡幅1.3km"
+    },
+    {
+      "id": "naruto_city_pdf",
+      "title": "鳴門市 PRパンフレット",
+      "url": "https://www.city.naruto.tokushima.jp/promotion/narutomade/2021/pdf/03-04.pdf",
+      "accessed": "2026-10-28",
+      "used_for": "渦の直径 最大約30m（参考）"
+    },
+    {
+      "id": "ana_naruto",
+      "title": "ANA Japan Travel Planner 徳島（鳴門の渦潮）",
+      "url": "https://www.ana.co.jp/ja/au/japan-travel-planner/tokushima/0000001.html",
+      "accessed": "2026-10-28",
+      "used_for": "渦の直径20m、時速20km以上（参考・二次情報）"
+    }
+  ],
+  "caption": "もしも月が今の半分の距離に来たら…？🌕\n\n月が潮を起こす力は「距離の3乗に反比例」。半分の距離なら単純計算で約8倍。\nそして潮位差で渦が生まれる鳴門海峡は――。\n\n📐 この動画の前提\n・月の距離以外の変化（軌道・地殻変動・太陽の潮汐など）は無視した思考実験です\n・潮位差も8倍になると仮定し、流速はベルヌーイの式、エネルギーは流速の3乗で概算しています\n・「世界のエネルギー首都」はフィクションです😂\n\nあなたなら、巨大渦潮を見に行く？ コメントで教えて👇\n\nナレーション音声: Open JTalk / HTS voice \"Mei\" (c) Nagoya Institute of Technology, CC BY 3.0\n地図: Natural Earth",
+  "hashtags": [
+    "#もしも",
+    "#もしもシリーズ",
+    "#思考実験",
+    "#科学",
+    "#宇宙",
+    "#月",
+    "#潮汐",
+    "#鳴門の渦潮",
+    "#鳴門海峡",
+    "#徳島",
+    "#徳島県",
+    "#AI動画"
+  ],
+  "pinned_comment": "【計算メモ】潮汐力∝1/距離³ → 2³=8倍。鳴門の水位差1.5m→12mと仮定、v=√(2gΔh)で約20→55km/h、エネルギー∝v³で約23倍。ツッコミ大歓迎です🌀",
+  "thumbnail_text": "月が半分の距離に来たら？",
+  "production_notes": [
+    "潮位差が8倍になるのは仮定。動画内で『仮定すると』『単純計算』を明示すること。",
+    "渦潮の直径は資料により20m/30mと差があるため数値を使っていない。",
+    "ナレーション音声はCC BY 3.0のため、キャプションにクレジットを必ず残す。",
+    "徳島の住民・観光を揶揄しない。『命がけ』は仮説世界の話として扱う。"
+  ]
+}

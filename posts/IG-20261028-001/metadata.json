@@ -1,0 +1,27 @@
+{
+  "post_id": "IG-20261028-001",
+  "title": "もしも月が今の半分の距離に来たら？",
+  "built_at": "2026-10-28T15:21:54+00:00",
+  "duration_sec": 46.816,
+  "tts_backend": "openjtalk",
+  "tts_credit": "ナレーション音声: Open JTalk / HTS voice \"Mei\" (c) Nagoya Institute of Technology, CC BY 3.0",
+  "render": {
+    "engine": "pipeline.render (Pillow+ffmpeg)",
+    "supersampling": 2,
+    "fps": 30,
+    "size": "1080x1920"
+  },
+  "reel_sha256": "68786d5818d3913e47841494bf5b6bf2d45d2fe5b3a9bc8bda0d482db9ed917d",
+  "reel_bytes": 11845895,
+  "qc_passed": true,
+  "build_seconds": 158.3,
+  "cost_usd": 0.0,
+  "categories": [
+    "scientific",
+    "data_estimate",
+    "fiction"
+  ],
+  "tokushima_ending_type": "徳島が想定外の勝者になる / 徳島の地理が世界規模の問題を左右する",
+  "hook": "もしも、月が今の半分の距離に来たら？",
+  "preview_quality": false
+}
