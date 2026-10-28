@@ -1,0 +1,41 @@
+name: insights
+# Collect 24h / 72h / 7d metrics, rebuild reports/latest.md, upload the report to Drive 08.
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: insights
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      APPROVER_LOGIN: ${{ vars.APPROVER_LOGIN || github.repository_owner }}
+      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      IG_API_VERSION: ${{ vars.IG_API_VERSION || 'v23.0' }}
+      GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+      GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+      GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install requests numpy pillow
+      - run: git config user.name "reel-bot" && git config user.email "reel-bot@users.noreply.github.com"
+      - run: |
+          if [ -z "$IG_ACCESS_TOKEN" ]; then echo "Instagram not connected yet; skipping"; exit 0; fi
+          python -m pipeline.ops insights
+      - name: Notify failure
+        if: failure()
+        run: python -m pipeline.notify "インサイト取得エラー" "insights workflow failed"

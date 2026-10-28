@@ -1,0 +1,44 @@
+name: publish
+# Publishes ONLY posts whose state is `approved` (checked again inside pipeline.ops).
+# Manual run = reconcile a post stuck in publishing/publish_unknown (never re-posts blindly).
+on:
+  workflow_call:
+    inputs:
+      post_id: {type: string, required: true}
+  workflow_dispatch:
+    inputs:
+      post_id: {description: "投稿ID", required: true}
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: publish-${{ inputs.post_id }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      APPROVER_LOGIN: ${{ vars.APPROVER_LOGIN || github.repository_owner }}
+      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      IG_API_VERSION: ${{ vars.IG_API_VERSION || 'v23.0' }}
+      GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+      GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+      GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: main}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install requests numpy pillow
+      - run: git config user.name "reel-bot" && git config user.email "reel-bot@users.noreply.github.com"
+      - run: python -m pipeline.ops publish "${{ inputs.post_id }}"
+      - name: Notify failure
+        if: failure()
+        run: python -m pipeline.notify "公開処理エラー ${{ inputs.post_id }}" "Instagram側の公開状態を確認してから再実行してください（自動再投稿はしません）"

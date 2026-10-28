@@ -1,0 +1,38 @@
+name: token-refresh
+# Instagram long-lived tokens last 60 days. Refresh twice a month and store the new token as a secret.
+# Needs SECRETS_PAT: fine-grained PAT for this repo with "Secrets: read and write".
+on:
+  schedule:
+    - cron: "23 3 1,15 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      APPROVER_LOGIN: ${{ vars.APPROVER_LOGIN || github.repository_owner }}
+      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      IG_API_VERSION: ${{ vars.IG_API_VERSION || 'v23.0' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install requests numpy pillow
+      - name: Refresh and store
+        env:
+          GH_TOKEN: ${{ secrets.SECRETS_PAT }}
+        run: |
+          if [ -z "$IG_ACCESS_TOKEN" ]; then echo "Instagram not connected yet; skipping"; exit 0; fi
+          if [ -z "$GH_TOKEN" ]; then python -m pipeline.notify "Instagramトークン更新" "SECRETS_PAT未設定のため自動更新できません。60日以内に手動更新してください"; exit 0; fi
+          NEW=$(python -c "from pipeline import instagram; print(instagram.refresh_token()['access_token'])")
+          echo "::add-mask::$NEW"
+          gh secret set IG_ACCESS_TOKEN --body "$NEW" --repo "$GITHUB_REPOSITORY"
+      - name: Notify failure
+        if: failure()
+        run: python -m pipeline.notify "Instagramトークン更新失敗" "トークンの期限切れ前に再設定してください"
