@@ -22,8 +22,42 @@ def check(name, fn):
         return name, "NG", str(e)[:200]
 
 
+HINTS = {
+    "invalid_client": "クライアントIDかクライアントシークレットが違います（貼り間違い・入れ替わり・クライアント削除）",
+    "invalid_grant": "Refresh tokenが無効です（取り直しが必要。同意画面がテスト中のまま7日経過した場合もこれ）",
+    "unauthorized_client": "Refresh tokenを発行したクライアントと、保存したクライアントIDが一致していません",
+}
+
+
+def secret_shape() -> str:
+    """Format checks only; never prints values."""
+    notes = []
+    for name in ("GDRIVE_CLIENT_ID", "GDRIVE_CLIENT_SECRET", "GDRIVE_REFRESH_TOKEN"):
+        v = os.environ.get(name, "")
+        if not v:
+            notes.append(f"{name}: 空")
+        elif v != v.strip():
+            notes.append(f"{name}: 前後に空白/改行あり（自動で除去して試行）")
+    cid = os.environ.get("GDRIVE_CLIENT_ID", "").strip()
+    if cid and not cid.endswith(".apps.googleusercontent.com"):
+        notes.append("GDRIVE_CLIENT_ID が .apps.googleusercontent.com で終わっていない")
+    sec = os.environ.get("GDRIVE_CLIENT_SECRET", "").strip()
+    if sec and sec.endswith(".apps.googleusercontent.com"):
+        notes.append("GDRIVE_CLIENT_SECRET にクライアントIDが入っている可能性")
+    rt = os.environ.get("GDRIVE_REFRESH_TOKEN", "").strip()
+    if rt and not rt.startswith("1//"):
+        notes.append("GDRIVE_REFRESH_TOKEN が 1// で始まっていない（Access tokenやAuthorization codeを保存した可能性）")
+    return " / ".join(notes) or "形式OK"
+
+
 def drive():
     from . import drive as d
+    shape = secret_shape()
+    try:
+        d.token()
+    except RuntimeError as e:
+        code = next((k for k in HINTS if k in str(e)), None)
+        raise RuntimeError(f"{e} → {HINTS.get(code, '')}［形式チェック: {shape}］")
     root = json.loads((ROOT / "config/drive_folders.json").read_text())["root"]["id"]
     r = requests.get(f"{d.API}/files/{root}", headers=d._h(), params={"fields": "name,mimeType"}, timeout=30)
     r.raise_for_status()
@@ -35,7 +69,7 @@ def instagram():
     me = ig._req("GET", f"{ig.GRAPH}/{ig._v()}/me", params={"fields": "user_id,username,account_type",
                                                               "access_token": ig._tok()})
     lim = ig.publishing_limit()
-    return f"@{me.get('username')} ({me.get('account_type')}) / user_id一致: {str(me.get('user_id')) == os.environ['IG_USER_ID']} / limit: {lim.get('data')}"
+    return f"@{me.get('username')} ({me.get('account_type')}) / user_id一致: {str(me.get('user_id')) == ig._uid()} / limit: {lim.get('data')}"
 
 
 def tts_google():

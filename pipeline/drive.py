@@ -23,14 +23,28 @@ UPLOAD = "https://www.googleapis.com/upload/drive/v3/files"
 _token: str | None = None
 
 
+def env(name: str) -> str:
+    """Secret from the environment; unset and empty both count as missing (Actions passes '' for unset)."""
+    v = os.environ.get(name, "")
+    if not v:
+        raise KeyError(name)
+    return v
+
+
 def token() -> str:
     global _token
     if _token:
         return _token
     r = requests.post("https://oauth2.googleapis.com/token", data={
-        "client_id": os.environ["GDRIVE_CLIENT_ID"], "client_secret": os.environ["GDRIVE_CLIENT_SECRET"],
-        "refresh_token": os.environ["GDRIVE_REFRESH_TOKEN"], "grant_type": "refresh_token"}, timeout=30)
-    r.raise_for_status()
+        "client_id": env("GDRIVE_CLIENT_ID").strip(), "client_secret": env("GDRIVE_CLIENT_SECRET").strip(),
+        "refresh_token": env("GDRIVE_REFRESH_TOKEN").strip(), "grant_type": "refresh_token"}, timeout=30)
+    if r.status_code >= 400:
+        try:
+            err = r.json()
+        except ValueError:
+            err = {"error": r.text[:200]}
+        # Google's error code only (invalid_client / invalid_grant / unauthorized_client); never echoes secrets
+        raise RuntimeError(f"token refresh failed {r.status_code}: {err.get('error')} {err.get('error_description', '')}")
     _token = r.json()["access_token"]
     return _token
 

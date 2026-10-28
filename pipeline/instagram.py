@@ -29,12 +29,19 @@ def _v():
     return os.environ.get("IG_API_VERSION", "v23.0")
 
 
+def _env(name):
+    v = os.environ.get(name, "")
+    if not v:  # Actions passes '' for secrets that are not set
+        raise KeyError(name)
+    return v.strip()
+
+
 def _tok():
-    return os.environ["IG_ACCESS_TOKEN"]
+    return _env("IG_ACCESS_TOKEN")
 
 
 def _uid():
-    return os.environ["IG_USER_ID"]
+    return _env("IG_USER_ID")
 
 
 def _req(method, url, **kw):
