@@ -1,0 +1,37 @@
+name: ondoku-probe
+# One-off investigation: read the public Ondoku WordPress plugin source and site pages to learn
+# the API endpoint, parameters and voice IDs. Prints findings only; uses no secrets.
+on: workflow_dispatch
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Plugin source (API usage)
+        run: |
+          mkdir p && cd p
+          curl -sSL -o ondoku.zip https://downloads.wordpress.org/plugin/ondoku.zip && unzip -q ondoku.zip
+          echo "=== files"; find . -type f | head -50
+          echo "=== URLs"; grep -rhoE "https?://[a-zA-Z0-9./_?=&-]*ondoku[a-zA-Z0-9./_?=&-]*" . | sort -u
+          echo "=== request code"; grep -rn -iE "wp_remote_(post|get)|curl|'(token|voice|pitch|speed|text|language)'|\"(token|voice|pitch|speed|text)\"" --include=*.php . | head -80
+      - name: Site pages (API docs / voice list)
+        run: |
+          for u in https://ondoku3.com/ja/text_to_speech_api/ https://ondoku3.com/en/text_to_speech_api/ \
+                   https://ondoku3.com/ja/post/ondoku-api/ https://ondoku3.com/ja/ https://ondoku3.com/en/post/listen-advanced-tts-voice-sample/; do
+            echo "=================== $u"
+            curl -sSL -m 30 -A "Mozilla/5.0" "$u" -o page.html -w "HTTP %{http_code}\n" || true
+            python3 - <<'PY'
+          import re, html
+          s = open("page.html", encoding="utf-8", errors="ignore").read()
+          text = html.unescape(re.sub(r"<script.*?</script>|<style.*?</style>", " ", s, flags=re.S))
+          for pat in [r"api[^\n<]{0,200}", r"[^\n<>]{0,120}\bSam\b[^\n<>]{0,160}", r"(ja-JP|en-US)[-\w]{0,40}"]:
+              hits = sorted(set(m.group(0).strip() for m in re.finditer(pat, text, re.I)))[:40]
+              print(f"--- /{pat}/ ({len(hits)})"); [print("  ", h[:300]) for h in hits]
+          # option values of any <select> (voice pickers)
+          opts = re.findall(r'<option[^>]*value="([^"]+)"[^>]*>([^<]{0,60})<', s)
+          print(f"--- options ({len(opts)})"); [print("  ", v, "|", t.strip()) for v, t in opts[:150]]
+          PY
+          done
