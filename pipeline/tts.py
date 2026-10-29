@@ -123,7 +123,8 @@ def synth_ondoku(text: str, voice: str = "en-HK-SamNeural", speed: float = 1.0, 
         if isinstance(result, dict) and result.get("code") == "quota_exceeded":
             raise OndokuQuotaError(f"音読さんの文字数が不足しています（残り: {result.get('available', '不明')}）")
         if r.status_code >= 400 or not isinstance(result, dict) or not result.get("url"):
-            raise RuntimeError(f"音読さん API {r.status_code}: {r.text[:300]}")
+            msg = result.get("error", r.text[:300]) if isinstance(result, dict) else r.text[:300]
+            raise RuntimeError(f"音読さん API {r.status_code}（声: {voice}）: {msg}")
         ondoku_chars_used += len(text)
         audio = requests.get(result["url"], timeout=90)
         audio.raise_for_status()

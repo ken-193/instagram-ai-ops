@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       post_id: {description: "投稿ID", required: true, default: "IG-20261028-001"}
-      voices: {description: "声（config/voices.json の名前、カンマ区切り）", required: true, default: "Sam,Samuel"}
+      voices: {description: "声（config/voices.json の名前、カンマ区切り）", required: true, default: "Samuel,Masaru,Keita"}
 
 permissions:
   contents: read

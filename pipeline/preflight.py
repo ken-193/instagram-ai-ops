@@ -84,8 +84,8 @@ def ondoku():
     if not os.environ.get("ONDOKU_TOKEN"):
         raise KeyError("ONDOKU_TOKEN")
     from . import tts
-    x = tts.synth_ondoku("テスト", voice="en-HK-SamNeural")
-    return f"Sam（en-HK-SamNeural）で「テスト」→ {len(x) / tts.SR:.2f}秒の音声（{tts.ondoku_chars_used}文字使用）"
+    x = tts.synth_ondoku("テスト", voice="en-US-SamuelMultilingualNeural")
+    return f"Samuel（多言語）で「テスト」→ {len(x) / tts.SR:.2f}秒の音声（{tts.ondoku_chars_used}文字使用）"
 
 
 def gemini():
