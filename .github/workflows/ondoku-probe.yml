@@ -16,6 +16,9 @@ jobs:
           curl -sSL -o ondoku.zip https://downloads.wordpress.org/plugin/ondoku.zip && unzip -q ondoku.zip
           echo "=== files"; find . -type f | head -50
           echo "=== URLs"; grep -rhoE "https?://[a-zA-Z0-9./_?=&-]*ondoku[a-zA-Z0-9./_?=&-]*" . | sort -u
+          echo "=== API constant"; grep -rn "ONDOKUSAN_API\|define(" --include=*.php . | head -20
+          echo "=== hooks.php request/response"; sed -n '190,300p' ondoku/classes/hooks.php
+          echo "=== pitch helper"; grep -rn -A12 "function ondokusan_pitch_to_api" --include=*.php .
           echo "=== request code"; grep -rn -iE "wp_remote_(post|get)|curl|'(token|voice|pitch|speed|text|language)'|\"(token|voice|pitch|speed|text)\"" --include=*.php . | head -80
       - name: Site pages (API docs / voice list)
         run: |
@@ -31,7 +34,13 @@ jobs:
               hits = sorted(set(m.group(0).strip() for m in re.finditer(pat, text, re.I)))[:40]
               print(f"--- /{pat}/ ({len(hits)})"); [print("  ", h[:300]) for h in hits]
           # option values of any <select> (voice pickers)
-          opts = re.findall(r'<option[^>]*value="([^"]+)"[^>]*>([^<]{0,60})<', s)
-          print(f"--- options ({len(opts)})"); [print("  ", v, "|", t.strip()) for v, t in opts[:150]]
+          opts = re.findall(r'<option([^>]*)value="([^"]+)"([^>]*)>([^<]{0,60})<', s)
+          print(f"--- options ({len(opts)}) — ja-JP and anything named Sam*")
+          for a, v, b, t in opts:
+              if v.startswith("ja-JP") or "sam" in (v + t).lower():
+                  print("  ", v, "|", t.strip(), "|", (a + b).strip()[:160])
+          i = s.find(">Sam<")
+          if i >= 0:
+              print("--- context around >Sam<"); print(s[max(0, i - 600): i + 200])
           PY
           done
