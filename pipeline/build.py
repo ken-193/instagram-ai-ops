@@ -29,9 +29,17 @@ LEAD, GAP, TAIL, XFADE = 0.2, 0.12, 0.3, 0.22
 
 
 # ---------------------------------------------------------------- timeline
-def build_timeline(script: dict, backend: str, cache: Path) -> tuple[dict, list]:
-    speed = script.get("tts", {}).get("speed", 1.12)
-    kw = {"speed": speed} if backend == "openjtalk" else {}
+def tts_kwargs(script: dict, backend: str, voice: str | None = None, style: str | None = None) -> dict:
+    cfg = script.get("tts", {})
+    if backend == "openjtalk":
+        return {"speed": cfg.get("speed", 1.12)}
+    if backend == "gemini":
+        return {"voice": voice or cfg.get("voice", "Charon"), "style": style if style is not None else cfg.get("style", "")}
+    return {}
+
+
+def build_timeline(script: dict, backend: str, cache: Path, kw: dict | None = None) -> tuple[dict, list]:
+    kw = tts_kwargs(script, backend) if kw is None else kw
     scenes, voice_events, t = [], [], 0.0
     for sc in script["scenes"]:
         cur = LEAD
@@ -160,6 +168,10 @@ def main(argv=None):
     ap.add_argument("post_id")
     ap.add_argument("--preview", action="store_true", help="1x supersampling, faster")
     ap.add_argument("--tts", default=None)
+    ap.add_argument("--voice", default=None, help="Gemini prebuilt voice name (e.g. Charon)")
+    ap.add_argument("--style", default=None, help="Gemini speaking-style instruction")
+    ap.add_argument("--out", default=None, help="output dir (default posts/<id>/out)")
+    ap.add_argument("--sample", action="store_true", help="voice sample: don't touch metadata/docs of the post")
     ap.add_argument("--workers", type=int, default=max(1, mp.cpu_count()))
     a = ap.parse_args(argv)
 
@@ -171,12 +183,13 @@ def main(argv=None):
         sys.exit(2)
     limits = json.loads((ROOT / "config/limits.json").read_text())
     backend = a.tts or script.get("tts", {}).get("backend", "openjtalk")
-    out = post_dir / "out"
-    out.mkdir(exist_ok=True)
+    out = Path(a.out) if a.out else post_dir / "out"
+    out.mkdir(parents=True, exist_ok=True)
+    kw = tts_kwargs(script, backend, a.voice, a.style)
     t0 = time.time()
 
     print("[1/5] narration + timeline")
-    timeline, voice = build_timeline(script, backend, ROOT / ".cache/tts")
+    timeline, voice = build_timeline(script, backend, ROOT / ".cache/tts", kw)
     if not (limits["min_duration_sec"] <= timeline["total"] <= limits["max_duration_sec"]):
         print(f"WARNING: duration {timeline['total']}s outside limits")
     (out / "timeline.json").write_text(json.dumps(timeline, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -196,6 +209,19 @@ def main(argv=None):
     print("[4/5] quality check")
     report = qc.run(out / "reel.mp4", script, timeline)
 
+    narration_sec = sum(l["end"] - l["start"] for s in timeline["scenes"] for l in s["lines"])
+    cost = 0.0 if backend == "openjtalk" else None
+    if backend == "gemini":  # estimate: ~25 audio tokens/s at the configured output price
+        price = limits.get("gemini_tts_usd_per_million_audio_tokens", 20.0)
+        cost = round(narration_sec * 25 * price / 1e6, 4)
+    if a.sample:
+        sample = {"post_id": a.post_id, "backend": backend, **kw, "model": tts.gemini_model_used(),
+                  "duration_sec": timeline["total"], "narration_sec": round(narration_sec, 1),
+                  "est_cost_usd": cost, "qc_passed": report["passed"], "reel_sha256": sha256(out / "reel.mp4")}
+        (out / "sample.json").write_text(json.dumps(sample, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(json.dumps(sample, ensure_ascii=False))
+        return
+
     print("[5/5] docs + metadata")
     meta = {
         "post_id": a.post_id,
@@ -203,13 +229,15 @@ def main(argv=None):
         "built_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "duration_sec": timeline["total"],
         "tts_backend": backend,
+        "tts_options": kw,
+        "tts_model": tts.gemini_model_used() if backend == "gemini" else None,
         "tts_credit": tts.CREDITS.get(backend),
         "render": {"engine": "pipeline.render (Pillow+ffmpeg)", "supersampling": ss, "fps": FPS, "size": f"{W}x{H}"},
         "reel_sha256": sha256(out / "reel.mp4"),
         "reel_bytes": (out / "reel.mp4").stat().st_size,
         "qc_passed": report["passed"],
         "build_seconds": round(time.time() - t0, 1),
-        "cost_usd": 0.0 if backend == "openjtalk" else None,
+        "cost_usd": cost,
         "categories": script["categories"],
         "tokushima_ending_type": script["tokushima_ending"]["type"],
         "hook": script["hook"],

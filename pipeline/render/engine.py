@@ -140,7 +140,7 @@ class Canvas:
 
     def text(self, x, y, text, size, fill, family="heavy", weight=900, anchor="mm", stroke=0,
              stroke_fill=(0, 0, 0), alpha=1.0):
-        if alpha <= 0 or not text:
+        if alpha <= 0 or not text or size * self.ss < 2:
             return
         f = self.font(size, family, weight)
         if alpha >= 1:
@@ -161,6 +161,8 @@ class Canvas:
     def rich_line(self, cx, y, runs, size, family="heavy", stroke=0, alpha=1.0, scale=1.0):
         """runs: list of (text, rgb). Rendered centered at cx."""
         size = size * scale
+        if size * self.ss < 2:  # pop-in animations start at scale 0: nothing visible to draw yet
+            return
         widths = [self.text_size(t, size, family)[0] if t.strip() else self.font(size, family).getlength(t) / self.ss
                   for t, _ in runs]
         total = sum(widths)

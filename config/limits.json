@@ -7,5 +7,6 @@
   "max_publish_attempts_per_post": 2,
   "max_productions_per_day": 3,
   "max_duration_sec": 60,
-  "min_duration_sec": 15
+  "min_duration_sec": 15,
+  "gemini_tts_usd_per_million_audio_tokens": 20.0
 }
