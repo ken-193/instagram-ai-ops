@@ -29,6 +29,7 @@ CREDITS = {
 GEMINI_API = "https://generativelanguage.googleapis.com/v1beta"
 GEMINI_MODEL_PREFERENCE = ["gemini-3.1-flash-tts-preview", "gemini-2.5-flash-preview-tts", "gemini-2.5-pro-preview-tts"]
 _gemini_model: str | None = None
+_gemini_tried: set[str] = set()
 
 
 def _resample(x: np.ndarray, sr_in: int, sr_out: int = SR) -> np.ndarray:
@@ -99,7 +100,7 @@ def synth_gemini(text: str, voice: str = "Charon", style: str = "") -> np.ndarra
     global _gemini_model
     if _gemini_model is None:
         _gemini_model = os.environ.get("GEMINI_TTS_MODEL") or GEMINI_MODEL_PREFERENCE[0]
-    for attempt in range(6):
+    for attempt in range(8):
         r = _gemini_call(_gemini_model, text, voice, style)
         if r.status_code == 404 and attempt == 0:  # model retired/renamed: pick one the API offers
             found = gemini_tts_models()
@@ -107,6 +108,15 @@ def synth_gemini(text: str, voice: str = "Charon", style: str = "") -> np.ndarra
                 raise RuntimeError("no Gemini TTS model available for this API key")
             print(f"Gemini TTS model {_gemini_model} not found; using {found[0]} (available: {found})")
             _gemini_model = found[0]
+            continue
+        if r.status_code == 402:  # this model needs paid credits on this project: try another TTS model
+            others = [m for m in gemini_tts_models() if m not in _gemini_tried]
+            _gemini_tried.add(_gemini_model)
+            others = [m for m in others if m not in _gemini_tried]
+            if not others:
+                raise RuntimeError(f"Gemini TTS 402 (no credits) for every TTS model tried: {sorted(_gemini_tried)}")
+            print(f"Gemini TTS model {_gemini_model} needs credits (402); trying {others[0]}")
+            _gemini_model = others[0]
             continue
         if r.status_code in (429, 500, 503):  # rate limit / transient: bounded backoff
             time.sleep(min(60, 5 * 2 ** attempt))
@@ -119,6 +129,15 @@ def synth_gemini(text: str, voice: str = "Charon", style: str = "") -> np.ndarra
                         24000))
         return _resample(pcm, rate)
     raise RuntimeError("Gemini TTS kept failing (rate limit or server errors)")
+
+
+def gemini_probe() -> dict[str, str]:
+    """Try a one-word request on every TTS model: {model: 'OK' | 'HTTP <code>'} (for preflight)."""
+    out = {}
+    for m in gemini_tts_models():
+        r = _gemini_call(m, "テスト", "Charon", "")
+        out[m] = "OK" if r.status_code == 200 else f"HTTP {r.status_code}"
+    return out
 
 
 def gemini_model_used() -> str | None:

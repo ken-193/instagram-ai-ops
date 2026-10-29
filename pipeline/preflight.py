@@ -84,11 +84,14 @@ def gemini():
     if not os.environ.get("GEMINI_API_KEY"):
         return "任意（未設定ならOpen JTalkを使用）"
     from . import tts
-    models = tts.gemini_tts_models()
-    if not models:
-        raise RuntimeError("APIキーは有効ですが、使えるTTSモデルが見つかりません")
-    x = tts.synth_gemini("接続テストです。", voice="Charon")
-    return f"TTSモデル: {', '.join(models[:3])} / 使用: {tts.gemini_model_used()} / {len(x) / tts.SR:.1f}s audio"
+    probe = tts.gemini_probe()
+    if not probe:
+        raise RuntimeError("APIキーは有効ですが、TTSモデルが見つかりません")
+    detail = " / ".join(f"{m}: {r}" for m, r in probe.items())
+    if "OK" not in probe.values():
+        hint = "（402=クレジット不足: AI Studioで課金/クレジットの設定が必要）" if any("402" in r for r in probe.values()) else ""
+        raise RuntimeError(detail + hint)
+    return detail
 
 
 def github():
