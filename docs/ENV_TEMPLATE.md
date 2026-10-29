@@ -12,8 +12,8 @@
 | `GDRIVE_CLIENT_ID` | 必須 | Drive へのアップロード（OAuthクライアント） | Google Cloud Console |
 | `GDRIVE_CLIENT_SECRET` | 必須 | 同上 | Google Cloud Console |
 | `GDRIVE_REFRESH_TOKEN` | 必須 | あなたのDriveに書き込むための更新トークン（scope: `https://www.googleapis.com/auth/drive`） | OAuth 2.0 Playground |
-| `IG_USER_ID` | 公開に必須 | InstagramのユーザーID | Meta for Developers（アプリのInstagram設定画面） |
-| `IG_ACCESS_TOKEN` | 公開に必須 | 長期アクセストークン（60日） | 同上 |
+| `IG_USER_ID` | 任意（Muse投稿のため現在不要。API投稿・インサイト取得に切り替える場合のみ） | InstagramのユーザーID | Meta for Developers（アプリのInstagram設定画面） |
+| `IG_ACCESS_TOKEN` | 任意（同上） | 長期アクセストークン（60日） | 同上 |
 | `GOOGLE_TTS_API_KEY` | 任意 | 自然な日本語ナレーション（Chirp 3 HD）。未設定なら無料のOpen JTalk | Google Cloud Console（Text-to-Speech APIを有効化） |
 | `NTFY_TOPIC` | 任意 | ntfyアプリへのプッシュ通知。推測されにくいランダムな文字列にする | 自分で決める（ntfyアプリで同じトピックを購読） |
 | `SECRETS_PAT` | 任意 | Instagramトークンの自動更新でSecretを書き換えるため | GitHub → Settings → Developer settings → Fine-grained token（このリポジトリのみ、Secrets: Read and write） |
@@ -36,7 +36,7 @@
 4. `https://developers.google.com/oauthplayground` → 右上の歯車 → 「Use your own OAuth credentials」に3.の値 → 左の入力欄に `https://www.googleapis.com/auth/drive` → Authorize → Exchange authorization code for tokens → **Refresh token** を控える。
 5. 3つの値を Secrets に保存。
 
-### B. Instagram（公開に必須・約20〜30分）
+### B. Instagram API（任意・Museを使う間は不要）
 1. Instagramアプリ → 設定 → アカウントの種類 → **プロアカウント（クリエイターまたはビジネス）** に切り替え。
 2. Meta for Developers でアプリを作成し、「Instagram」製品の **API setup with Instagram login** を追加。
 3. 自分のInstagramアカウントを追加し、権限 `instagram_business_basic`, `instagram_business_content_publish`, `instagram_business_manage_insights` でトークンを生成。

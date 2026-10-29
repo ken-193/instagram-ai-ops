@@ -11,6 +11,7 @@ Safety rules enforced here (not in the UI):
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -22,7 +23,8 @@ TRANSITIONS: dict[str, set[str]] = {
     "rendered": {"pending_approval", "failed"},
     "pending_approval": {"approved", "revision_requested", "rejected", "rendered"},
     "revision_requested": {"drafted", "rendered", "rejected"},
-    "approved": {"publishing", "rejected"},
+    "approved": {"publishing", "handed_off", "rejected"},
+    "handed_off": {"published", "rejected"},  # in Drive 11_Muse投稿キュー, waiting for Muse to post
     "publishing": {"published", "publish_unknown", "publish_failed"},
     "publish_unknown": {"published", "publish_failed", "approved"},
     "publish_failed": {"approved", "rejected"},
@@ -77,6 +79,18 @@ def approve(st: dict, actor: str, owner: str, reel_sha256: str) -> dict:
         raise TransitionError("reel changed since it was sent for review; re-review the latest version")
     return transition(st, "approved", actor, "approved via GitHub issue comment", approved_sha256=reel_sha256,
                       approved_by=actor, approved_at=now(), approved_revision=st.get("revision", 0))
+
+
+def mark_posted(st: dict, actor: str, owner: str, url: str) -> dict:
+    """Owner confirms Muse posted the reel (`/posted <Instagram URL>`)."""
+    if actor.lower() != owner.lower():
+        raise TransitionError(f"{actor} is not allowed to confirm posting (owner: {owner})")
+    if st["status"] != "handed_off":
+        raise TransitionError(f"cannot mark as posted while status is {st['status']}")
+    if not re.match(r"^https://(www\.)?instagram\.com/(reel|reels|p)/[\w-]+/?", url or ""):
+        raise TransitionError("Instagramの投稿URL（https://www.instagram.com/reel/...）を付けてください")
+    return transition(st, "published", actor, "posted by Muse (confirmed by owner)",
+                      ig={**st.get("ig", {}), "permalink": url.split("?")[0], "published_at": now(), "via": "muse"})
 
 
 def assert_publishable(st: dict, max_attempts: int, downloaded_sha256: str) -> None:

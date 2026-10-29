@@ -1,7 +1,8 @@
 """Operational commands run by GitHub Actions.
 
   python -m pipeline.ops submit   <post_id>   # after a QC-passed build: Drive upload + approval request
-  python -m pipeline.ops publish  <post_id>   # only after approval; idempotent, reconciles unknown states
+  python -m pipeline.ops publish  <post_id>   # only after approval: Muse handoff or Instagram API (config/publishing.json)
+  python -m pipeline.ops posted   <post_id>   # after /posted: file the Drive folders, close the issue
   python -m pipeline.ops insights             # collect 24h / 72h / 7d metrics for published posts
   python -m pipeline.ops guard    <post_id>   # cost / attempt limits before rendering
 
@@ -20,6 +21,7 @@ from . import notify, state
 
 ROOT = Path(__file__).resolve().parents[1]
 LIMITS = json.loads((ROOT / "config/limits.json").read_text())
+PUBLISHING = json.loads((ROOT / "config/publishing.json").read_text())
 CHECKPOINTS = {"24h": 24, "72h": 72, "7d": 168}
 
 
@@ -177,7 +179,65 @@ def reconcile(st: dict) -> None:
     raise SystemExit(f"publish state unresolved: {code}")
 
 
+def handoff(post_id: str) -> None:
+    """Muse mode: copy the APPROVED reel + caption + cover into Drive 11_Muse投稿キュー.
+    Only this step ever writes to the folder Muse watches, and only for status `approved`
+    with the exact approved file, so Muse can never pick up an unapproved video."""
+    from . import drive
+
+    st = state.load(post_id)
+    if st["status"] in ("handed_off", "published"):
+        print(f"already {st['status']}; nothing to do")
+        return
+    work = ROOT / ".cache" / "publish"
+    work.mkdir(parents=True, exist_ok=True)
+    reel = drive.download(st["drive"]["files"]["reel.mp4"], work / f"{post_id}.mp4")
+    state.assert_publishable(st, LIMITS["max_publish_attempts_per_post"], _sha256(reel))
+
+    cfg = PUBLISHING["muse"]
+    queue = drive.FOLDERS[cfg["queue_folder_key"]]
+    stem = cfg["file_stem"].format(post_id=post_id)
+    copied = {}
+    for src, ext in cfg["files"].items():
+        copied[src] = drive.copy(st["drive"]["files"][src], queue, stem + ext)
+    st["muse"] = {"queue_folder_id": queue, "files": copied, "handed_off_at": state.now()}
+    state.transition(st, "handed_off", "pipeline", "copied to 11_Muse投稿キュー")
+    state.save(st)
+    git_commit(f"{post_id}: handed off to Muse")
+    try:
+        drive.rename(st["drive"]["folder_id"], f"{post_id}_承認済み")
+    except Exception as e:  # cosmetic only
+        print("rename failed:", e)
+    if st.get("issue_number"):
+        notify.issue_comment(st["issue_number"], "\n".join([
+            "📦 Museの投稿キューに置きました（Drive `11_Muse投稿キュー`）。",
+            "", *[f"- `{stem + ext}`" for ext in cfg["files"].values()], "",
+            "Museで投稿できたら、このIssueに `/posted 投稿のURL` と返信してください。",
+            "例: `/posted https://www.instagram.com/reel/xxxxxxxx/`",
+            "記録すると、キューのファイルは投稿済みフォルダへ移動します（Museが同じ動画を二度投稿しないように）。"]))
+    notify.push("Muse投稿キューに追加", f"{post_id} を投稿できます")
+
+
+def posted(post_id: str) -> None:
+    """After /posted: move queue files out of Muse's folder (no double post) and file everything in 07."""
+    from . import drive
+
+    st = state.load(post_id)
+    if st["status"] != "published":
+        raise SystemExit(f"{post_id} is {st['status']}, not published")
+    done = drive.FOLDERS["07_published"]
+    drive.move(st["drive"]["folder_id"], done)
+    drive.rename(st["drive"]["folder_id"], post_id)
+    for fid in st.get("muse", {}).get("files", {}).values():
+        drive.move(fid, st["drive"]["folder_id"])
+    if st.get("issue_number"):
+        notify.close_issue(st["issue_number"])
+
+
 def publish(post_id: str) -> None:
+    if PUBLISHING.get("mode") == "muse":
+        handoff(post_id)
+        return
     from . import drive, instagram
 
     st = state.load(post_id)
@@ -251,6 +311,8 @@ def main(argv=None):
         submit(argv[1])
     elif cmd == "publish":
         publish(argv[1])
+    elif cmd == "posted":
+        posted(argv[1])
     elif cmd == "insights":
         print(collect_insights())
     elif cmd == "guard":

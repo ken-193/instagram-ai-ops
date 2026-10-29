@@ -15,9 +15,9 @@
 | 動画生成AI（Veo等） | ⏸ 将来 | 印象的な1〜2カットだけ追加する用途で検討。現在は `max_ai_video_seconds_per_post: 0` で無効 |
 | 音声合成 | ✅ Open JTalk（試作） / Google Cloud TTS（本番候補） | 試作は無料オフライン音声。より自然な音声は Google Chirp 3 HD に切替可能（実装済み・未検証） |
 | BGM・効果音 | ✅ コード生成 | 第三者音源を使わないため利用条件の問題が発生しない |
-| Instagram API | ✅ 実装済み・未検証 | Instagram API with Instagram Login で Reels 公開・インサイト取得 |
+| Muse | ✅ 投稿担当 | Drive `11_Muse投稿キュー` から承認済み動画を引き取りInstagramへ投稿（MUSE_HANDOFF.md） |
+| Instagram API | ⏸ 予備 | 直接投稿・インサイト取得のコードは実装済み・未検証。`config/publishing.json` の mode を `api` にすると使用 |
 | 通知 | ✅ GitHub通知 / 任意で ntfy | 承認依頼・公開完了・エラー |
-| Muse | ❌ 自動化には不採用 | 下記「Museについて」参照 |
 | n8n Cloud | ❌ 不採用（代替候補） | GitHub Actions で同じことが追加費用なしでできるため |
 
 ## 2. 連携方式
@@ -33,7 +33,7 @@
         |                                        v
         |                            [Actions: approval] state= approved（sha256固定）
         |                                        v
-        |                            [Actions: publish] Driveから取得→sha256照合→Instagram Reels
+        |                            [Actions: publish] Driveから取得→sha256照合→11_Muse投稿キューへコピー→[Muse]→Instagram
         |                                        v
         |                            [Actions: insights 6h毎] → reports/ → Drive 08
         +-- 次回企画時に reports/latest.md と learnings.json を読む
@@ -114,9 +114,11 @@ ElevenLabs・VOICEVOX は今回調査できていません（未比較）。
 
 ## 6. Museについて
 
-調査で確認できた「Muse」は Meta の AI モデル群（Muse Spark＝Meta AIの基盤、Muse Image＝画像生成でInstagramストーリーズのエフェクト等に利用、Muse Video＝プレビュー段階）でした。
-**Google Driveの監視・動画の自動投稿・インサイトの定期取得を行える公開APIは確認できなかった**ため、自動化の前提にはしていません。
-想定されている「Muse」が別のサービスであれば教えてください。連携可否を調査します。
+投稿は Muse が担当します（2026-10-29 方針決定）。
+- 受け渡し: 承認済みの版だけを Drive `11_Muse投稿キュー` に `IG-xxx.mp4 / .txt / .jpg` としてコピー。Museはこのフォルダだけを監視する。
+- 完了記録: 投稿後に Issue へ `/posted URL`。キューのファイルは投稿済みフォルダへ移動し、再投稿を防ぐ。
+- Museの仕様（監視方法・必要なファイル形式・投稿URLの通知可否・分析機能）は公開情報では確認できていないため、判明次第 `config/publishing.json` と手順を合わせる。
+- 詳細: MUSE_HANDOFF.md
 
 ## 7. 認証情報の管理方針
 - 秘密情報は **GitHub Secrets のみ**に保存。リポジトリ・Drive・ドキュメントには書かない（ENV_TEMPLATE.md は名前と用途だけ）。

@@ -12,9 +12,10 @@
 
 | コマンド | 結果 |
 |---|---|
-| `/approve` | 現在レビュー中の版を承認 → 自動で公開処理へ |
+| `/approve` | 現在レビュー中の版を承認 → `11_Muse投稿キュー` へ受け渡し（Museが投稿） |
 | `/revise 修正内容` | 修正依頼として記録 → Claude Codeで反映・再生成 → 新しい版の承認依頼が届く |
 | `/reject 理由` | 却下（終了状態）。この投稿は公開されません |
+| `/posted URL` | Museで投稿したあとに記録。キューのファイルを投稿済みフォルダへ移動しIssueを閉じる |
 
 承認時の目視チェック（quality_check.md 末尾）: 字幕とナレーションの同期／数字・地名の読み／字幕がUIに隠れない／仮定・フィクションが誤解なく伝わる／地域への配慮。
 
@@ -30,14 +31,15 @@
 
 ## 状態遷移
 ```
-drafted → rendered → pending_approval ─┬→ approved → publishing → published
+drafted → rendered → pending_approval ─┬→ approved → handed_off（Museキュー）→ published（/posted）
                          ↑             ├→ revision_requested → (再生成) → rendered
                          └─(新しい版)───┘└→ rejected（終了）
-publishing → publish_unknown（照合待ち）/ publish_failed（コンテナ未作成なら /approve で再試行可）
+（Instagram API モード時のみ）approved → publishing → published / publish_unknown / publish_failed
 ```
 
 ## 承認履歴の記録
 - すべての遷移が `history`（日時・前後の状態・操作者・メモ）に追記され、gitのコミットとしても残ります。
 - 承認時は `approved_by`, `approved_at`, `approved_sha256`, `approved_revision` を記録。
-- 公開後は `ig.media_id`, `ig.permalink`, `ig.published_at` を記録し、Driveのフォルダを `07_投稿済み` へ移動します。
+- キューへの受け渡し時は `muse.files`（コピーしたファイルID）と日時を記録。
+- `/posted` 後は `ig.permalink`, `ig.published_at` を記録し、Driveのフォルダとキューのファイルを `07_投稿済み` へ移動します。
 - 却下は `rejected_reason` を記録します。
