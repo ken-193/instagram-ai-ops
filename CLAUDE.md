@@ -18,6 +18,10 @@
    フレームを数枚書き出して目視確認（文字の重なり・はみ出し・安全領域）。尺は15〜60秒（目標30〜45秒）。
 6. `python -m pytest -q tests` が通ることを確認してコミット。main に入ると produce ワークフローが本番レンダリング→Drive→承認依頼を行う。
 
+## 投稿の仕組み（Muse）
+承認後は Drive `11_Muse投稿キュー` に承認済みの版だけをコピーし、Museが投稿する（docs/MUSE_HANDOFF.md）。
+`11_Muse投稿キュー` には承認フロー以外から絶対に何も置かない。投稿方式は `config/publishing.json`（muse / api）。
+
 ## 修正依頼（/revise）を反映するとき
 `state/posts/<id>.json` の `revision_requests` を読み、script.json を直して上記5〜6を実施。
 

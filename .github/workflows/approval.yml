@@ -20,10 +20,14 @@ jobs:
       cancel-in-progress: false
     outputs:
       approved: ${{ steps.h.outputs.approved }}
+      posted: ${{ steps.h.outputs.posted }}
       post_id: ${{ steps.h.outputs.post_id }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       APPROVER_LOGIN: ${{ vars.APPROVER_LOGIN || github.repository_owner }}
+      GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+      GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+      GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -36,6 +40,9 @@ jobs:
         run: |
           git add state
           git diff --cached --quiet || (git commit -m "approval: ${{ steps.h.outputs.post_id }}" && git push)
+      - name: File posted reel (move out of Muse queue)
+        if: steps.h.outputs.posted == 'true'
+        run: python -m pipeline.ops posted "${{ steps.h.outputs.post_id }}"
 
   publish:
     needs: decide

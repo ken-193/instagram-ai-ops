@@ -1,0 +1,13 @@
+{
+  "comment": "mode: 'muse' = approved reels are copied to Drive 11_Muse投稿キュー and Muse posts them; 'api' = post via Instagram API (pipeline/instagram.py).",
+  "mode": "muse",
+  "muse": {
+    "queue_folder_key": "11_muse_queue",
+    "file_stem": "{post_id}",
+    "files": {
+      "reel.mp4": ".mp4",
+      "caption.txt": ".txt",
+      "thumbnail.jpg": ".jpg"
+    }
+  }
+}

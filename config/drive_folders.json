@@ -1,6 +1,9 @@
 {
   "comment": "Google Drive folder IDs (not secrets). Root folder is the existing 'instagram_post_reel'.",
-  "root": {"name": "instagram_post_reel", "id": "1Rvls7x0Py7ioCLTdSdst3CHNzu7ilnT-"},
+  "root": {
+    "name": "instagram_post_reel",
+    "id": "1Rvls7x0Py7ioCLTdSdst3CHNzu7ilnT-"
+  },
   "folders": {
     "00_manual": "1b_1SMOuSEjbDs80OG_c7a5AXtygUV3C-",
     "01_system": "1oUosmqQ8PHNytT_csXrtLOm8iwvMrlji",
@@ -12,6 +15,7 @@
     "07_published": "1J8PdOdu3fkCiGepVVYbtw4Me8SyDhMvH",
     "08_reports": "1dze15_fGG0-x3gjTPq1wiOL8ZMOGg7Zu",
     "09_templates": "1x-2lzINQhnbgyGemUqLOIHSu2blnCSc-",
-    "10_errors": "1nevunqhRhqliUK-_OEba1v36PYXZ_f2N"
+    "10_errors": "1nevunqhRhqliUK-_OEba1v36PYXZ_f2N",
+    "11_muse_queue": "1ZN7E164f6IXZMR9ZWeelW5v7nEisAHxN"
   }
 }

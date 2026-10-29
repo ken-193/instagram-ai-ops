@@ -10,6 +10,7 @@ from pipeline import ops, state
 @pytest.fixture
 def env(tmp_path, monkeypatch):
     monkeypatch.setattr(state, "STATE_DIR", tmp_path)
+    monkeypatch.setitem(ops.PUBLISHING, "mode", "api")
     log = []
     monkeypatch.setattr(ops, "git_commit", lambda msg: log.append(("commit", msg, state.load("IG-20261028-001")["status"])))
     monkeypatch.setattr(ops, "full_caption", lambda d: "もしも月が今の半分の距離に来たら…？ #もしも")

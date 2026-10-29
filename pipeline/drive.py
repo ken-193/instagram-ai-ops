@@ -78,7 +78,8 @@ def upload(local: Path, parent: str, name: str | None = None) -> str:
     """Resumable upload; if a file with the same name exists in `parent`, its content is updated
     (new revision) rather than creating a duplicate."""
     name = name or local.name
-    mime = mimetypes.guess_type(name)[0] or "application/octet-stream"
+    mime = {".md": "text/markdown", ".csv": "text/csv", ".txt": "text/plain"}.get(Path(name).suffix) \
+        or mimetypes.guess_type(name)[0] or "application/octet-stream"
     existing = find(name, parent)
     meta = {"name": name} if existing else {"name": name, "parents": [parent]}
     url = f"{UPLOAD}/{existing['id']}" if existing else UPLOAD
@@ -107,6 +108,21 @@ def move(file_id: str, new_parent: str) -> None:
     old = ",".join(r.json().get("parents", []))
     r = requests.patch(f"{API}/files/{file_id}", headers=_h(), params={"addParents": new_parent, "removeParents": old},
                        timeout=30)
+    r.raise_for_status()
+
+
+def copy(file_id: str, parent: str, name: str) -> str:
+    """Copy a file into `parent` as `name`; reuses an existing copy with that name (idempotent)."""
+    existing = find(name, parent)
+    if existing:
+        return existing["id"]
+    r = requests.post(f"{API}/files/{file_id}/copy", headers=_h(), json={"name": name, "parents": [parent]}, timeout=120)
+    r.raise_for_status()
+    return r.json()["id"]
+
+
+def rename(file_id: str, name: str) -> None:
+    r = requests.patch(f"{API}/files/{file_id}", headers=_h(), json={"name": name}, timeout=30)
     r.raise_for_status()
 
 
