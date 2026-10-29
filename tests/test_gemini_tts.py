@@ -46,3 +46,24 @@ def test_gemini_retries_rate_limit_then_succeeds(monkeypatch):
     monkeypatch.setattr(tts, "_gemini_call", lambda *a: seq.pop(0))
     monkeypatch.setattr("time.sleep", lambda s: None)
     assert len(tts.synth_gemini("テスト")) > 0
+
+
+def test_gemini_402_tries_other_models_then_gives_up(monkeypatch):
+    calls = []
+    monkeypatch.setattr(tts, "_gemini_model", "paid-a-tts")
+    monkeypatch.setattr(tts, "_gemini_tried", set())
+    monkeypatch.setattr(tts, "gemini_tts_models", lambda: ["paid-a-tts", "paid-b-tts"])
+    monkeypatch.setattr(tts, "_gemini_call", lambda m, *a: calls.append(m) or Resp(402))
+    import pytest
+    with pytest.raises(RuntimeError, match="402"):
+        tts.synth_gemini("テスト")
+    assert calls == ["paid-a-tts", "paid-b-tts"]
+
+
+def test_gemini_402_falls_back_to_free_model(monkeypatch):
+    monkeypatch.setattr(tts, "_gemini_model", "paid-tts")
+    monkeypatch.setattr(tts, "_gemini_tried", set())
+    monkeypatch.setattr(tts, "gemini_tts_models", lambda: ["paid-tts", "free-tts"])
+    monkeypatch.setattr(tts, "_gemini_call", lambda m, *a: Resp(402) if m == "paid-tts" else Resp(200, audio_payload()))
+    tts.synth_gemini("テスト")
+    assert tts.gemini_model_used() == "free-tts"
