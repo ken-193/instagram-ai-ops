@@ -17,7 +17,9 @@ jobs:
           echo "=== files"; find . -type f | head -50
           echo "=== URLs"; grep -rhoE "https?://[a-zA-Z0-9./_?=&-]*ondoku[a-zA-Z0-9./_?=&-]*" . | sort -u
           echo "=== API constant"; grep -rn "ONDOKUSAN_API\|define(" --include=*.php . | head -20
-          echo "=== hooks.php request/response"; sed -n '190,300p' ondoku/classes/hooks.php
+          echo "=== ondokusan.php head"; sed -n '1,40p' ondoku/ondokusan.php
+          echo "=== hooks.php response (success path)"; sed -n '295,380p' ondoku/classes/hooks.php
+          echo "=== readme (terms/credit)"; grep -n -iE "credit|commercial|license|terms|plan|free|character" ondoku/readme.txt | head -40
           echo "=== pitch helper"; grep -rn -A12 "function ondokusan_pitch_to_api" --include=*.php .
           echo "=== request code"; grep -rn -iE "wp_remote_(post|get)|curl|'(token|voice|pitch|speed|text|language)'|\"(token|voice|pitch|speed|text)\"" --include=*.php . | head -80
       - name: Site pages (API docs / voice list)
