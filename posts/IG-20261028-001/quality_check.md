@@ -4,7 +4,7 @@
 
 | チェック | 結果 | 詳細 | ブロッキング |
 |---|---|---|---|
-| file exists | OK | 11845895 bytes | yes |
+| file exists | OK | 11848046 bytes | yes |
 | video codec H.264 | OK | h264 | yes |
 | pixel format yuv420p | OK | yuv420p | yes |
 | resolution 1080x1920 (9:16) | OK | 1080x1920 | yes |

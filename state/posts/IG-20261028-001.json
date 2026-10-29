@@ -1,0 +1,40 @@
+{
+  "post_id": "IG-20261028-001",
+  "status": "pending_approval",
+  "revision": 1,
+  "history": [
+    {
+      "at": "2026-10-29T03:50:55+00:00",
+      "from": "drafted",
+      "to": "rendered",
+      "actor": "pipeline",
+      "note": "build + QC passed"
+    },
+    {
+      "at": "2026-10-29T03:51:09+00:00",
+      "from": "rendered",
+      "to": "pending_approval",
+      "actor": "pipeline",
+      "note": "rev 1 sent for review"
+    }
+  ],
+  "render_attempts": 1,
+  "publish_attempts": 0,
+  "drive": {
+    "folder_id": "1n5J4_2l-xqqICTdDQ1HducZx2LqeQNzO",
+    "files": {
+      "reel.mp4": "1syedDWCAIaNluJQPCNuY7bjBV9_Q_GHl",
+      "thumbnail.jpg": "1m0YhiqXJU7uRDSG1OWHu79KfqLDUqL8o",
+      "script.md": "1mzxzY2nbSB0yexfCnGksce4wkidFq9R1",
+      "script.json": "1KKWYQucvZEd7dUidsgZ5PWOak5goMQH5",
+      "caption.txt": "1xhpjD361SE-swPPVhz52xG4J2cupipsC",
+      "sources.md": "15yM59bWE68UgvQ093eFoBU3XK9MUmLY1",
+      "metadata.json": "1fCyTA5N0l2HQ8KnscK9tHBlQQcXEgxLy",
+      "quality_check.md": "1hx9laq2eiMPhTFANiM-xbaA7wIsF_wPF"
+    }
+  },
+  "ig": {},
+  "insights": {},
+  "reel_sha256": "dcc72c2c15f13e1e57186428cb19da6bc45dbeccb45ad13d68c643a3593535a9",
+  "issue_number": 3
+}
