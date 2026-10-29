@@ -44,8 +44,8 @@ def test_ondoku_quota_notice_audio_is_never_used(monkeypatch):
 
 
 def test_ondoku_http_error_and_missing_url(monkeypatch):
-    monkeypatch.setattr(tts, "_ondoku_call", lambda body: Resp(400, None))
-    with pytest.raises(RuntimeError, match="400"):
+    monkeypatch.setattr(tts, "_ondoku_call", lambda body: Resp(400, {"error": "この音声では本文を読み上げできませんでした"}))
+    with pytest.raises(RuntimeError, match="400.*読み上げできません"):
         tts.synth_ondoku("テスト")
     monkeypatch.setattr(tts, "_ondoku_call", lambda body: Resp(200, {"message": "ng"}))
     with pytest.raises(RuntimeError):
