@@ -26,7 +26,7 @@ def _run_ff(args) -> str:
     return r.stderr + ("" if r.returncode == 0 else f"\nEXIT {r.returncode}")
 
 
-def run(video: Path, script: dict, timeline: dict) -> dict:
+def run(video: Path, script: dict, timeline: dict, backend: str | None = None) -> dict:
     checks: list[dict] = []
 
     def add(name, ok, detail, blocking=True):
@@ -85,9 +85,11 @@ def run(video: Path, script: dict, timeline: dict) -> dict:
             "assumption/estimate/fiction claims present")
     unverified = [fc["claim"] for fc in script["fact_checks"] if fc["status"] == "verified" and not fc.get("source_ids")]
     add("verified claims have sources", not unverified, unverified or "ok")
-    backend = script.get("tts", {}).get("backend", "openjtalk")
+    backend = backend or script.get("tts", {}).get("backend", "openjtalk")
     if backend == "openjtalk":
         add("TTS credit (CC BY) in caption", "CC BY" in cap, CREDITS["openjtalk"])
+    if backend == "ondoku":
+        add("TTS credit (音読さん) in caption", "音読さん" in cap, CREDITS["ondoku"])
     add("hashtags <= 15", len(script["hashtags"]) <= 15, f"{len(script['hashtags'])} tags")
     total_caption = len(cap) + 2 + len(" ".join(script["hashtags"]))
     add("caption+tags <= 2200 chars", total_caption <= 2200, f"{total_caption} chars")

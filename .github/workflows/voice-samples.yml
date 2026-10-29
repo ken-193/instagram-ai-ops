@@ -1,11 +1,11 @@
 name: voice-samples
-# Render the same reel once per Gemini voice and open one comparison issue.
+# Render the same reel once per voice candidate (config/voices.json) and open one comparison issue.
 # Samples go to Drive 05/voice_samples only — never to the approval or Muse folders.
 on:
   workflow_dispatch:
     inputs:
       post_id: {description: "投稿ID", required: true, default: "IG-20261028-001"}
-      voices: {description: "声（カンマ区切り）", required: true, default: "Charon,Fenrir,Iapetus"}
+      voices: {description: "声（config/voices.json の名前、カンマ区切り）", required: true, default: "Sam,Samuel"}
 
 permissions:
   contents: read
@@ -33,6 +33,7 @@ jobs:
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       GEMINI_TTS_MODEL: ${{ vars.GEMINI_TTS_MODEL }}
+      ONDOKU_TOKEN: ${{ secrets.ONDOKU_TOKEN }}
       GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
       GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
       GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
@@ -42,13 +43,13 @@ jobs:
         with: {python-version: "3.12", cache: pip}
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - run: pip install -r requirements.txt
-      - name: Check key
-        run: test -n "$GEMINI_API_KEY" || (echo "::error::GEMINI_API_KEY が未設定です（docs/ENV_TEMPLATE.md）"; exit 1)
+      - uses: actions/cache@v4
+        with:
+          path: .cache/tts
+          key: tts-${{ matrix.voice }}-${{ hashFiles('posts/**/script.json', 'config/voices.json') }}
+          restore-keys: tts-${{ matrix.voice }}-
       - name: Render with ${{ matrix.voice }}
-        run: |
-          STYLE="$(python -m pipeline.voice_samples style '${{ matrix.voice }}')"
-          python -m pipeline.build "${{ github.event.inputs.post_id }}" --tts gemini --voice "${{ matrix.voice }}" \
-            --style "$STYLE" --out "samples/${{ matrix.voice }}" --sample
+        run: python -m pipeline.voice_samples render "${{ github.event.inputs.post_id }}" "${{ matrix.voice }}"
       - name: Upload to Drive
         run: python -m pipeline.voice_samples upload "${{ github.event.inputs.post_id }}" "${{ matrix.voice }}" "samples/${{ matrix.voice }}"
       - uses: actions/upload-artifact@v4

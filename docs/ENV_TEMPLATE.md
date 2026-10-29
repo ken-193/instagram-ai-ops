@@ -14,7 +14,8 @@
 | `GDRIVE_REFRESH_TOKEN` | 必須 | あなたのDriveに書き込むための更新トークン（scope: `https://www.googleapis.com/auth/drive`） | OAuth 2.0 Playground |
 | `IG_USER_ID` | 任意（Muse投稿のため現在不要。API投稿・インサイト取得に切り替える場合のみ） | InstagramのユーザーID | Meta for Developers（アプリのInstagram設定画面） |
 | `IG_ACCESS_TOKEN` | 任意（同上） | 長期アクセストークン（60日） | 同上 |
-| `GEMINI_API_KEY` | 推奨 | Geminiの音声合成（男性ナレーション）。未設定なら無料のOpen JTalk | Google AI Studio（https://aistudio.google.com/apikey） |
+| `ONDOKU_TOKEN` | 必須（ナレーション） | 音読さんのアクセストークン。ナレーション音声の生成 | 音読さん（https://ondoku3.com/ja/users/setting/）※無料登録 |
+| `GEMINI_API_KEY` | 任意 | Geminiの音声合成（男性ナレーション）。未設定なら無料のOpen JTalk | Google AI Studio（https://aistudio.google.com/apikey） |
 | `GOOGLE_TTS_API_KEY` | 任意 | 自然な日本語ナレーション（Chirp 3 HD）。未設定なら無料のOpen JTalk | Google Cloud Console（Text-to-Speech APIを有効化） |
 | `NTFY_TOPIC` | 任意 | ntfyアプリへのプッシュ通知。推測されにくいランダムな文字列にする | 自分で決める（ntfyアプリで同じトピックを購読） |
 | `SECRETS_PAT` | 任意 | Instagramトークンの自動更新でSecretを書き換えるため | GitHub → Settings → Developer settings → Fine-grained token（このリポジトリのみ、Secrets: Read and write） |
@@ -45,7 +46,14 @@
 4. 表示される **ユーザーID** と **アクセストークン（長期）** を Secrets に保存。
    - 自分のアカウントだけで使う場合、アプリは開発モードのままで利用できる想定です（初回の接続テストで確認します）。
 
-### C. Gemini 音声（ナレーション）
+### C. 音読さん（ナレーション）
+1. https://ondoku3.com で無料登録してログイン。
+2. https://ondoku3.com/ja/users/setting/ を開き、アクセストークンをコピー。
+3. `ONDOKU_TOKEN` として Secrets に保存。
+4. 無料プランは月ごとの文字数に上限あり（1本あたり約400〜500文字）。上限に達すると制作がエラーで止まります（案内音声が混ざることはありません）。
+5. 利用規約・クレジット表記の条件はプランにより異なるため、音読さんの公式ページで確認してください。キャプションには「ナレーション音声: 音読さん（ondoku3.com）」を入れます。
+
+### C2. Gemini 音声（任意・現在は未使用）
 1. https://aistudio.google.com/apikey を開き、flyingbird0526@gmail.com でログイン → 「APIキーを作成」。
 2. 既存のGoogle Cloudプロジェクト（`reel-ops`）を選ぶか、新規作成でOK。
 3. 表示されたキーを `GEMINI_API_KEY` として Secrets に保存。

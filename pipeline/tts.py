@@ -4,6 +4,9 @@ Backends
   openjtalk : offline, free. Voice "Mei" (CC BY 3.0, Nagoya Institute of Technology) -> credit required.
   google    : Google Cloud Text-to-Speech REST (needs GOOGLE_TTS_API_KEY). Higher quality.
               NOTE: not exercised from the development sandbox (network policy); verify on first Actions run.
+  ondoku    : 音読さん ondoku3.com (needs ONDOKU_TOKEN). Voice IDs as on the site (e.g. en-HK-SamNeural).
+              Free plan: monthly character quota; credit in the caption. Over quota the API answers 200
+              with a *notice* audio and code=quota_exceeded — that is treated as an error, never used.
   gemini    : Gemini API speech generation (needs GEMINI_API_KEY). Prebuilt voices + natural-language style.
               Model names change often: GEMINI_TTS_MODEL is tried first, then any TTS model ListModels reports.
 """
@@ -24,7 +27,15 @@ CREDITS = {
     "openjtalk": "ナレーション音声: Open JTalk / HTS voice \"Mei\" (c) Nagoya Institute of Technology, CC BY 3.0",
     "google": "ナレーション音声: Google Cloud Text-to-Speech",
     "gemini": "ナレーション: AI音声（Google Gemini）",
+    "ondoku": "ナレーション音声: 音読さん（ondoku3.com）",
 }
+
+ONDOKU_API = os.environ.get("ONDOKU_API_URL") or "https://ondoku3.com/ja/text_to_speech_api/"
+ondoku_chars_used = 0  # characters sent this process (free plan has a monthly quota)
+
+
+class OndokuQuotaError(RuntimeError):
+    pass
 
 GEMINI_API = "https://generativelanguage.googleapis.com/v1beta"
 GEMINI_MODEL_PREFERENCE = ["gemini-3.1-flash-tts-preview", "gemini-2.5-flash-preview-tts", "gemini-2.5-pro-preview-tts"]
@@ -70,6 +81,54 @@ def synth_google(text: str, voice: str = "ja-JP-Chirp3-HD-Charon", rate: float =
     with wave.open(io.BytesIO(raw)) as w:
         pcm = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768.0
         return _resample(pcm, w.getframerate())
+
+
+def _decode_audio(data: bytes) -> np.ndarray:
+    """mp3/wav bytes -> mono float32 at SR via ffmpeg."""
+    import subprocess
+
+    r = subprocess.run(["ffmpeg", "-v", "error", "-i", "pipe:0", "-f", "f32le", "-ac", "1", "-ar", str(SR), "pipe:1"],
+                       input=data, capture_output=True)
+    if r.returncode != 0:
+        raise RuntimeError(f"audio decode failed: {r.stderr[:200]!r}")
+    return np.frombuffer(r.stdout, dtype=np.float32).copy()
+
+
+def _ondoku_call(body: dict):
+    import requests
+
+    token = os.environ.get("ONDOKU_TOKEN", "")
+    if not token:
+        raise KeyError("ONDOKU_TOKEN")
+    return requests.post(ONDOKU_API, json=body, headers={"token": token.strip(), "content-type": "application/json"},
+                         timeout=90)
+
+
+def synth_ondoku(text: str, voice: str = "en-HK-SamNeural", speed: float = 1.0, pitch: float = 0.0) -> np.ndarray:
+    import time
+
+    import requests
+
+    global ondoku_chars_used
+    body = {"pitch": pitch, "speed": speed, "text": text, "voice": voice}
+    for attempt in range(4):
+        r = _ondoku_call(body)
+        if r.status_code in (429, 500, 502, 503) and attempt < 3:
+            time.sleep(5 * 2 ** attempt)
+            continue
+        try:
+            result = r.json()
+        except ValueError:
+            result = None
+        if isinstance(result, dict) and result.get("code") == "quota_exceeded":
+            raise OndokuQuotaError(f"音読さんの文字数が不足しています（残り: {result.get('available', '不明')}）")
+        if r.status_code >= 400 or not isinstance(result, dict) or not result.get("url"):
+            raise RuntimeError(f"音読さん API {r.status_code}: {r.text[:300]}")
+        ondoku_chars_used += len(text)
+        audio = requests.get(result["url"], timeout=90)
+        audio.raise_for_status()
+        return _decode_audio(audio.content)
+    raise RuntimeError("音読さん API kept failing")
 
 
 def gemini_tts_models() -> list[str]:
@@ -156,6 +215,8 @@ def synth(text: str, backend: str, cache_dir: Path, **kw) -> np.ndarray:
         x = synth_google(text, **kw)
     elif backend == "gemini":
         x = synth_gemini(text, **kw)
+    elif backend == "ondoku":
+        x = synth_ondoku(text, **kw)
     else:
         raise ValueError(f"unknown TTS backend {backend}")
     x = _trim(x)
