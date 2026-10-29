@@ -183,7 +183,7 @@ def distance_compare(cv: Canvas, t, dur, P, ctx: SceneCtx):
     headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=330, size=74)
     lab_p = seg(t, ctx.line_start(P.get("label_on_line", 2), dur * 0.7), 0.4)
     if lab_p > 0:
-        sc = ease_out_back(lab_p)
+        sc = 0.6 + 0.4 * ease_out_back(lab_p)
         cv.rich_line(540, 560, split_emphasis(P.get("label", ""), P.get("emphasis_label", P.get("emphasis", [])), C["white"],
                                     C["yellow"]),
                      78, stroke=4, scale=sc, alpha=clamp(lab_p * 2))

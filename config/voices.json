@@ -1,0 +1,17 @@
+{
+  "comment": "Gemini prebuilt voices used for narration comparisons. style = speaking-style instruction sent with every line.",
+  "candidates": {
+    "Charon": {
+      "label": "落ち着いたドキュメンタリー系（低め・知的）",
+      "style": "Read the following Japanese line as a calm, authoritative science documentary narrator, at a slightly brisk pace"
+    },
+    "Fenrir": {
+      "label": "テンション高めの実況系（勢い・ワクワク感）",
+      "style": "Read the following Japanese line like an excited, energetic announcer revealing something amazing, at a quick pace"
+    },
+    "Iapetus": {
+      "label": "明瞭で親しみやすい解説系（クリア・聞きやすい）",
+      "style": "Read the following Japanese line as a friendly, clear explainer talking to a curious viewer, at a natural brisk pace"
+    }
+  }
+}

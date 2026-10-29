@@ -127,3 +127,11 @@ def test_schema_rejects_unsourced_verified_claim():
 def test_wrap_never_splits_inside_chunks():
     assert wrap_jp("世界中の海辺が|毎日、巨大な満ち引きに|襲われる。", 13) == ["世界中の海辺が毎日、", "巨大な満ち引きに襲われる。"]
     assert wrap_jp("渦潮発電で、|世界の|エネルギー首都に！？", 10) == ["渦潮発電で、世界の", "エネルギー首都に！？"]
+
+
+def test_render_survives_zero_scale_text():
+    from pipeline.render.engine import C, Canvas
+    for ss in (1, 2):
+        cv = Canvas(ss)
+        cv.rich_line(540, 500, [("見た目 約2倍", C["white"])], 78, scale=0.001)
+        cv.text(540, 500, "x", 0.2, C["white"])

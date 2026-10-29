@@ -14,6 +14,7 @@
 | `GDRIVE_REFRESH_TOKEN` | 必須 | あなたのDriveに書き込むための更新トークン（scope: `https://www.googleapis.com/auth/drive`） | OAuth 2.0 Playground |
 | `IG_USER_ID` | 任意（Muse投稿のため現在不要。API投稿・インサイト取得に切り替える場合のみ） | InstagramのユーザーID | Meta for Developers（アプリのInstagram設定画面） |
 | `IG_ACCESS_TOKEN` | 任意（同上） | 長期アクセストークン（60日） | 同上 |
+| `GEMINI_API_KEY` | 推奨 | Geminiの音声合成（男性ナレーション）。未設定なら無料のOpen JTalk | Google AI Studio（https://aistudio.google.com/apikey） |
 | `GOOGLE_TTS_API_KEY` | 任意 | 自然な日本語ナレーション（Chirp 3 HD）。未設定なら無料のOpen JTalk | Google Cloud Console（Text-to-Speech APIを有効化） |
 | `NTFY_TOPIC` | 任意 | ntfyアプリへのプッシュ通知。推測されにくいランダムな文字列にする | 自分で決める（ntfyアプリで同じトピックを購読） |
 | `SECRETS_PAT` | 任意 | Instagramトークンの自動更新でSecretを書き換えるため | GitHub → Settings → Developer settings → Fine-grained token（このリポジトリのみ、Secrets: Read and write） |
@@ -23,6 +24,7 @@
 | 名前 | 既定値 | 用途 |
 |---|---|---|
 | `APPROVER_LOGIN` | リポジトリのオーナー（ken-193） | 承認コマンドを受け付けるGitHubユーザー |
+| `GEMINI_TTS_MODEL` | （空＝自動選択） | 使うGemini TTSモデル名。廃止された場合はAPIが提供するTTSモデルを自動で選ぶ |
 | `IG_API_VERSION` | `v23.0` | Instagram APIのバージョン。Metaの変更履歴を見て更新 |
 
 ## 設定手順
@@ -43,7 +45,14 @@
 4. 表示される **ユーザーID** と **アクセストークン（長期）** を Secrets に保存。
    - 自分のアカウントだけで使う場合、アプリは開発モードのままで利用できる想定です（初回の接続テストで確認します）。
 
-### C. 任意
+### C. Gemini 音声（ナレーション）
+1. https://aistudio.google.com/apikey を開き、flyingbird0526@gmail.com でログイン → 「APIキーを作成」。
+2. 既存のGoogle Cloudプロジェクト（`reel-ops`）を選ぶか、新規作成でOK。
+3. 表示されたキーを `GEMINI_API_KEY` として Secrets に保存。
+4. 無料枠の有無・料金はモデルにより変わります。課金を有効にしない限り請求は発生しません（無料枠を超えるとエラーになります）。
+   無料枠では入力内容がGoogleの品質改善に使われる場合があります（台本のみで個人情報は含みません）。
+
+### D. 任意
 - ntfy: App Storeで「ntfy」をインストール → ランダムなトピック名を購読 → 同じ文字列を `NTFY_TOPIC` に保存。
 - 自然な音声: Google Cloud Console で Text-to-Speech API を有効化 → APIキー作成（Text-to-Speech APIのみに制限）→ `GOOGLE_TTS_API_KEY`。台本の `tts.backend` を `google` に。
 

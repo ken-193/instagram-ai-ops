@@ -80,6 +80,17 @@ def tts_google():
     return f"{len(x) / tts.SR:.1f}s audio"
 
 
+def gemini():
+    if not os.environ.get("GEMINI_API_KEY"):
+        return "任意（未設定ならOpen JTalkを使用）"
+    from . import tts
+    models = tts.gemini_tts_models()
+    if not models:
+        raise RuntimeError("APIキーは有効ですが、使えるTTSモデルが見つかりません")
+    x = tts.synth_gemini("接続テストです。", voice="Charon")
+    return f"TTSモデル: {', '.join(models[:3])} / 使用: {tts.gemini_model_used()} / {len(x) / tts.SR:.1f}s audio"
+
+
 def github():
     r = requests.get(f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}",
                      headers={"Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}"}, timeout=30)
@@ -97,7 +108,7 @@ def ntfy():
 
 if __name__ == "__main__":
     rows = [check("GitHub", github), check("Google Drive", drive), check("Instagram", instagram),
-            check("Google TTS", tts_google), check("ntfy", ntfy)]
+            check("Gemini TTS", gemini), check("Google TTS", tts_google), check("ntfy", ntfy)]
     print("| サービス | 結果 | 詳細 |\n|---|---|---|")
     for r in rows:
         print(f"| {r[0]} | {r[1]} | {r[2]} |")

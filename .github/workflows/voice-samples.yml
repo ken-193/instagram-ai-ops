@@ -1,0 +1,74 @@
+name: voice-samples
+# Render the same reel once per Gemini voice and open one comparison issue.
+# Samples go to Drive 05/voice_samples only — never to the approval or Muse folders.
+on:
+  workflow_dispatch:
+    inputs:
+      post_id: {description: "投稿ID", required: true, default: "IG-20261028-001"}
+      voices: {description: "声（カンマ区切り）", required: true, default: "Charon,Fenrir,Iapetus"}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      voices: ${{ steps.v.outputs.json }}
+    steps:
+      - id: v
+        run: |
+          echo "json=$(echo '${{ github.event.inputs.voices }}' | python3 -c 'import sys,json;print(json.dumps([v.strip() for v in sys.stdin.read().split(",") if v.strip()][:5]))')" >> "$GITHUB_OUTPUT"
+
+  render:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        voice: ${{ fromJSON(needs.plan.outputs.voices) }}
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GEMINI_TTS_MODEL: ${{ vars.GEMINI_TTS_MODEL }}
+      GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+      GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+      GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12", cache: pip}
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install -r requirements.txt
+      - name: Check key
+        run: test -n "$GEMINI_API_KEY" || (echo "::error::GEMINI_API_KEY が未設定です（docs/ENV_TEMPLATE.md）"; exit 1)
+      - name: Render with ${{ matrix.voice }}
+        run: |
+          STYLE="$(python -m pipeline.voice_samples style '${{ matrix.voice }}')"
+          python -m pipeline.build "${{ github.event.inputs.post_id }}" --tts gemini --voice "${{ matrix.voice }}" \
+            --style "$STYLE" --out "samples/${{ matrix.voice }}" --sample
+      - name: Upload to Drive
+        run: python -m pipeline.voice_samples upload "${{ github.event.inputs.post_id }}" "${{ matrix.voice }}" "samples/${{ matrix.voice }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sample-${{ matrix.voice }}
+          path: samples/${{ matrix.voice }}/sample.json
+          retention-days: 14
+
+  report:
+    needs: render
+    if: always() && !cancelled()
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      APPROVER_LOGIN: ${{ vars.APPROVER_LOGIN || github.repository_owner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install requests
+      - uses: actions/download-artifact@v4
+        with: {pattern: "sample-*", path: collected}
+      - run: python -m pipeline.voice_samples report "${{ github.event.inputs.post_id }}" collected

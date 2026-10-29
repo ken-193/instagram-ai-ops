@@ -13,7 +13,7 @@
 | Google Drive | ✅ | 完成動画・台本・出典・レポートの保管とiPhoneでの再生 |
 | 動画制作 | ✅ プログラム生成 | Pillow + ffmpeg による図解アニメーション（地図・天体・数値・渦）。費用0円、決定的に再現可能 |
 | 動画生成AI（Veo等） | ⏸ 将来 | 印象的な1〜2カットだけ追加する用途で検討。現在は `max_ai_video_seconds_per_post: 0` で無効 |
-| 音声合成 | ✅ Open JTalk（試作） / Google Cloud TTS（本番候補） | 試作は無料オフライン音声。より自然な音声は Google Chirp 3 HD に切替可能（実装済み・未検証） |
+| 音声合成 | ✅ Gemini TTS（男性ボイス・比較中） / Open JTalk（予備・無料） | 試作は無料オフライン音声。より自然な音声は Google Chirp 3 HD に切替可能（実装済み・未検証） |
 | BGM・効果音 | ✅ コード生成 | 第三者音源を使わないため利用条件の問題が発生しない |
 | Muse | ✅ 投稿担当 | Drive `11_Muse投稿キュー` から承認済み動画を引き取りInstagramへ投稿（MUSE_HANDOFF.md） |
 | Instagram API | ⏸ 予備 | 直接投稿・インサイト取得のコードは実装済み・未検証。`config/publishing.json` の mode を `api` にすると使用 |
@@ -79,6 +79,8 @@
 | 状態 | 動作確認済み | 実装済み・未検証（`GOOGLE_TTS_API_KEY` を設定し台本の `tts.backend` を `google` に） |
 
 ElevenLabs・VOICEVOX は今回調査できていません（未比較）。
+
+**Gemini TTS（2026-10-29 追加）**: Gemini API の音声生成。プリセットの声（Charon / Fenrir / Iapetus など）に話し方の指示を付けて読み上げる。モデル名は頻繁に変わるため、`GEMINI_TTS_MODEL` が使えなければAPIが提供するTTSモデルを自動選択。費用はモデル次第（二次情報では出力音声100万トークンあたり$10〜20程度 → 45秒の動画で約$0.02）。声の比較は `voice-samples` ワークフロー。
 
 ## 4. 費用
 
