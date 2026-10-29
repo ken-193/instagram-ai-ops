@@ -29,12 +29,16 @@ LEAD, GAP, TAIL, XFADE = 0.2, 0.12, 0.3, 0.22
 
 
 # ---------------------------------------------------------------- timeline
-def tts_kwargs(script: dict, backend: str, voice: str | None = None, style: str | None = None) -> dict:
+def tts_kwargs(script: dict, backend: str, voice: str | None = None, style: str | None = None,
+               speed: float | None = None) -> dict:
     cfg = script.get("tts", {})
     if backend == "openjtalk":
         return {"speed": cfg.get("speed", 1.12)}
     if backend == "gemini":
         return {"voice": voice or cfg.get("voice", "Charon"), "style": style if style is not None else cfg.get("style", "")}
+    if backend == "ondoku":
+        return {"voice": voice or cfg.get("voice", "en-HK-SamNeural"),
+                "speed": speed if speed is not None else cfg.get("speed", 1.1), "pitch": cfg.get("pitch", 0.0)}
     return {}
 
 
@@ -170,6 +174,7 @@ def main(argv=None):
     ap.add_argument("--tts", default=None)
     ap.add_argument("--voice", default=None, help="Gemini prebuilt voice name (e.g. Charon)")
     ap.add_argument("--style", default=None, help="Gemini speaking-style instruction")
+    ap.add_argument("--speed", type=float, default=None, help="音読さん reading speed (0.3-4)")
     ap.add_argument("--out", default=None, help="output dir (default posts/<id>/out)")
     ap.add_argument("--sample", action="store_true", help="voice sample: don't touch metadata/docs of the post")
     ap.add_argument("--workers", type=int, default=max(1, mp.cpu_count()))
@@ -185,7 +190,7 @@ def main(argv=None):
     backend = a.tts or script.get("tts", {}).get("backend", "openjtalk")
     out = Path(a.out) if a.out else post_dir / "out"
     out.mkdir(parents=True, exist_ok=True)
-    kw = tts_kwargs(script, backend, a.voice, a.style)
+    kw = tts_kwargs(script, backend, a.voice, a.style, a.speed)
     t0 = time.time()
 
     print("[1/5] narration + timeline")
@@ -207,17 +212,17 @@ def main(argv=None):
     render_thumbnail(script, timeline, out / "thumbnail.jpg", ss)
 
     print("[4/5] quality check")
-    report = qc.run(out / "reel.mp4", script, timeline)
+    report = qc.run(out / "reel.mp4", script, timeline, backend)
 
     narration_sec = sum(l["end"] - l["start"] for s in timeline["scenes"] for l in s["lines"])
-    cost = 0.0 if backend == "openjtalk" else None
+    cost = 0.0 if backend in ("openjtalk", "ondoku") else None  # 音読さん: within the plan's character quota
     if backend == "gemini":  # estimate: ~25 audio tokens/s at the configured output price
         price = limits.get("gemini_tts_usd_per_million_audio_tokens", 20.0)
         cost = round(narration_sec * 25 * price / 1e6, 4)
     if a.sample:
         sample = {"post_id": a.post_id, "backend": backend, **kw, "model": tts.gemini_model_used(),
                   "duration_sec": timeline["total"], "narration_sec": round(narration_sec, 1),
-                  "est_cost_usd": cost, "qc_passed": report["passed"], "reel_sha256": sha256(out / "reel.mp4")}
+                  "est_cost_usd": cost, "tts_chars": tts.ondoku_chars_used or None, "qc_passed": report["passed"], "reel_sha256": sha256(out / "reel.mp4")}
         (out / "sample.json").write_text(json.dumps(sample, ensure_ascii=False, indent=2), encoding="utf-8")
         print(json.dumps(sample, ensure_ascii=False))
         return
@@ -230,6 +235,7 @@ def main(argv=None):
         "duration_sec": timeline["total"],
         "tts_backend": backend,
         "tts_options": kw,
+        "tts_chars_sent": tts.ondoku_chars_used or None,
         "tts_model": tts.gemini_model_used() if backend == "gemini" else None,
         "tts_credit": tts.CREDITS.get(backend),
         "render": {"engine": "pipeline.render (Pillow+ffmpeg)", "supersampling": ss, "fps": FPS, "size": f"{W}x{H}"},

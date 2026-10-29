@@ -27,6 +27,7 @@ jobs:
       GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       GEMINI_TTS_MODEL: ${{ vars.GEMINI_TTS_MODEL }}
+      ONDOKU_TOKEN: ${{ secrets.ONDOKU_TOKEN }}
       GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
       GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
       GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
@@ -46,6 +47,11 @@ jobs:
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - run: pip install -r requirements.txt
       - run: git config user.name "reel-bot" && git config user.email "reel-bot@users.noreply.github.com"
+      - uses: actions/cache@v4  # reuse narration audio so re-renders don't spend 音読さん characters again
+        with:
+          path: .cache/tts
+          key: tts-${{ steps.pid.outputs.id }}-${{ hashFiles('posts/**/script.json') }}
+          restore-keys: tts-
       - name: Guard (limits / duplicate protection)
         run: python -m pipeline.ops guard "${{ steps.pid.outputs.id }}"
       - name: Build + QC
