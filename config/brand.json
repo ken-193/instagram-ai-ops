@@ -1,13 +1,17 @@
 {
   "series_tagline": "AIが仮説をシミュレーション → 最後は徳島",
   "colors": {
-    "black": "#000000",
-    "bg": "#07090B",
-    "white": "#FFFFFF",
-    "gray": "#9CA3AF",
-    "emerald": "#10B981",
-    "emerald_dark": "#065F46",
-    "yellow": "#FACC15"
+    "comment": "2026-11-01 palette. main=beige, sub=deep green, accent=terracotta. Use roles, not raw colors.",
+    "bg": "#F7F3E9",
+    "paper": "#FFFDF7",
+    "land": "#EBE2CE",
+    "line": "#DDD3BD",
+    "ink": "#24302A",
+    "muted": "#6F6858",
+    "sub": "#2F855A",
+    "sub_dark": "#22543D",
+    "sub_light": "#CFE5D7",
+    "accent": "#C53030"
   },
   "video": {
     "width": 1080,
@@ -25,7 +29,7 @@
     "center_y": 1330,
     "font_size": 64,
     "max_chars_per_line": 13,
-    "box_alpha": 170
+    "box_alpha": 238
   },
   "fonts": {
     "heavy": "assets/fonts/DelaGothicOne-Regular.ttf",

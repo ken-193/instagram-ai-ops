@@ -65,7 +65,7 @@ def moon_sprite(px: int = 1000) -> Image.Image:
         r = rnd.uniform(px * 0.08, px * 0.18)
         x, y = rnd.uniform(px * 0.2, px * 0.8), rnd.uniform(px * 0.2, px * 0.8)
         cd.ellipse([x - r, y - r * 0.8, x + r, y + r * 0.8], fill=(60, 62, 70, 55))
-    craters = craters.filter(ImageFilter.GaussianBlur(px / 400))
+    craters = craters.convert("RGBa").filter(ImageFilter.GaussianBlur(px / 400)).convert("RGBA")
     img.alpha_composite(craters)
     img.putalpha(mask)
     return img
@@ -76,7 +76,7 @@ def draw_moon(cv: Canvas, x, y, r, glow=0.6):
         return
     if glow > 0:
         cv.glow(lambda d, k: d.ellipse([(x - r * 1.08) * k, (y - r * 1.08) * k, (x + r * 1.08) * k,
-                                        (y + r * 1.08) * k], fill=(255, 255, 240, 200)), radius=r * 0.25 + 10,
+                                        (y + r * 1.08) * k], fill=C["paper"] + (255,)), radius=r * 0.25 + 10,
                 strength=glow)
     sp = moon_sprite().resize((max(2, int(2 * r * cv.ss)),) * 2, Image.LANCZOS)
     cv.img.alpha_composite(sp, (int((x - r) * cv.ss), int((y - r) * cv.ss)))
@@ -92,7 +92,7 @@ def earth_sprite(px: int = 800) -> Image.Image:
         r = px / 2 * f
         off = (1 - f) * px * 0.08
         d.ellipse([px / 2 - r - off, px / 2 - r - off, px / 2 + r - off, px / 2 + r - off],
-                  fill=mix((6, 30, 38), (14, 90, 92), 1 - f))
+                  fill=mix(C["sub_light"], (232, 243, 236), 1 - f))
     land = Image.new("RGBA", (px, px), (0, 0, 0, 0))
     ld = ImageDraw.Draw(land)
     for _ in range(26):
@@ -104,18 +104,18 @@ def earth_sprite(px: int = 800) -> Image.Image:
             a = k / n * math.tau
             rr = base * rnd.uniform(0.6, 1.4)
             pts.append((cx + math.cos(a) * rr * 1.3, cy + math.sin(a) * rr))
-        ld.polygon(pts, fill=C["emerald"] + (150,))
-    land = land.filter(ImageFilter.GaussianBlur(px / 160))
+        ld.polygon(pts, fill=C["sub"] + (200,))
+    land = land.convert("RGBa").filter(ImageFilter.GaussianBlur(px / 160)).convert("RGBA")
     img.alpha_composite(land)
     mask = Image.new("L", (px, px), 0)
     ImageDraw.Draw(mask).ellipse([0, 0, px - 1, px - 1], fill=255)
     img.putalpha(mask)
-    ImageDraw.Draw(img).ellipse([2, 2, px - 3, px - 3], outline=C["emerald"] + (255,), width=max(2, px // 160))
+    ImageDraw.Draw(img).ellipse([2, 2, px - 3, px - 3], outline=C["sub_dark"] + (255,), width=max(2, px // 160))
     return img
 
 
 def draw_earth(cv: Canvas, x, y, r):
-    cv.glow(lambda d, k: d.ellipse([(x - r) * k, (y - r) * k, (x + r) * k, (y + r) * k], fill=C["emerald"] + (160,)),
+    cv.glow(lambda d, k: d.ellipse([(x - r) * k, (y - r) * k, (x + r) * k, (y + r) * k], fill=C["sub_light"] + (200,)),
             radius=r * 0.2 + 8, strength=0.7)
     sp = earth_sprite().resize((max(2, int(2 * r * cv.ss)),) * 2, Image.LANCZOS)
     cv.img.alpha_composite(sp, (int((x - r) * cv.ss), int((y - r) * cv.ss)))
@@ -124,14 +124,14 @@ def draw_earth(cv: Canvas, x, y, r):
 def headline(cv: Canvas, lines: list[str], emphasis: list[str], t: float, y0: float = 330, size: float = 84,
              gap: float = 1.25, delay: float = 0.0, stagger: float = 0.18, base=None):
     """Top-of-screen headline; each line pops in with ease_out_back."""
-    base = base or C["white"]
+    base = base or C["ink"]
     cx = (SAFE["left"] + W - SAFE["right"]) / 2
     for i, line in enumerate(lines):
         p = seg(t, delay + i * stagger, 0.45)
         if p <= 0:
             continue
         sc = 0.6 + 0.4 * ease_out_back(p)
-        runs = split_emphasis(line, emphasis, base, C["yellow"])
+        runs = split_emphasis(line, emphasis, base, C["accent"])
         cv.rich_line(cx, y0 + i * size * gap, runs, size, stroke=4, alpha=clamp(p * 2), scale=sc)
 
 
@@ -143,14 +143,14 @@ def counter_text(cv, x, y, value_from, value_to, p, unit="", prefix="", size=96,
                  unit_size=None):
     v = lerp(value_from, value_to, ease_out(p))
     s = prefix + fmt_num(v, decimals)
-    color = color or C["yellow"]
+    color = color or C["accent"]
     unit_size = unit_size or size * 0.55
     w, _ = cv.text_size(s, size)
     uw, _ = cv.text_size(unit, unit_size) if unit else (0, 0)
     left = x - (w + uw + 10) / 2
     cv.text(left, y, s, size, color, anchor="lm", stroke=4)
     if unit:
-        cv.text(left + w + 10, y + size * 0.12, unit, unit_size, C["white"], anchor="lm", stroke=3)
+        cv.text(left + w + 10, y + size * 0.12, unit, unit_size, C["ink"], anchor="lm", stroke=3)
 
 
 # ---------------------------------------------------------------- scenes
@@ -174,9 +174,9 @@ def distance_compare(cv: Canvas, t, dur, P, ctx: SceneCtx):
     draw_earth(cv, ex, ey, er)
     # distance line
     y_line = ey + 230
-    cv.line([(ex, y_line), (mx, y_line)], fill=C["white"] + (200,), width=4)
+    cv.line([(ex, y_line), (mx, y_line)], fill=C["ink"] + (200,), width=4)
     for x in (ex, mx):
-        cv.line([(x, y_line - 22), (x, y_line + 22)], fill=C["white"] + (230,), width=4)
+        cv.line([(x, y_line - 22), (x, y_line + 22)], fill=C["ink"] + (230,), width=4)
     counter_text(cv, (ex + mx) / 2, y_line + 70, P["from_value"], P["to_value"], p, unit=P.get("unit", "km"),
                  size=70)
     draw_moon(cv, mx, ey, mr, glow=0.5)
@@ -184,8 +184,8 @@ def distance_compare(cv: Canvas, t, dur, P, ctx: SceneCtx):
     lab_p = seg(t, ctx.line_start(P.get("label_on_line", 2), dur * 0.7), 0.4)
     if lab_p > 0:
         sc = 0.6 + 0.4 * ease_out_back(lab_p)
-        cv.rich_line(540, 560, split_emphasis(P.get("label", ""), P.get("emphasis_label", P.get("emphasis", [])), C["white"],
-                                    C["yellow"]),
+        cv.rich_line(540, 560, split_emphasis(P.get("label", ""), P.get("emphasis_label", P.get("emphasis", [])), C["ink"],
+                                    C["accent"]),
                      78, stroke=4, scale=sc, alpha=clamp(lab_p * 2))
 
 
@@ -194,23 +194,23 @@ def formula_bars(cv: Canvas, t, dur, P, ctx: SceneCtx):
     headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=300, size=70)
     fp = seg(t, ctx.line_start(1, 0.6), 0.5)
     if fp > 0:
-        cv.text(540, 470, P.get("formula", ""), 64, C["emerald"], family="sans", weight=900, stroke=3,
+        cv.text(540, 470, P.get("formula", ""), 64, C["sub"], family="sans", weight=900, stroke=3,
                 alpha=clamp(fp * 2))
     base_y = 1120
     unit = 64
     grow = ease_out(seg(t, ctx.line_start(2, dur * 0.55), 1.0))
-    bars = [(P.get("left_label", "今"), 1.0, C["gray"]), (P.get("right_label", "半分の距離"), lerp(1, P.get("ratio", 8), grow),
-                                                         C["emerald"])]
+    bars = [(P.get("left_label", "今"), 1.0, C["muted"]), (P.get("right_label", "半分の距離"), lerp(1, P.get("ratio", 8), grow),
+                                                         C["sub"])]
     for i, (lab, val, col) in enumerate(bars):
         x = 330 + i * 360
         h = unit * val * (ease_out(seg(t, 0.2, 0.6)))
         cv.rect(x - 90, base_y - h, x + 90, base_y, fill=col + (255,), radius=12)
-        cv.text(x, base_y + 50, lab, 44, C["white"], family="sans", weight=800)
+        cv.text(x, base_y + 50, lab, 44, C["ink"], family="sans", weight=800)
         if i == 1 and grow > 0:
-            cv.text(x, base_y - h - 70, f"×{val:.0f}" if grow >= 0.97 or val % 1 < 0.05 else f"×{val:.1f}", 110, C["yellow"], stroke=5)
+            cv.text(x, base_y - h - 70, f"×{val:.0f}" if grow >= 0.97 or val % 1 < 0.05 else f"×{val:.1f}", 110, C["accent"], stroke=5)
     if grow >= 1:
         cv.glow(lambda d, k: d.rounded_rectangle([(690 - 90) * k, (base_y - unit * 8) * k, (690 + 90) * k,
-                                                  base_y * k], radius=12 * k, fill=C["emerald"] + (255,)),
+                                                  base_y * k], radius=12 * k, fill=C["sub"] + (255,)),
                 radius=40, strength=0.5 + 0.3 * math.sin(t * 8))
 
 
@@ -228,7 +228,7 @@ def globe_tides(cv: Canvas, t, dur, P, ctx: SceneCtx):
         rr = r + 10 + bulge * (0.5 + 0.5 * math.cos(2 * (a - ang)))
         rr += 2.5 * math.sin(a * 9 + t * 6)
         pts.append(((cx + math.cos(a) * rr) * k, (cy + math.sin(a) * rr) * k))
-    d.polygon(pts, fill=C["emerald"] + (110,), outline=C["emerald"] + (255,), width=int(3 * k))
+    d.polygon(pts, fill=C["sub"] + (110,), outline=C["sub"] + (255,), width=int(3 * k))
     cv.img.alpha_composite(layer)
     draw_earth(cv, cx, cy, r)
     mx, my = cx + math.cos(ang) * 470, cy + math.sin(ang) * 470
@@ -236,10 +236,10 @@ def globe_tides(cv: Canvas, t, dur, P, ctx: SceneCtx):
     # ripple warnings around the globe
     for i in range(3):
         rp = ((t * 0.7 + i / 3) % 1.0)
-        cv.circle(cx, cy, r + 40 + rp * 260, outline=C["yellow"] + (int(160 * (1 - rp)),), width=4)
+        cv.circle(cx, cy, r + 40 + rp * 260, outline=C["accent"] + (int(160 * (1 - rp)),), width=4)
     headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=300, size=70)
     if P.get("note"):
-        cv.text(540, 1160, P["note"], 34, C["gray"], family="sans", weight=600, alpha=clamp(t * 2))
+        cv.text(540, 1160, P["note"], 34, C["muted"], family="sans", weight=600, alpha=clamp(t * 2))
 
 
 # -- Japan map
@@ -266,14 +266,14 @@ def draw_japan(cv: Canvas, cam, highlight=None, hl_color=None, hl_alpha=1.0, bas
             if len(pts) < 3:
                 continue
             if is_hl:
-                hd.polygon(pts, fill=(hl_color or C["emerald"]) + (int(255 * hl_alpha),),
-                           outline=C["white"] + (255,), width=int(3 * k))
+                hd.polygon(pts, fill=(hl_color or C["sub"]) + (int(255 * hl_alpha),),
+                           outline=C["paper"] + (255,), width=int(3 * k))
             else:
-                d.polygon(pts, fill=(28, 34, 38, int(255 * base_alpha)),
-                          outline=C["emerald"] + (int(200 * base_alpha),), width=int(2 * k))
+                d.polygon(pts, fill=C["land"] + (int(255 * base_alpha),),
+                          outline=C["sub"] + (int(170 * base_alpha),), width=int(2 * k))
     cv.img.alpha_composite(layer)
     if highlight and hl_alpha > 0:
-        glow = hl_layer.resize((hl_layer.width // 4, hl_layer.height // 4)).filter(ImageFilter.GaussianBlur(10))
+        glow = hl_layer.resize((hl_layer.width // 4, hl_layer.height // 4)).convert("RGBa").filter(ImageFilter.GaussianBlur(10)).convert("RGBA")
         cv.img.alpha_composite(glow.resize(hl_layer.size))
         cv.img.alpha_composite(hl_layer)
 
@@ -281,12 +281,12 @@ def draw_japan(cv: Canvas, cam, highlight=None, hl_color=None, hl_alpha=1.0, bas
 def pin(cv: Canvas, x, y, label, p, color=None):
     if p <= 0:
         return
-    color = color or C["yellow"]
+    color = color or C["accent"]
     drop = (1 - ease_out_back(p)) * 60
-    cv.circle(x, y - drop, 16, fill=color + (255,), outline=C["black"] + (255,), width=3)
+    cv.circle(x, y - drop, 16, fill=color + (255,), outline=C["paper"] + (255,), width=3)
     cv.circle(x, y, 26 + 30 * ((p * 2) % 1), outline=color + (int(200 * (1 - (p * 2) % 1)),), width=4)
     w, _ = cv.text_size(label, 50)
-    cv.rect(x - w / 2 - 22, y - drop - 120, x + w / 2 + 22, y - drop - 44, fill=(0, 0, 0, 210),
+    cv.rect(x - w / 2 - 22, y - drop - 120, x + w / 2 + 22, y - drop - 44, fill=C["paper"] + (240,),
             outline=color + (255,), width=3, radius=16)
     cv.text(x, y - drop - 82, label, 50, color)
 
@@ -310,7 +310,7 @@ def japan_zoom(cv: Canvas, t, dur, P, ctx: SceneCtx):
         pin(cv, px, py, P["pin"]["label"], pp)
     headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=300, size=70)
     if hl_a > 0 and P.get("big_label"):
-        cv.text(540, 1080, P["big_label"], 120 * (0.7 + 0.3 * ease_out_back(hl_a)), C["yellow"], stroke=6,
+        cv.text(540, 1080, P["big_label"], 120 * (0.7 + 0.3 * ease_out_back(hl_a)), C["accent"], stroke=6,
                 alpha=hl_a)
 
 
@@ -319,7 +319,7 @@ def draw_whirlpool(cv: Canvas, cx, cy, R, t, spin=1.0, alpha=1.0, arms=7):
     layer, d = cv.overlay()
     for i in range(14, 0, -1):  # water body
         rr = R * i / 14
-        col = mix((4, 40, 46), (12, 120, 110), i / 14)
+        col = mix(C["sub_dark"], C["sub"], i / 14)
         d.ellipse([(cx - rr) * k, (cy - rr * 0.92) * k, (cx + rr) * k, (cy + rr * 0.92) * k],
                   fill=col + (int(255 * alpha),))
     rot = t * spin
@@ -334,10 +334,10 @@ def draw_whirlpool(cv: Canvas, cx, cy, R, t, spin=1.0, alpha=1.0, arms=7):
         for j in range(len(pts) - 1):
             f = j / len(pts)
             w = max(1, int((2 + 10 * f) * k))
-            c = mix(C["white"], C["emerald"], f * 0.8)
+            c = mix(C["paper"], C["sub_light"], f * 0.8)
             d.line([pts[j], pts[j + 1]], fill=c + (int(220 * alpha * (0.35 + 0.65 * f)),), width=w)
     d.ellipse([(cx - R * 0.07) * k, (cy - R * 0.06) * k, (cx + R * 0.07) * k, (cy + R * 0.06) * k],
-              fill=(0, 0, 0, int(255 * alpha)))
+              fill=C["ink"] + (int(255 * alpha),))
     cv.img.alpha_composite(layer)
 
 
@@ -352,14 +352,14 @@ def whirlpool(cv: Canvas, t, dur, P, ctx: SceneCtx):
     # speed counter
     c = P["speed"]
     cp = seg(t, ctx.line_start(1, dur * 0.35), 1.6)
-    cv.text(540, 300, c.get("label", "潮流の速さ"), 46, C["white"], family="sans", weight=800, alpha=clamp(t * 3))
+    cv.text(540, 300, c.get("label", "潮流の速さ"), 46, C["ink"], family="sans", weight=800, alpha=clamp(t * 3))
     counter_text(cv, 540, 390, c["from"], c["to"] if cp > 0 else c["from"], cp, unit=c.get("unit", "km/h"),
                  prefix=c.get("prefix", "時速"), size=100)
     ep = seg(t, ctx.line_start(2, dur * 0.7), 0.5)
     if ep > 0:
         e = P["energy"]
-        cv.rect(170, 1080 - 70, 910, 1080 + 70, fill=(0, 0, 0, 200), outline=C["yellow"] + (255,), width=4, radius=20)
-        cv.rich_line(540, 1080, split_emphasis(e["text"], e.get("emphasis", []), C["white"], C["yellow"]), 72,
+        cv.rect(170, 1080 - 70, 910, 1080 + 70, fill=C["paper"] + (245,), outline=C["accent"] + (255,), width=4, radius=20)
+        cv.rich_line(540, 1080, split_emphasis(e["text"], e.get("emphasis", []), C["ink"], C["accent"]), 72,
                      stroke=4, scale=0.7 + 0.3 * ease_out_back(ep), alpha=clamp(ep * 2))
 
 
@@ -367,7 +367,7 @@ def whirlpool(cv: Canvas, t, dur, P, ctx: SceneCtx):
 def power_ochi(cv: Canvas, t, dur, P, ctx: SceneCtx):
     cam = (P.get("lon", 134.2), P.get("lat", 34.0), P.get("scale", 300))
     flare = ease_out(seg(t, ctx.line_start(1, dur * 0.3), 0.6))
-    draw_japan(cv, cam, highlight=P.get("highlight", "JP-36"), hl_color=mix(C["emerald"], C["yellow"], flare * 0.5),
+    draw_japan(cv, cam, highlight=P.get("highlight", "JP-36"), hl_color=C["sub"],
                hl_alpha=1.0, base_alpha=0.8)
     ox, oy = proj(134.35, 33.95, cam)
     rnd = random.Random(int(t * 12))
@@ -380,17 +380,17 @@ def power_ochi(cv: Canvas, t, dur, P, ctx: SceneCtx):
                 f = s / 7
                 jitter = rnd.uniform(-22, 22)
                 pts.append((ox + math.cos(a) * L * f - math.sin(a) * jitter, oy + math.sin(a) * L * f + math.cos(a) * jitter))
-            cv.glow(lambda d, k, pts=pts: d.line([(x * k, y * k) for x, y in pts], fill=C["yellow"] + (255,),
+            cv.glow(lambda d, k, pts=pts: d.line([(x * k, y * k) for x, y in pts], fill=C["accent"] + (255,),
                                                   width=int(10 * k)), radius=20, strength=0.9)
-            cv.line(pts, fill=C["white"] + (255,), width=4)
+            cv.line(pts, fill=C["paper"] + (255,), width=4)
     draw_whirlpool(cv, ox + 70, oy - 70, 70, t * 6, alpha=0.95, arms=5)
     lp = seg(t, ctx.line_start(2, dur * 0.6), 0.5)
     headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=290, size=74)
     if lp > 0:
         sx, sy = shake(t, 4 * (1 - lp))
-        cv.rect(110, 980, 970, 1170, fill=(0, 0, 0, 215), outline=C["emerald"] + (255,), width=5, radius=26)
+        cv.rect(110, 980, 970, 1170, fill=C["paper"] + (245,), outline=C["sub"] + (255,), width=5, radius=26)
         for i, l in enumerate(P.get("stamp", [])):
-            cv.rich_line(540 + sx, 1030 + i * 90 + sy, split_emphasis(l, P.get("emphasis", []), C["white"], C["yellow"]),
+            cv.rich_line(540 + sx, 1030 + i * 90 + sy, split_emphasis(l, P.get("emphasis", []), C["ink"], C["accent"]),
                          70, stroke=4, scale=0.6 + 0.4 * ease_out_back(lp), alpha=clamp(lp * 2))
 
 
@@ -400,7 +400,7 @@ def outro_question(cv: Canvas, t, dur, P, ctx: SceneCtx):
     headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=330, size=84)
     qp = seg(t, ctx.line_start(1, dur * 0.45), 0.45)
     if qp > 0:
-        cv.rect(150, 960, 930, 1140, fill=C["emerald"] + (240,), radius=30)
-        cv.text(540, 1050, P.get("question", ""), 70 * (0.7 + 0.3 * ease_out_back(qp)), C["black"], alpha=clamp(qp * 2))
+        cv.rect(150, 960, 930, 1140, fill=C["sub"] + (250,), radius=30)
+        cv.text(540, 1050, P.get("question", ""), 70 * (0.7 + 0.3 * ease_out_back(qp)), C["paper"], alpha=clamp(qp * 2), stroke_fill=C["sub"])
     if P.get("footer"):
-        cv.text(540, 1470, P["footer"], 38, C["emerald"], family="sans", weight=800, alpha=clamp(t * 2))
+        cv.text(540, 1470, P["footer"], 38, C["sub"], family="sans", weight=800, alpha=clamp(t * 2))

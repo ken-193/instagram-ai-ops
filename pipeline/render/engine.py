@@ -26,7 +26,7 @@ def hex_rgb(h: str) -> tuple[int, int, int]:
     return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
 
 
-C = {k: hex_rgb(v) for k, v in BRAND["colors"].items()}
+C = {k: hex_rgb(v) for k, v in BRAND["colors"].items() if k != "comment"}
 
 
 # ---------------------------------------------------------------- easing
@@ -126,7 +126,8 @@ class Canvas:
             return
         pad = int(radius * self.ss / q * 2.5) + 2
         bb = (max(0, bb[0] - pad), max(0, bb[1] - pad), min(small.width, bb[2] + pad), min(small.height, bb[3] + pad))
-        crop = small.crop(bb).filter(ImageFilter.GaussianBlur(radius / q * self.ss))
+        # blur premultiplied ("RGBa") so transparent pixels don't bleed black into the glow
+        crop = small.crop(bb).convert("RGBa").filter(ImageFilter.GaussianBlur(radius / q * self.ss)).convert("RGBA")
         if strength != 1.0:
             crop.putalpha(crop.getchannel("A").point(lambda v: min(255, int(v * strength))))
         crop = crop.resize(((bb[2] - bb[0]) * q, (bb[3] - bb[1]) * q), Image.BILINEAR)
@@ -139,10 +140,11 @@ class Canvas:
         return (b[2] - b[0]) / self.ss, (b[3] - b[1]) / self.ss
 
     def text(self, x, y, text, size, fill, family="heavy", weight=900, anchor="mm", stroke=0,
-             stroke_fill=(0, 0, 0), alpha=1.0):
+             stroke_fill=None, alpha=1.0):
         if alpha <= 0 or not text or size * self.ss < 2:
             return
         f = self.font(size, family, weight)
+        stroke_fill = stroke_fill or C["bg"]  # halo in the background color keeps text readable over graphics
         if alpha >= 1:
             self.d.text(self.pt(x, y), text, font=f, fill=fill, anchor=anchor, stroke_width=int(stroke * self.ss),
                         stroke_fill=stroke_fill)
@@ -258,42 +260,39 @@ def draw_subtitle(cv: Canvas, text: str, emphasis: list[str], p_in: float, alpha
     bx1, by1 = int((cx + maxw / 2 + pad) * s), int((top + lh * len(lines) + 10) * s)
     box = Image.new("RGBA", (bx1 - bx0, by1 - by0), (0, 0, 0, 0))
     ImageDraw.Draw(box).rounded_rectangle([0, 0, bx1 - bx0 - 1, by1 - by0 - 1], radius=22 * s,
-                                          fill=(0, 0, 0, int(cfg["box_alpha"] * a)))
+                                          fill=C["paper"] + (int(cfg["box_alpha"] * a),),
+                                          outline=C["sub"] + (int(255 * a),), width=3 * s)
     cv.img.alpha_composite(box, (bx0, by0))
     rise = (1 - ease_out(p_in)) * 18
     for i, l in enumerate(lines):
-        runs = split_emphasis(l, emphasis, C["white"], C["yellow"])
-        cv.rich_line(cx, top + lh * (i + 0.5) + rise, runs, size, stroke=3, alpha=a)
+        runs = split_emphasis(l, emphasis, C["ink"], C["accent"])
+        cv.rich_line(cx, top + lh * (i + 0.5) + rise, runs, size, stroke=0, alpha=a)
 
 
 # ---------------------------------------------------------------- background
 @lru_cache(maxsize=4)
 def starfield(ss: int, seed: int = 7) -> Image.Image:
+    """Background plate (name kept for callers): beige paper, soft green vignette, grain and a faint grid."""
     rnd = random.Random(seed)
     img = Image.new("RGBA", (W * ss, int(H * 1.15) * ss), C["bg"] + (255,))
-    d = ImageDraw.Draw(img)
-    # radial vignette glow
     glow = Image.new("RGBA", (W // 4, H // 4), (0, 0, 0, 0))
     gd = ImageDraw.Draw(glow)
     for i in range(40, 0, -1):
         r = i * 9
-        a = int(4 + (40 - i) * 0.35)
-        gd.ellipse([W / 8 - r, H / 8 - r * 1.3, W / 8 + r, H / 8 + r * 1.3], fill=C["emerald_dark"] + (a,))
-    glow = glow.filter(ImageFilter.GaussianBlur(30)).resize((W * ss, H * ss), Image.BILINEAR)
+        gd.ellipse([W / 8 - r, H / 8 - r * 1.3, W / 8 + r, H / 8 + r * 1.3], fill=C["sub_light"] + (int(2 + (40 - i) * 0.25),))
+    glow = glow.convert("RGBa").filter(ImageFilter.GaussianBlur(30)).convert("RGBA").resize((W * ss, H * ss), Image.BILINEAR)
     img.alpha_composite(glow, (0, int(H * 0.05) * ss))
-    for _ in range(420):
+    grain = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    gr = ImageDraw.Draw(grain)
+    for _ in range(1600):
         x, y = rnd.random() * W, rnd.random() * H * 1.15
-        r = rnd.choice([0.8, 1.0, 1.2, 1.6, 2.2])
-        b = rnd.randint(90, 230)
-        d.ellipse([(x - r) * ss, (y - r) * ss, (x + r) * ss, (y + r) * ss], fill=(b, b, b, 255))
-    # faint grid (composited so the low alpha actually blends)
-    grid = Image.new("RGBA", img.size, (0, 0, 0, 0))
-    gd2 = ImageDraw.Draw(grid)
+        r = rnd.choice([0.6, 0.8, 1.0])
+        gr.ellipse([(x - r) * ss, (y - r) * ss, (x + r) * ss, (y + r) * ss], fill=C["muted"] + (rnd.randint(14, 34),))
     for gx in range(0, W, 90):
-        gd2.line([(gx * ss, 0), (gx * ss, img.height)], fill=C["emerald"] + (22,), width=ss)
+        gr.line([(gx * ss, 0), (gx * ss, img.height)], fill=C["sub"] + (16,), width=ss)
     for gy in range(0, int(H * 1.15), 90):
-        gd2.line([(0, gy * ss), (img.width, gy * ss)], fill=C["emerald"] + (22,), width=ss)
-    img.alpha_composite(grid)
+        gr.line([(0, gy * ss), (img.width, gy * ss)], fill=C["sub"] + (16,), width=ss)
+    img.alpha_composite(grain)
     return img
 
 
@@ -306,7 +305,7 @@ def draw_background(cv: Canvas, t_global: float):
 def draw_branding(cv: Canvas, t: float):
     if not BRAND.get("show_series_label", True):
         return
-    cv.text(SAFE["left"] + 4, SAFE["top"] - 70, BRAND["series_name"], 30, C["emerald"], family="sans", weight=800,
+    cv.text(SAFE["left"] + 4, SAFE["top"] - 70, BRAND["series_name"], 30, C["sub"], family="sans", weight=800,
             anchor="lm", alpha=0.9)
 
 
