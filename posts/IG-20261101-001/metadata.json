@@ -1,0 +1,34 @@
+{
+  "post_id": "IG-20261101-001",
+  "title": "もしも世界82億人が全員徳島に引っ越したら？",
+  "built_at": "2026-11-01T11:04:50+00:00",
+  "duration_sec": 46.722,
+  "tts_backend": "ondoku",
+  "tts_options": {
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1,
+    "pitch": 0.0
+  },
+  "tts_chars_sent": 264,
+  "tts_model": null,
+  "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
+  "render": {
+    "engine": "pipeline.render (Pillow+ffmpeg)",
+    "supersampling": 2,
+    "fps": 30,
+    "size": "1080x1920"
+  },
+  "reel_sha256": "8896decebd6793c566c415382a500f27eefc8569f64dc90d92e639de7bfa607b",
+  "reel_bytes": 11034630,
+  "qc_passed": true,
+  "build_seconds": 223.8,
+  "cost_usd": 0.0,
+  "categories": [
+    "data_estimate",
+    "thought_experiment",
+    "fiction"
+  ],
+  "tokushima_ending_type": "徳島の名物が意外な解決策 / 前半の仮説が徳島で逆転",
+  "hook": "もしも、世界の82億人が全員、徳島に引っ越したら？",
+  "preview_quality": false
+}
