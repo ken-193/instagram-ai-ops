@@ -90,7 +90,9 @@ def submit(post_id: str) -> None:
     st["revision"] = st.get("revision", 0) + 1
     record_cost(meta.get("cost_usd") or 0.0)
 
-    folder = drive.ensure_folder(post_id, drive.FOLDERS["06_pending"])
+    # reuse the folder recorded for this post (it may have been renamed, e.g. "_承認済み");
+    # look up by name only the first time
+    folder = st.get("drive", {}).get("folder_id") or drive.ensure_folder(post_id, drive.FOLDERS["06_pending"])
     files = {}
     for name, src in [("reel.mp4", post_dir / "out/reel.mp4"), ("thumbnail.jpg", post_dir / "out/thumbnail.jpg"),
                       ("script.md", post_dir / "script.md"), ("script.json", post_dir / "script.json"),
