@@ -135,3 +135,11 @@ def test_render_survives_zero_scale_text():
         cv = Canvas(ss)
         cv.rich_line(540, 500, [("見た目 約2倍", C["ink"])], 78, scale=0.001)
         cv.text(540, 500, "x", 0.2, C["ink"])
+
+
+def test_qc_flags_characters_missing_from_heading_font():
+    from pipeline.qc import missing_glyphs
+    s = json.loads((ROOT / "posts/IG-20261101-001/script.json").read_text(encoding="utf-8"))
+    assert missing_glyphs(s) == []
+    s["scenes"][2]["params"]["headline"] = ["1人あたり 約0.5㎡"]
+    assert missing_glyphs(s) == ["㎡"]
