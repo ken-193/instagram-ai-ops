@@ -84,3 +84,29 @@ def test_queue_copy_never_reuses_different_file(monkeypatch):
     with pytest.raises(RuntimeError, match="different content"):
         drive.copy("NEW", "Q", "IG-1.mp4")
     assert drive.copy("SAME", "Q", "IG-1.mp4") == "OLD"
+
+
+def test_submit_reuses_recorded_folder_even_if_renamed(tmp_path, monkeypatch):
+    monkeypatch.setattr(state, "STATE_DIR", tmp_path / "state")
+    monkeypatch.setattr(ops, "git_commit", lambda msg: None)
+    for f in ("issue_comment", "push"):
+        monkeypatch.setattr(ops.notify, f, lambda *a, **k: None)
+    used = []
+    drive = types.SimpleNamespace(FOLDERS={"06_pending": "P"}, web_link=lambda *a, **k: "L",
+                                  ensure_folder=lambda *a: pytest.fail("must not look the folder up by name"),
+                                  upload=lambda src, folder, name: used.append(folder) or "X")
+    monkeypatch.setitem(sys.modules, "pipeline.drive", drive)
+    import pipeline
+    monkeypatch.setattr(pipeline, "drive", drive, raising=False)
+    post = tmp_path / "posts" / PID
+    (post / "out").mkdir(parents=True)
+    for n in ("out/reel.mp4", "out/thumbnail.jpg", "script.md", "caption.txt", "sources.md", "quality_check.md"):
+        (post / n).write_text("x")
+    (post / "metadata.json").write_text(json.dumps({"qc_passed": True, "reel_sha256": "n", "duration_sec": 50}))
+    (post / "script.json").write_text(json.dumps({"title": "t"}))
+    monkeypatch.setattr(ops, "ROOT", tmp_path)
+    st = state.load(PID)
+    st.update(status="revision_requested", issue_number=3, drive={"folder_id": "RENAMED", "files": {}})
+    state.save(st)
+    ops.submit(PID)
+    assert set(used) == {"RENAMED"}
