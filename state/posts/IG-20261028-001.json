@@ -1,6 +1,6 @@
 {
   "post_id": "IG-20261028-001",
-  "status": "approved",
+  "status": "handed_off",
   "revision": 3,
   "history": [
     {
@@ -72,6 +72,13 @@
       "to": "approved",
       "actor": "ken-193",
       "note": "approved via GitHub issue comment"
+    },
+    {
+      "at": "2026-11-01T10:30:28+00:00",
+      "from": "approved",
+      "to": "handed_off",
+      "actor": "pipeline",
+      "note": "copied to 11_Muse投稿キュー"
     }
   ],
   "render_attempts": 3,
@@ -97,7 +104,15 @@
   "approved_by": "ken-193",
   "approved_at": "2026-11-01T10:30:08+00:00",
   "approved_revision": 3,
-  "muse": null,
+  "muse": {
+    "queue_folder_id": "1ZN7E164f6IXZMR9ZWeelW5v7nEisAHxN",
+    "files": {
+      "reel.mp4": "1QWksLNI-9Y_1WHWlJ620YS09dYIRY8_H",
+      "caption.txt": "1s7EQnKpafCez0DQdkgYmMC_sR7zxQZn7",
+      "thumbnail.jpg": "1Y2Fj6v3WWkA94ytSJTdHT4--vT_5gKcM"
+    },
+    "handed_off_at": "2026-11-01T10:30:28+00:00"
+  },
   "withdrawals": [
     {
       "at": "2026-11-01T10:17:36+00:00",
