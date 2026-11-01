@@ -1,0 +1,396 @@
+{
+  "post_id": "IG-20261101-003",
+  "title": "もしも阿波踊りが東京を襲撃したら？",
+  "summary": "ある日、徳島の阿波踊りが東京に押し寄せる。緊急速報風の導入→渋谷・新宿・東京タワーが踊りに包まれる→見ていた人まで踊り出す→東京全域が祭り会場に。最後は『東京、徳島支部になりました。』。破壊ではなく、恐怖っぽい導入から平和で笑える結末へのギャップが見どころ。",
+  "premise": "完全なフィクション（思考実験）。阿波踊りが東京に来る・30分で全域が踊る・東京が徳島支部になる、はすべて架空。実在の事実はキャプションの豆知識（阿波踊りの歴史、高円寺の阿波おどり）のみ。",
+  "categories": [
+    "fiction"
+  ],
+  "genre": "エンタメ・文化 / 徳島（世界規模→徳島着地）",
+  "target_audience": "阿波踊り・お祭り好き、東京在住者、徳島出身者、映画予告風のパロディが好きな10〜40代",
+  "hook": "もしも阿波踊りが東京を襲撃したら？",
+  "tokushima_ending": {
+    "type": "徳島の文化が東京を『平和に制圧』する（逆転オチ『東京、徳島支部になりました。』）",
+    "description": "ニュース速報のような緊迫感で引っ張り、正体が阿波踊りだと明かす。最後は東京全体が踊りの会場になり、『東京、徳島支部になりました。』の看板テロップで締める。破壊や争いは描かず、全員が笑顔で踊る平和な結末。"
+  },
+  "bgm": {
+    "mood": "前半は緊迫したシネマティック、後半は阿波踊りの鳴り物（太鼓・鉦・笛）が主役になる祭り囃子風（コード生成のオリジナル）",
+    "bpm": 128,
+    "climax_scene": "s5",
+    "matsuri_from_scene": "s1",
+    "matsuri_full_scene": "s5"
+  },
+  "tts": {
+    "backend": "ondoku",
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1,
+    "pitch": 0.0
+  },
+  "export_scene_clips": true,
+  "scenes": [
+    {
+      "id": "s1",
+      "type": "tokyo_alert",
+      "narration": [
+        {
+          "text": "緊急事態です。",
+          "tts": "緊急事態です。"
+        }
+      ],
+      "emphasis": [
+        "緊急事態"
+      ],
+      "on_screen_text": [
+        "もしも阿波踊りが",
+        "東京を襲撃したら？",
+        "緊急速報"
+      ],
+      "params": {
+        "title": [
+          "もしも阿波踊りが",
+          "東京を襲撃したら？"
+        ],
+        "emphasis": [
+          "阿波踊り",
+          "東京"
+        ],
+        "title_size": 86,
+        "title_y": 690,
+        "banner": "緊急速報",
+        "ticker": "都心に大規模な集団が接近中　太鼓と笛の音を確認",
+        "screen": "速報"
+      },
+      "animation": "渋谷の大通りを見下ろす街頭カメラ。地面が細かく揺れ、通りの奥から阿波踊りの大群が迫ってくる。タイトルは0秒目から中央に表示。",
+      "camera": "ゆっくり後退しながら揺れる（報道カメラ風）",
+      "sfx": [
+        "rumble"
+      ],
+      "video_prompt": "Photorealistic cinematic vertical 9:16 shot, Shibuya scramble crossing in Tokyo on an ordinary afternoon, pedestrians stop and turn, the ground trembles slightly, far down the avenue a huge crowd in Awa-odori costumes (yukata, folded straw amigasa hats, happi coats, paper lanterns) advances toward camera, slow push-in, handheld news-camera feel, overcast light, no text",
+      "min_duration": 3.6
+    },
+    {
+      "id": "s2",
+      "type": "aerial_wave",
+      "narration": [
+        {
+          "text": "東京に、|謎の大群が出現。",
+          "tts": "東京に、謎の大群が出現。"
+        },
+        {
+          "text": "その正体は…|徳島の、阿波踊り。",
+          "tts": "その正体は……。徳島の、あわおどり。"
+        }
+      ],
+      "emphasis": [
+        "謎の大群",
+        "阿波踊り"
+      ],
+      "on_screen_text": [
+        "東京上空",
+        "正体：阿波踊り"
+      ],
+      "params": {
+        "chip": "東京上空",
+        "live": "LIVE",
+        "stamp": "正体：阿波踊り",
+        "stamp_emphasis": [
+          "阿波踊り"
+        ],
+        "stamp_on_line": 1,
+        "stamp_delay": 1.1
+      },
+      "animation": "真上からの空撮。碁盤の目の街を、編み笠と浴衣の踊り手の波が下から上へ埋めていく。",
+      "camera": "上昇しながら少し回転（ドローン）",
+      "sfx": [
+        "whoosh",
+        "impact"
+      ],
+      "video_prompt": "Photorealistic aerial drone shot, vertical 9:16, a Tokyo city grid seen from above, thousands of Awa-odori dancers in indigo and red yukata with straw hats flow through every street like a wave, camera slowly rising and rotating, late afternoon sun, long building shadows, no text",
+      "min_duration": 5.6
+    },
+    {
+      "id": "s3",
+      "type": "shibuya_scramble",
+      "narration": [
+        {
+          "text": "渋谷。",
+          "tts": "渋谷。"
+        },
+        {
+          "text": "スクランブル交差点が、|踊りで埋め尽くされました。",
+          "tts": "スクランブル交差点が、踊りで、埋め尽くされました。"
+        }
+      ],
+      "emphasis": [
+        "埋め尽くされ"
+      ],
+      "on_screen_text": [
+        "渋谷",
+        "阿波踊り"
+      ],
+      "params": {
+        "chip": "渋谷",
+        "live": "LIVE",
+        "screen": "阿波踊り",
+        "aerial_on_line": 1,
+        "aerial_delay": 1.3
+      },
+      "animation": "前半：ビルと大型ビジョンを見上げるローアングル、手前を踊り手が横切る。後半：交差点の真上からの俯瞰。踊り手が中心から広がり交差点を埋める。",
+      "camera": "見上げ → ホワイトフラッシュ → 真上の俯瞰（ゆっくり回転）",
+      "sfx": [
+        "whoosh"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, low angle from the street looking up at Shibuya buildings and giant video screens while Awa-odori dancers pass close to camera raising both hands, same-side hand and foot stepping forward together; then a whip to a top-down drone shot of the Shibuya scramble crossing completely filled with dancers, no text",
+      "min_duration": 6.4
+    },
+    {
+      "id": "s4",
+      "type": "shinjuku_canyon",
+      "narration": [
+        {
+          "text": "新宿。",
+          "tts": "新宿。"
+        },
+        {
+          "text": "東京の主要エリアが、|次々と踊りに|包まれていきます。",
+          "tts": "東京の、主要エリアが、次々と、踊りに包まれていきます。"
+        }
+      ],
+      "emphasis": [
+        "次々と"
+      ],
+      "on_screen_text": [
+        "新宿"
+      ],
+      "params": {
+        "chip": "新宿",
+        "live": "LIVE",
+        "bpm": 128,
+        "speed": 9.0
+      },
+      "animation": "夕暮れの高層ビルの谷間を前進するカメラ。通りは奥まで踊り手で埋まり、太鼓に合わせて衝撃波の輪が広がる。",
+      "camera": "ドリーイン（前進）しながら少し上昇",
+      "sfx": [
+        "whoosh"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, Shinjuku skyscraper canyon at dusk, camera dollies forward at second-floor height above an avenue packed with Awa-odori dancers, taiko drums and shinobue flutes, lanterns glowing, glass towers reflecting orange sky, epic scale, no text",
+      "min_duration": 6.0
+    },
+    {
+      "id": "s5",
+      "type": "tower_night",
+      "narration": [
+        {
+          "text": "そして、|東京タワー。",
+          "tts": "そして、東京タワー。"
+        },
+        {
+          "text": "提灯の光が、|夜の東京を照らします。",
+          "tts": "ちょうちんの光が、夜の東京を、照らします。"
+        }
+      ],
+      "emphasis": [
+        "東京タワー",
+        "提灯"
+      ],
+      "on_screen_text": [
+        "東京タワー"
+      ],
+      "params": {
+        "chip": "東京タワー",
+        "live": "LIVE",
+        "rings": 9
+      },
+      "animation": "夜の東京タワー。提灯を持った踊り手の輪が外側へ何重にも増え、回りながらタワーを囲む。",
+      "camera": "ドローンで周回しながら上昇（背景の街が流れる）",
+      "sfx": [
+        "riser"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16 night drone orbit around Tokyo Tower, tens of thousands of dancers with glowing paper lanterns form huge rings around the tower, warm lantern light on the streets, cinematic climax, no text",
+      "min_duration": 6.8
+    },
+    {
+      "id": "s6",
+      "type": "dance_spread",
+      "narration": [
+        {
+          "text": "しかし、|異変はここからでした。",
+          "tts": "しかし、異変は、ここからでした。"
+        },
+        {
+          "text": "踊りを見ていた人々が、|次々と踊り始めたのです。",
+          "tts": "踊りを見ていた人々が、次々と、踊り始めたのです。"
+        }
+      ],
+      "emphasis": [
+        "異変",
+        "踊り始めた"
+      ],
+      "on_screen_text": [
+        "（字幕のみ）"
+      ],
+      "params": {
+        "spread_on_line": 1
+      },
+      "animation": "提灯が吊られた夕方の通り。スーツの会社員、観光客、学生が「？」の顔で見ている → 一人が先に踊り出し、続いて全員がカバンを置いて笑顔で踊り出す。",
+      "camera": "ゆっくり前進するミディアムショット",
+      "sfx": [
+        "ding"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, festival-lit Tokyo street in the evening, a salaryman in a suit with a briefcase, tourists and locals watch the Awa-odori procession with confused faces, then one by one they drop their bags, raise their hands and start dancing with big smiles, medium shot, natural faces and hands, no text",
+      "min_duration": 7.4
+    },
+    {
+      "id": "s7",
+      "type": "tokyo_festival",
+      "narration": [
+        {
+          "text": "わずか30分で、|東京は、|巨大な阿波踊り会場に。",
+          "tts": "わずか、さんじゅっぷんで、東京は、巨大な、あわおどり会場に。"
+        }
+      ],
+      "emphasis": [
+        "30分",
+        "阿波踊り会場"
+      ],
+      "on_screen_text": [
+        "経過 30分",
+        "踊っている人 100％",
+        "東京全域が阿波踊り会場に"
+      ],
+      "params": {
+        "clock_label": "経過",
+        "clock_unit": "分",
+        "bar_label": "踊っている人",
+        "bar_unit": "％",
+        "stamp": "東京全域が|阿波踊り会場に",
+        "stamp_emphasis": [
+          "阿波踊り会場"
+        ],
+        "stamp_at": 2.6
+      },
+      "animation": "東京都の地図。新宿から踊り手の点が同心円状に広がり、多摩の山まで埋まる。経過時間と踊っている人の割合が100％に。",
+      "camera": "新宿の寄りから東京都全体へズームアウト",
+      "sfx": [
+        "riser"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, very high aerial shot of all of Tokyo at blue hour, every street, park and plaza filled with dancers and lanterns, the whole city glowing like one giant festival ground, slow pull back, no text",
+      "min_duration": 5.8
+    },
+    {
+      "id": "s8",
+      "type": "branch_ochi",
+      "narration": [
+        {
+          "text": "東京、|徳島支部に|なりました。",
+          "tts": "東京、とくしま支部に、なりました。"
+        }
+      ],
+      "emphasis": [
+        "徳島支部"
+      ],
+      "on_screen_text": [
+        "東京、",
+        "徳島支部に",
+        "なりました。",
+        "（旧）東京"
+      ],
+      "params": {
+        "lines": [
+          "東京、",
+          "徳島支部に",
+          "なりました。"
+        ],
+        "emphasis": [
+          "徳島支部"
+        ],
+        "size": 92,
+        "plate": "（旧）東京",
+        "plate_delay": 1.6
+      },
+      "animation": "夕暮れの東京（遠くに東京タワー）と、手前で笑顔で踊る人々。中央に大きな看板テロップがドンと出て、少し間を置いて『（旧）東京』の札が付く。",
+      "camera": "固定（間を取る）",
+      "sfx": [
+        "impact"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, Tokyo skyline at dusk with Tokyo Tower in the distance, happy Awa-odori dancers fill the foreground, calm wide shot holding still, empty area in the centre for a title card, no text",
+      "min_duration": 4.8
+    }
+  ],
+  "fact_checks": [
+    {
+      "claim": "阿波踊りが東京に押し寄せ、渋谷・新宿・東京タワーを埋め尽くす",
+      "status": "fiction",
+      "note": "架空の設定。"
+    },
+    {
+      "claim": "見ていた人が次々と踊り出し、30分で東京全体が阿波踊り会場になる",
+      "status": "fiction",
+      "note": "架空の設定。30分は演出上の数字。"
+    },
+    {
+      "claim": "東京が徳島支部になる",
+      "status": "fiction",
+      "note": "オチのための架空の設定。"
+    },
+    {
+      "claim": "阿波踊りは400年を超える歴史をもつといわれる",
+      "status": "verified",
+      "source_ids": [
+        "pref_tokushima_awaodori"
+      ],
+      "note": "起源には諸説あり、『といわれる』表現で扱う。検索で見つかった県の資料の抜粋で確認（本文PDFは未読）。"
+    },
+    {
+      "claim": "東京・高円寺の阿波おどりは1957年に『高円寺ばか踊り』として始まった",
+      "status": "verified",
+      "source_ids": [
+        "suginami_koenji"
+      ],
+      "note": "杉並区の公式ページの記載（検索結果の抜粋で確認）。"
+    }
+  ],
+  "sources": [
+    {
+      "id": "pref_tokushima_awaodori",
+      "title": "徳島県 資料（阿波おどり）",
+      "url": "https://www.pref.tokushima.lg.jp/file/attachment/932945.pdf",
+      "accessed": "2026-11-01",
+      "used_for": "阿波おどりは400年を超える歴史をもつといわれる"
+    },
+    {
+      "id": "suginami_koenji",
+      "title": "杉並区 - 東京高円寺阿波おどり",
+      "url": "https://www.city.suginami.tokyo.jp/s007/10581.html",
+      "accessed": "2026-11-01",
+      "used_for": "1957年8月27日に『高円寺ばか踊り』として始まった"
+    }
+  ],
+  "caption": "もしも阿波踊りが東京を襲撃したら…？🥁🏮\n\n渋谷、新宿、そして東京タワー。\n押し寄せた踊りの波は止まらず、見ていた人まで踊り出して――。\n\n📝 この動画はフィクションです\n・阿波踊りが東京に押し寄せる、30分で東京全域が踊る、東京が徳島支部になる…はすべて架空の設定です\n・誰も傷つかない、平和な『襲撃』です😂\n\n💡 ちなみに本当の話\n・阿波踊りは400年を超える歴史があるといわれています\n・東京の高円寺では、1957年から阿波おどりが続いています（はじまりは『高円寺ばか踊り』）\n…実はもう、東京は少しずつ踊らされているのかも？\n\nあなたの街に来たら、踊る？見る？👇\n\nナレーション音声: 音読さん（ondoku3.com）\n映像・音楽: コードで生成したオリジナル（実在の映像・楽曲は使用していません）\n地図: Natural Earth",
+  "hashtags": [
+    "#もしも",
+    "#もしもシリーズ",
+    "#阿波踊り",
+    "#阿波おどり",
+    "#徳島",
+    "#徳島県",
+    "#東京",
+    "#渋谷",
+    "#新宿",
+    "#東京タワー",
+    "#お祭り",
+    "#AI動画",
+    "#思考実験"
+  ],
+  "pinned_comment": "【ほんとの話】阿波踊りは400年を超える歴史があるといわれ、東京・高円寺の阿波おどりは1957年に始まりました。踊る阿呆に見る阿呆…あなたはどっち？🏮",
+  "thumbnail_text": "もしも阿波踊りが東京を襲撃したら？",
+  "production_notes": [
+    "オーナー指定のコンセプト・構成・ナレーションをベースに制作（企画20案の比較は省略し、指定案をそのまま採用）。",
+    "実写風のAI映像生成サービスはこのシステムに未接続（config/limits.json の max_ai_video_seconds_per_post = 0）。そのため映像はコード生成の2.5Dアニメーション（透視図法の街・群衆・カメラ移動）で制作。各シーンの video_prompt は実写系の動画生成サービスにそのまま渡せる英語プロンプト。",
+    "ナレーションはオーナー案から微調整：『主要都市』→『主要エリア』（渋谷・新宿は都市ではなく地区のため）、渋谷の場面に『スクランブル交差点が、踊りで埋め尽くされました。』、東京タワーの場面に『提灯の光が、夜の東京を照らします。』を追加。",
+    "阿波踊りの描写：同じ側の手と足を同時に前に出す動き。女踊りは浴衣・鳥追い笠・手を高く、男踊りは法被・低く広い構え、提灯を持つ踊り手も混ぜる。",
+    "東京タワーはシルエットの描画のみ（ロゴ・公式キャラクター不使用）。大型ビジョンの表示は『速報』『阿波踊り』のみで実在広告は描かない。",
+    "地域への配慮：『襲撃』はタイトルの言葉遊び。破壊・けが・争いは描かず、全員が笑顔で踊る平和な結末にしている。",
+    "BGMはコード生成：前半は緊迫系、s1から遠くの太鼓が聞こえ始め、s5で鳴り物（太鼓・鉦・笛）が主役になる。旋律はオリジナル。"
+  ]
+}

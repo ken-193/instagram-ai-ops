@@ -94,7 +94,25 @@ def qc_md(report: dict, post_id: str) -> str:
     return "\n".join(L) + "\n"
 
 
+def ai_video_prompts_md(script: dict, timeline: dict) -> str:
+    """Scene-by-scene prompts for an external text-to-video service (photoreal version of the reel).
+    Clips of <= 8 s fit the common generators; cut them on the scene boundaries below."""
+    L = [f"# {script['title']} — AI動画生成プロンプト", "",
+         "このリールはコード生成のアニメーションで作っています。実写風の映像に差し替えたい場合は、"
+         "各シーンのプロンプトを動画生成サービスに渡し、下の秒数に合わせて編集します（ナレーション・字幕・BGMは"
+         " out/narration.wav, out/subtitles.srt, out/bgm_sfx.wav をそのまま使えます）。", "",
+         "共通: vertical 9:16, 1080x1920, photorealistic, cinematic, consistent costumes (Awa-odori: yukata, folded straw "
+         "amigasa hats, happi coats, paper lanterns), no on-screen text, no logos, no real advertisements.", ""]
+    for sc, meta in zip(script["scenes"], timeline["scenes"]):
+        L += [f"## {sc['id']}（{meta['start']:.1f}〜{meta['end']:.1f}秒 / {meta['duration']:.1f}秒）", "",
+              f"- 映像: {sc['animation']}", f"- カメラ: {sc['camera']}",
+              f"- ナレーション: {' '.join(strip_hints(l['text']) for l in sc['narration'])}", "", "```",
+              sc["video_prompt"], "```", ""]
+    return "\n".join(L)
+
+
 def write_post_docs(post_dir: Path, script: dict, timeline: dict, report: dict):
+    (post_dir / "ai_video_prompts.md").write_text(ai_video_prompts_md(script, timeline), encoding="utf-8")
     (post_dir / "script.md").write_text(script_md(script, timeline), encoding="utf-8")
     (post_dir / "caption.txt").write_text(script["caption"] + "\n\n" + " ".join(script["hashtags"]) + "\n", encoding="utf-8")
     (post_dir / "sources.md").write_text(sources_md(script), encoding="utf-8")

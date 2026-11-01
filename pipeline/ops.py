@@ -99,6 +99,16 @@ def submit(post_id: str) -> None:
                       ("caption.txt", post_dir / "caption.txt"), ("sources.md", post_dir / "sources.md"),
                       ("metadata.json", post_dir / "metadata.json"), ("quality_check.md", post_dir / "quality_check.md")]:
         files[name] = drive.upload(src, folder, name)
+    extras = [("subtitles.srt", post_dir / "out/subtitles.srt"), ("narration.wav", post_dir / "out/narration.wav"),
+              ("bgm_sfx.wav", post_dir / "out/bgm_sfx.wav"), ("ai_video_prompts.md", post_dir / "ai_video_prompts.md")]
+    for name, src in extras:  # optional deliverables (not part of what Muse posts)
+        if src.exists():
+            files[name] = drive.upload(src, folder, name)
+    clips = sorted((post_dir / "out/scenes").glob("*.mp4"))
+    if clips:
+        sub = drive.ensure_folder("scenes", folder)
+        for c in clips:
+            files["scenes/" + c.name] = drive.upload(c, sub, c.name)
     st["drive"] = {"folder_id": folder, "files": files}
     st["reel_sha256"] = meta["reel_sha256"]
 

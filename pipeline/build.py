@@ -159,6 +159,32 @@ def sfx_events(script, timeline):
     return ev
 
 
+def _srt_time(x: float) -> str:
+    ms = int(round(x * 1000))
+    return f"{ms // 3600000:02d}:{ms // 60000 % 60:02d}:{ms // 1000 % 60:02d},{ms % 1000:03d}"
+
+
+def srt(timeline: dict) -> str:
+    """Subtitle file (same text/timing as the burned-in subtitles; '|' hints become line breaks)."""
+    out, n = [], 0
+    for sc in timeline["scenes"]:
+        for ln in sc["lines"]:
+            n += 1
+            out.append(f"{n}\n{_srt_time(sc['start'] + ln['start'])} --> {_srt_time(sc['start'] + ln['end'] + GAP)}\n"
+                       + ln["text"].replace("|", "\n") + "\n")
+    return "\n".join(out)
+
+
+def export_scene_clips(timeline: dict, reel: Path, dest: Path):
+    """Per-scene MP4s cut from the finished reel (re-encoded so every cut is frame-accurate)."""
+    dest.mkdir(exist_ok=True)
+    for i, sc in enumerate(timeline["scenes"], 1):
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{sc['start']:.3f}", "-i", str(reel),
+                        "-t", f"{sc['duration']:.3f}", "-c:v", "libx264", "-crf", "18", "-preset", "fast",
+                        "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
+                        str(dest / f"{i:02d}_{sc['id']}_{sc['type']}.mp4")], check=True)
+
+
 def sha256(p: Path) -> str:
     h = hashlib.sha256()
     with open(p, "rb") as f:
@@ -202,14 +228,24 @@ def main(argv=None):
     print("[2/5] audio mix")
     climax_id = script.get("bgm", {}).get("climax_scene")
     climax = next((s["start"] for s in timeline["scenes"] if s["id"] == climax_id), None)
-    mixdown = audio.mix(timeline["total"], voice, sfx_events(script, timeline), bpm=script.get("bgm", {}).get("bpm", 112),
-                        climax=climax)
+    bg = script.get("bgm", {})
+
+    def scene_start(sid):
+        return next((s["start"] for s in timeline["scenes"] if s["id"] == sid), None) if sid else None
+    mixdown, stems = audio.mix(timeline["total"], voice, sfx_events(script, timeline), bpm=bg.get("bpm", 112),
+                               climax=climax, matsuri_from=scene_start(bg.get("matsuri_from_scene")),
+                               matsuri_full=scene_start(bg.get("matsuri_full_scene")), stems=True)
     audio.write_wav(out / "audio.wav", mixdown)
+    audio.write_wav(out / "narration.wav", stems["voice"])
+    audio.write_wav(out / "bgm_sfx.wav", stems["music_sfx"])
+    (out / "subtitles.srt").write_text(srt(timeline), encoding="utf-8")
 
     ss = 1 if a.preview else 2
     print(f"[3/5] render video ({int(timeline['total'] * FPS)} frames, ss={ss}, workers={a.workers})")
     render_video(script, timeline, out / "audio.wav", out / "reel.mp4", ss, a.workers, crf=20)
     render_thumbnail(script, timeline, out / "thumbnail.jpg", ss)
+    if script.get("export_scene_clips"):
+        export_scene_clips(timeline, out / "reel.mp4", out / "scenes")
 
     print("[4/5] quality check")
     report = qc.run(out / "reel.mp4", script, timeline, backend)

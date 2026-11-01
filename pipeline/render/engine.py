@@ -101,8 +101,18 @@ class Canvas:
 
     def rect(self, x0, y0, x1, y1, fill=None, outline=None, width=0, radius=0):
         s = self.ss
-        self.d.rounded_rectangle([x0 * s, y0 * s, x1 * s, y1 * s], radius=radius * s, fill=fill,
-                                 outline=outline, width=int(width * s))
+        if (x1 - x0) * s < 1 or (y1 - y0) * s < 1:  # degenerate (e.g. a far-away object): nothing to draw
+            return
+        radius = min(radius, (x1 - x0) / 2, (y1 - y0) / 2)
+        width = min(width, (x1 - x0) / 2, (y1 - y0) / 2)
+        box = [x0 * s, y0 * s, x1 * s, y1 * s]
+        if radius * s < 1 or min(x1 - x0, y1 - y0) * s < 8:
+            self.d.rectangle(box, fill=fill, outline=outline, width=int(width * s))
+            return
+        try:
+            self.d.rounded_rectangle(box, radius=radius * s, fill=fill, outline=outline, width=int(width * s))
+        except ValueError:  # Pillow rejects some tiny rounded boxes after rounding
+            self.d.rectangle(box, fill=fill, outline=outline, width=int(width * s))
 
     def polygon(self, pts, fill=None, outline=None, width=1):
         if len(pts) < 3:
