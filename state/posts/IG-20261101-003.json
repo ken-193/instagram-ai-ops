@@ -1,0 +1,52 @@
+{
+  "post_id": "IG-20261101-003",
+  "status": "pending_approval",
+  "revision": 1,
+  "history": [
+    {
+      "at": "2026-11-01T12:18:48+00:00",
+      "from": "drafted",
+      "to": "rendered",
+      "actor": "pipeline",
+      "note": "build + QC passed"
+    },
+    {
+      "at": "2026-11-01T12:19:18+00:00",
+      "from": "rendered",
+      "to": "pending_approval",
+      "actor": "pipeline",
+      "note": "rev 1 sent for review"
+    }
+  ],
+  "render_attempts": 1,
+  "publish_attempts": 0,
+  "drive": {
+    "folder_id": "1CrXfrxxgsJLJlQfn08HNwW_DABOFGWRU",
+    "files": {
+      "reel.mp4": "16NvrrcLEmkeUgfLGgP0D3ospRC2Y8pxJ",
+      "thumbnail.jpg": "1Hb8I-I2-pmF05i4qPo-5xCM2lrCfM_it",
+      "script.md": "1O2pnYZ7MZLoZWz4zIz9e3euTCCrpSsB_",
+      "script.json": "14Hz8Uk-awx_2eoyXU81q-DVstK3s3yU4",
+      "caption.txt": "11YEWrzZaON5VtvtcUmPZBD7bA0wRh5Rd",
+      "sources.md": "1timDxWOodG800RIi3jwNCjILEwG0O6hr",
+      "metadata.json": "1sxpoCANB-iuO8_lre51Xkz52MlIPZg3T",
+      "quality_check.md": "1MhK6v_8WhPZplEUkQjebqo8laoLwdoRB",
+      "subtitles.srt": "1oGMQptjAdWKnn6HeBN6X2BLrkfkKpsTR",
+      "narration.wav": "1c7_oXC55ZOk9Rju40dOmpTOz3B7EYNoT",
+      "bgm_sfx.wav": "1IM9WsKERC_ZXEMnNJE_6C1ZcymKWMgci",
+      "ai_video_prompts.md": "18gDPZpSbzD4n0C8qhSnBmGsqa2CvZOzR",
+      "scenes/01_s1_tokyo_alert.mp4": "1OE9cBJIJ5ciNK-XqFn2uGrMAMr6HrL21",
+      "scenes/02_s2_aerial_wave.mp4": "1Cs8G6ejpCq8ATNGDVMYO5rrd9QSWOn8I",
+      "scenes/03_s3_shibuya_scramble.mp4": "1DO-uarl0kYCh9XZNOcM_HaTWWxGFci38",
+      "scenes/04_s4_shinjuku_canyon.mp4": "1zL5SwDyfoSwU3Fx1sWjcIadV6dHrb9Ab",
+      "scenes/05_s5_tower_night.mp4": "1dRfQqB-Kphg5Ce5SRrH9f4PhP5CDY5Di",
+      "scenes/06_s6_dance_spread.mp4": "1u9WZM6OkoLzMyLNKehAUtmfHBU0ZwSSi",
+      "scenes/07_s7_tokyo_festival.mp4": "1VSVp35pn0V_dYLivS3LjB7dDWrejASIy",
+      "scenes/08_s8_branch_ochi.mp4": "1i_B4nI1eciH7VdKmUHSkW3mqPsRUfeIp"
+    }
+  },
+  "ig": {},
+  "insights": {},
+  "reel_sha256": "f8e8296ef195cc0b5547753597cb08314481e21041e73efb73122e6c956e8203",
+  "issue_number": 22
+}

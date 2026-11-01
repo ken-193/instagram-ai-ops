@@ -1,0 +1,32 @@
+{
+  "post_id": "IG-20261101-003",
+  "title": "もしも阿波踊りが東京を襲撃したら？",
+  "built_at": "2026-11-01T12:18:43+00:00",
+  "duration_sec": 48.29,
+  "tts_backend": "ondoku",
+  "tts_options": {
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1,
+    "pitch": 0.0
+  },
+  "tts_chars_sent": 213,
+  "tts_model": null,
+  "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
+  "render": {
+    "engine": "pipeline.render (Pillow+ffmpeg)",
+    "supersampling": 2,
+    "fps": 30,
+    "size": "1080x1920"
+  },
+  "reel_sha256": "f8e8296ef195cc0b5547753597cb08314481e21041e73efb73122e6c956e8203",
+  "reel_bytes": 34859593,
+  "qc_passed": true,
+  "build_seconds": 491.7,
+  "cost_usd": 0.0,
+  "categories": [
+    "fiction"
+  ],
+  "tokushima_ending_type": "徳島の文化が東京を『平和に制圧』する（逆転オチ『東京、徳島支部になりました。』）",
+  "hook": "もしも阿波踊りが東京を襲撃したら？",
+  "preview_quality": false
+}
