@@ -1,0 +1,51 @@
+name: narration-check
+# Synthesize every narration line with the production voice (音読さん), transcribe it with Whisper and
+# compare readings. Not a production run: no state change, no approval issue, does not count toward limits.
+on:
+  workflow_dispatch:
+    inputs:
+      post_id: {description: "投稿ID (例 IG-20261101-004)", required: true}
+      model: {description: "Whisper model (small / medium)", required: false, default: "medium"}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ONDOKU_TOKEN: ${{ secrets.ONDOKU_TOKEN }}
+      GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+      GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+      GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12", cache: pip}
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install -r requirements.txt faster-whisper==1.2.1
+      - uses: actions/cache@v4  # same narration cache as produce: the checked audio is re-used, not re-bought
+        with:
+          path: .cache/tts
+          key: tts-${{ inputs.post_id }}-check-${{ hashFiles('posts/**/script.json') }}
+          restore-keys: tts-
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-${{ inputs.model }}
+      - name: Check narration
+        id: chk
+        run: python -m pipeline.narration_check "${{ inputs.post_id }}" --out check --model "${{ inputs.model }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: narration-check-${{ inputs.post_id }}
+          path: check/
+          retention-days: 30
+      - name: Upload to Drive (05 素材 / narration_check)
+        if: always() && env.GDRIVE_REFRESH_TOKEN != ''
+        run: |
+          if [ -f check/narration.mp3 ]; then python -m pipeline.narration_check "${{ inputs.post_id }}" --out check --upload; fi

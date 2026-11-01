@@ -1,6 +1,6 @@
 {
   "post_id": "IG-20261101-002",
-  "status": "pending_approval",
+  "status": "rejected",
   "revision": 1,
   "history": [
     {
@@ -16,6 +16,13 @@
       "to": "pending_approval",
       "actor": "pipeline",
       "note": "rev 1 sent for review"
+    },
+    {
+      "at": "2026-11-01T12:41:22+00:00",
+      "from": "pending_approval",
+      "to": "rejected",
+      "actor": "ken-193",
+      "note": "ボツ"
     }
   ],
   "render_attempts": 1,
@@ -36,5 +43,6 @@
   "ig": {},
   "insights": {},
   "reel_sha256": "dc10ab31d49e7d27ea0fb78b48b1b13ad08cc36429038feb22159b41b8cd4921",
-  "issue_number": 20
+  "issue_number": 20,
+  "rejected_reason": "ボツ"
 }
