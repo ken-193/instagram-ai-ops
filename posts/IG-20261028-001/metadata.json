@@ -1,7 +1,7 @@
 {
   "post_id": "IG-20261028-001",
   "title": "もしも月が今の半分の距離に来たら？",
-  "built_at": "2026-11-01T04:00:05+00:00",
+  "built_at": "2026-11-01T10:28:45+00:00",
   "duration_sec": 50.084,
   "tts_backend": "ondoku",
   "tts_options": {
@@ -9,7 +9,7 @@
     "speed": 1.1,
     "pitch": 0.0
   },
-  "tts_chars_sent": 282,
+  "tts_chars_sent": null,
   "tts_model": null,
   "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
   "render": {
@@ -18,10 +18,10 @@
     "fps": 30,
     "size": "1080x1920"
   },
-  "reel_sha256": "ea98a7028735a13dbcdd9b536a99c195177dfba8d2316c5d6ddcca23f07e823d",
-  "reel_bytes": 12329880,
+  "reel_sha256": "b2e31d8c8554dba689f22ff1b7b069adcc8c91a07a3ca39d744b50b6f2fb55ee",
+  "reel_bytes": 12440041,
   "qc_passed": true,
-  "build_seconds": 319.3,
+  "build_seconds": 346.3,
   "cost_usd": 0.0,
   "categories": [
     "scientific",

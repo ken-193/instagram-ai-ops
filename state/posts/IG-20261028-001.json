@@ -1,7 +1,7 @@
 {
   "post_id": "IG-20261028-001",
-  "status": "revision_requested",
-  "revision": 2,
+  "status": "pending_approval",
+  "revision": 3,
   "history": [
     {
       "at": "2026-10-29T03:50:55+00:00",
@@ -51,9 +51,23 @@
       "to": "revision_requested",
       "actor": "ken-193",
       "note": "withdrawn: 配色変更"
+    },
+    {
+      "at": "2026-11-01T10:28:49+00:00",
+      "from": "revision_requested",
+      "to": "rendered",
+      "actor": "pipeline",
+      "note": "build + QC passed"
+    },
+    {
+      "at": "2026-11-01T10:29:03+00:00",
+      "from": "rendered",
+      "to": "pending_approval",
+      "actor": "pipeline",
+      "note": "rev 3 sent for review"
     }
   ],
-  "render_attempts": 2,
+  "render_attempts": 3,
   "publish_attempts": 0,
   "drive": {
     "folder_id": "1n5J4_2l-xqqICTdDQ1HducZx2LqeQNzO",
@@ -70,7 +84,7 @@
   },
   "ig": {},
   "insights": {},
-  "reel_sha256": "ea98a7028735a13dbcdd9b536a99c195177dfba8d2316c5d6ddcca23f07e823d",
+  "reel_sha256": "b2e31d8c8554dba689f22ff1b7b069adcc8c91a07a3ca39d744b50b6f2fb55ee",
   "issue_number": 3,
   "approved_sha256": "ea98a7028735a13dbcdd9b536a99c195177dfba8d2316c5d6ddcca23f07e823d",
   "approved_by": "ken-193",
