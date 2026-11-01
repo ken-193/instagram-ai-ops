@@ -95,7 +95,24 @@ def sfx_rumble(dur=2.5):
     return (x * np.sin(np.linspace(0, np.pi, len(t)))).astype(np.float32)
 
 
-SFX = {"whoosh": sfx_whoosh, "impact": sfx_impact, "ding": sfx_ding, "tick": sfx_tick, "riser": sfx_riser,
+def sfx_splash(dur=1.2):
+    t = _t(dur)
+    noise = rng.standard_normal(len(t)).astype(np.float32)
+    body = lowpass(noise, 1800) * np.exp(-t * 3.5)
+    hiss = bandpass(noise, 2500, 9000) * np.exp(-t * 6) * 0.5
+    return ((body + hiss) * np.clip(t / 0.02, 0, 1) * 0.8).astype(np.float32)
+
+
+def sfx_boom(dur=3.5):
+    t = _t(dur)
+    f = 70 * np.exp(-t * 2) + 28
+    sub = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 1.4)
+    roar = lowpass(rng.standard_normal(len(t)).astype(np.float32), 900) * np.exp(-t * 1.1) * 1.4
+    spray = bandpass(rng.standard_normal(len(t)).astype(np.float32), 2000, 10000) * np.exp(-t * 1.8) * 0.5
+    return ((sub + roar + spray) * 0.8).astype(np.float32)
+
+
+SFX = {"splash": sfx_splash, "boom": sfx_boom, "whoosh": sfx_whoosh, "impact": sfx_impact, "ding": sfx_ding, "tick": sfx_tick, "riser": sfx_riser,
        "rumble": sfx_rumble}
 
 
@@ -257,7 +274,8 @@ def _ramp(n, a: float, b: float) -> np.ndarray:
 
 
 def mix(total: float, voice_events, sfx_events, bpm=112, climax=None, bgm_gain=0.32, duck=0.45,
-        matsuri_from: float | None = None, matsuri_full: float | None = None, stems: bool = False):
+        matsuri_from: float | None = None, matsuri_full: float | None = None, stems: bool = False,
+        music_env: list[tuple[float, float]] | None = None):
     """voice_events: [(start_sec, samples)], sfx_events: [(start_sec, name, gain)]. Returns stereo float32
     (and {"voice", "music_sfx"} stems when stems=True).
     matsuri_from/full: the festival band fades in from far away (low-passed) at `matsuri_from` and takes
@@ -279,6 +297,9 @@ def mix(total: float, voice_events, sfx_events, bpm=112, climax=None, bgm_gain=0
         fade = int(1.2 * SR)
         band[-fade:] *= np.linspace(1, 0, fade)
         music = music * (1 - 0.8 * near) + band * 1.1
+    if music_env:  # scripted music level: [(time, gain)], linear in between (e.g. a silence before a hit)
+        pts = sorted(music_env)
+        music = music * np.interp(np.arange(n) / SR, [p[0] for p in pts], [p[1] for p in pts]).astype(np.float32)
     # sidechain-style ducking from voice envelope
     envv = np.abs(voice)
     win = int(0.12 * SR)

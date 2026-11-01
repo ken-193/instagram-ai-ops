@@ -56,7 +56,7 @@ def _check_types(obj: dict, spec: dict, where: str, errors: list[str]) -> None:
             errors.append(f"{where}: missing '{key}'")
         elif not isinstance(obj[key], typ):
             errors.append(f"{where}: '{key}' must be {typ.__name__}")
-        elif typ in (str, list) and len(obj[key]) == 0 and key not in ("sfx", "production_notes"):
+        elif typ in (str, list) and len(obj[key]) == 0 and key not in ("sfx", "production_notes", "narration"):
             errors.append(f"{where}: '{key}' is empty")
 
 
@@ -112,6 +112,8 @@ def validate(script: dict, known_scene_types: set[str] | None = None) -> list[st
         seen.add(sc.get("id"))
         if known_scene_types is not None and sc.get("type") not in known_scene_types:
             errors.append(f"{where}: unknown scene type '{sc.get('type')}'")
+        if isinstance(sc.get("narration"), list) and not sc["narration"] and not sc.get("min_duration"):
+            errors.append(f"{where}: a scene without narration needs 'min_duration'")
         for j, line in enumerate(sc.get("narration", [])):
             if not isinstance(line, dict) or not line.get("text"):
                 errors.append(f"{where}.narration[{j}]: needs {{'text': ..., 'tts'?: ...}}")
