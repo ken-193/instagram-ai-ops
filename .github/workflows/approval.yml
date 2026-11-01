@@ -21,6 +21,7 @@ jobs:
     outputs:
       approved: ${{ steps.h.outputs.approved }}
       posted: ${{ steps.h.outputs.posted }}
+      withdrawn: ${{ steps.h.outputs.withdrawn }}
       post_id: ${{ steps.h.outputs.post_id }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,6 +41,9 @@ jobs:
         run: |
           git add state
           git diff --cached --quiet || (git commit -m "approval: ${{ steps.h.outputs.post_id }}" && git push)
+      - name: Withdraw from Muse queue
+        if: steps.h.outputs.withdrawn == 'true'
+        run: python -m pipeline.ops withdraw "${{ steps.h.outputs.post_id }}"
       - name: File posted reel (move out of Muse queue)
         if: steps.h.outputs.posted == 'true'
         run: python -m pipeline.ops posted "${{ steps.h.outputs.post_id }}"
