@@ -1,7 +1,7 @@
 {
   "post_id": "IG-20261028-001",
   "status": "pending_approval",
-  "revision": 1,
+  "revision": 2,
   "history": [
     {
       "at": "2026-10-29T03:50:55+00:00",
@@ -16,9 +16,23 @@
       "to": "pending_approval",
       "actor": "pipeline",
       "note": "rev 1 sent for review"
+    },
+    {
+      "at": "2026-11-01T04:00:07+00:00",
+      "from": "pending_approval",
+      "to": "rendered",
+      "actor": "pipeline",
+      "note": "new render replaces pending version"
+    },
+    {
+      "at": "2026-11-01T04:00:22+00:00",
+      "from": "rendered",
+      "to": "pending_approval",
+      "actor": "pipeline",
+      "note": "rev 2 sent for review"
     }
   ],
-  "render_attempts": 1,
+  "render_attempts": 2,
   "publish_attempts": 0,
   "drive": {
     "folder_id": "1n5J4_2l-xqqICTdDQ1HducZx2LqeQNzO",
@@ -35,6 +49,6 @@
   },
   "ig": {},
   "insights": {},
-  "reel_sha256": "dcc72c2c15f13e1e57186428cb19da6bc45dbeccb45ad13d68c643a3593535a9",
+  "reel_sha256": "ea98a7028735a13dbcdd9b536a99c195177dfba8d2316c5d6ddcca23f07e823d",
   "issue_number": 3
 }

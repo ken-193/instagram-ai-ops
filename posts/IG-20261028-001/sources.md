@@ -45,4 +45,3 @@
 - 地図: Natural Earth（パブリックドメイン） https://www.naturalearthdata.com/
 - フォント: Dela Gothic One / Noto Sans JP（SIL Open Font License 1.1）
 - BGM・効果音: コードで手続き生成（第三者素材なし）
-- ナレーション: Open JTalk + HTS voice "Mei"（CC BY 3.0, Nagoya Institute of Technology） → キャプションにクレジット記載
