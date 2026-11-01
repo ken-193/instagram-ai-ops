@@ -1,0 +1,33 @@
+{
+  "post_id": "IG-20261101-002",
+  "title": "もしも宇宙の果てまで行けたら？",
+  "built_at": "2026-11-01T11:19:13+00:00",
+  "duration_sec": 49.433,
+  "tts_backend": "ondoku",
+  "tts_options": {
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1,
+    "pitch": 0.0
+  },
+  "tts_chars_sent": 258,
+  "tts_model": null,
+  "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
+  "render": {
+    "engine": "pipeline.render (Pillow+ffmpeg)",
+    "supersampling": 2,
+    "fps": 30,
+    "size": "1080x1920"
+  },
+  "reel_sha256": "dc10ab31d49e7d27ea0fb78b48b1b13ad08cc36429038feb22159b41b8cd4921",
+  "reel_bytes": 7224977,
+  "qc_passed": true,
+  "build_seconds": 233.8,
+  "cost_usd": 0.0,
+  "categories": [
+    "scientific",
+    "fiction"
+  ],
+  "tokushima_ending_type": "壮大な話が徳島の日常に戻って終わる（落差オチ『最後に徳島かい！』）",
+  "hook": "もしも、宇宙の果てまで行けたら？",
+  "preview_quality": false
+}
