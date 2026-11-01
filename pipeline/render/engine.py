@@ -304,6 +304,8 @@ def draw_background(cv: Canvas, t_global: float):
 
 
 def draw_branding(cv: Canvas, t: float):
+    if not BRAND.get("show_series_label", True):
+        return
     cv.text(SAFE["left"] + 4, SAFE["top"] - 70, BRAND["series_name"], 30, C["emerald"], family="sans", weight=800,
             anchor="lm", alpha=0.9)
 

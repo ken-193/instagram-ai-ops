@@ -13,7 +13,10 @@
 4. `posts/IG-YYYYMMDD-NNN/script.json` を作成（見本: `posts/IG-20261028-001/script.json`）。
    - シーン種類は `pipeline/render/scenes.py` の SCENES から選ぶ。足りなければシーン関数を追加する。
    - 字幕の改行位置は `|`、読みが怪しい語は `tts` に読みを書く（`pyopenjtalk.g2p(text, kana=True)` で確認）。
-   - キャプションに仮定・フィクションの明示と、Open JTalk 使用時は CC BY クレジットを入れる。
+   - ナレーションは音読さんの Masaru: `"tts": {"backend": "ondoku", "voice": "ja-JP-MasaruMultilingualNeural", "speed": 1.1}`。
+     音読さんは「月」を「ガツ」と読むことがあるので、tts では「つき」などひらがなで書く。
+   - キャプションに仮定・フィクションの明示と「ナレーション音声: 音読さん（ondoku3.com）」のクレジットを入れる。
+   - 画面にシリーズ名や「次回も〜」の予告は入れない（BRAND_GUIDELINES.md）。
 5. `python -m pipeline.schema posts/<id>/script.json` → `python -m pipeline.build <id> --preview` で試作。
    フレームを数枚書き出して目視確認（文字の重なり・はみ出し・安全領域）。尺は15〜60秒（目標30〜45秒）。
 6. `python -m pytest -q tests` が通ることを確認してコミット。main に入ると produce ワークフローが本番レンダリング→Drive→承認依頼を行う。

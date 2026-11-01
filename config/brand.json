@@ -1,5 +1,4 @@
 {
-  "series_name": "もしもAI検証",
   "series_tagline": "AIが仮説をシミュレーション → 最後は徳島",
   "colors": {
     "black": "#000000",
@@ -10,14 +9,28 @@
     "emerald_dark": "#065F46",
     "yellow": "#FACC15"
   },
-  "video": {"width": 1080, "height": 1920, "fps": 30},
+  "video": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
   "safe_area": {
     "comment": "Instagram Reels UI overlap margins (px at 1080x1920). Keep all text inside.",
-    "top": 220, "bottom": 420, "left": 72, "right": 168
+    "top": 220,
+    "bottom": 420,
+    "left": 72,
+    "right": 168
   },
-  "subtitle": {"center_y": 1330, "font_size": 64, "max_chars_per_line": 13, "box_alpha": 170},
+  "subtitle": {
+    "center_y": 1330,
+    "font_size": 64,
+    "max_chars_per_line": 13,
+    "box_alpha": 170
+  },
   "fonts": {
     "heavy": "assets/fonts/DelaGothicOne-Regular.ttf",
     "sans": "assets/fonts/NotoSansJP-VF.ttf"
-  }
+  },
+  "series_name": "もしもAI検証",
+  "show_series_label": false
 }

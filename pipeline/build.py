@@ -37,7 +37,7 @@ def tts_kwargs(script: dict, backend: str, voice: str | None = None, style: str 
     if backend == "gemini":
         return {"voice": voice or cfg.get("voice", "Charon"), "style": style if style is not None else cfg.get("style", "")}
     if backend == "ondoku":
-        return {"voice": voice or cfg.get("voice", "en-HK-SamNeural"),
+        return {"voice": voice or cfg.get("voice", "ja-JP-MasaruMultilingualNeural"),
                 "speed": speed if speed is not None else cfg.get("speed", 1.1), "pitch": cfg.get("pitch", 0.0)}
     return {}
 
