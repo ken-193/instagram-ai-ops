@@ -1,6 +1,6 @@
 {
   "post_id": "IG-20261028-001",
-  "status": "pending_approval",
+  "status": "approved",
   "revision": 2,
   "history": [
     {
@@ -30,6 +30,13 @@
       "to": "pending_approval",
       "actor": "pipeline",
       "note": "rev 2 sent for review"
+    },
+    {
+      "at": "2026-11-01T06:16:38+00:00",
+      "from": "pending_approval",
+      "to": "approved",
+      "actor": "ken-193",
+      "note": "approved via GitHub issue comment"
     }
   ],
   "render_attempts": 2,
@@ -50,5 +57,9 @@
   "ig": {},
   "insights": {},
   "reel_sha256": "ea98a7028735a13dbcdd9b536a99c195177dfba8d2316c5d6ddcca23f07e823d",
-  "issue_number": 3
+  "issue_number": 3,
+  "approved_sha256": "ea98a7028735a13dbcdd9b536a99c195177dfba8d2316c5d6ddcca23f07e823d",
+  "approved_by": "ken-193",
+  "approved_at": "2026-11-01T06:16:38+00:00",
+  "approved_revision": 2
 }
