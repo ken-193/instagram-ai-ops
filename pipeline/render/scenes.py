@@ -777,3 +777,4 @@ def universe_loop(cv: Canvas, t, dur, P, ctx: SceneCtx):
         ap = seg(t, ctx.line_start(P.get("loop_on_line", 1), dur * 0.3) + dur * 0.6, 0.4)
         cv.text(sx, sy - 70, P["arrive_label"], 52 * (0.7 + 0.3 * ease_out_back(ap)), C["accent"], alpha=clamp(ap * 2),
                 stroke=5)
+from . import scenes_tokyo  # noqa: E402,F401  (registers the Tokyo scenes)

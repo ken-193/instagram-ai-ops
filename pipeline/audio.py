@@ -173,6 +173,75 @@ def bgm(total: float, bpm: float = 112, climax: float | None = None, mood: str =
     return out
 
 
+# ---------------------------------------------------------------- festival band (Awa-odori style, original)
+def _taiko(dur=0.6):
+    t = _t(dur)
+    f = 62 + 70 * np.exp(-t * 28)
+    body = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 7)
+    skin = lowpass(rng.standard_normal(len(t)).astype(np.float32), 900) * np.exp(-t * 40) * 0.6
+    return (body + skin).astype(np.float32)
+
+
+def _shime(dur=0.12):
+    t = _t(dur)
+    tone = np.sin(2 * np.pi * 520 * t) * np.exp(-t * 45)
+    snap = bandpass(rng.standard_normal(len(t)).astype(np.float32), 1500, 6000) * np.exp(-t * 80)
+    return (tone * 0.6 + snap * 0.8).astype(np.float32)
+
+
+def _kane(dur=0.35):
+    t = _t(dur)
+    x = sum(np.sin(2 * np.pi * 1180 * r * t) / (i + 1) for i, r in enumerate((1.0, 2.76, 5.4, 8.93)))
+    hiss = bandpass(rng.standard_normal(len(t)).astype(np.float32), 5000, 12000) * np.exp(-t * 40) * 0.4
+    return ((x * 0.35 + hiss) * np.exp(-t * 14)).astype(np.float32)
+
+
+def _fue(freq, dur):
+    t = _t(dur)
+    vib = 1 + 0.004 * np.sin(2 * np.pi * 5.6 * t) * np.clip(t / 0.25, 0, 1)
+    ph = np.cumsum(freq * vib) / SR
+    tone = np.sin(2 * np.pi * ph) + 0.25 * np.sin(4 * np.pi * ph) + 0.08 * np.sin(6 * np.pi * ph)
+    breath = bandpass(rng.standard_normal(len(t)).astype(np.float32), freq * 0.8, freq * 3) * 0.12
+    return ((tone + breath) * env_adsr(len(t), 0.03, 0.08, 0.8, 0.05) * 0.22).astype(np.float32)
+
+
+# own 8-bar phrase on the minyo (D F G A C) scale; (midi note, length in eighths)
+FUE_PHRASE = [(81, 2), (84, 1), (81, 1), (79, 2), (77, 2), (79, 1), (81, 1), (79, 1), (77, 1), (74, 4),
+              (77, 2), (79, 1), (81, 1), (84, 2), (86, 2), (84, 1), (81, 1), (79, 1), (81, 1), (74, 4)]
+
+
+def matsuri(total: float, bpm: float = 128) -> tuple[np.ndarray, np.ndarray]:
+    """Two-beat festival groove: big taiko, shime-daiko, kane (bell) + a shinobue-like flute line.
+    Returns (percussion, flute)."""
+    n = int(total * SR)
+    perc = np.zeros(n, np.float32)
+    flute = np.zeros(n, np.float32)
+    six = 60 / bpm / 4
+    taiko, shime, kane = _taiko(), _shime(), _kane()
+    k = 0
+    while k * six < total:
+        pos = k % 8   # one 2/4 bar = 8 sixteenths
+        at = k * six
+        if pos in (0, 3, 4, 6):
+            place(perc, taiko, at, 0.9 if pos in (0, 4) else 0.55)
+        if pos % 2 == 0 or pos == 7:
+            place(perc, shime, at, 0.35 if pos % 2 == 0 else 0.2)
+        if pos in (0, 4):
+            place(perc, kane, at, 0.3)
+        elif pos in (2, 6):
+            place(perc, kane, at, 0.14)
+        k += 1
+    at = 0.0
+    while at < total:
+        for note, ln in FUE_PHRASE:
+            d = ln * six * 2
+            place(flute, _fue(midi(note), d * 0.95), at)
+            at += d
+            if at >= total:
+                break
+    return perc, flute
+
+
 # ---------------------------------------------------------------- mix
 def place(buf: np.ndarray, x: np.ndarray, at: float, gain: float = 1.0):
     s = int(at * SR)
@@ -182,8 +251,17 @@ def place(buf: np.ndarray, x: np.ndarray, at: float, gain: float = 1.0):
     buf[s:s + m] += x[:m] * gain
 
 
-def mix(total: float, voice_events, sfx_events, bpm=112, climax=None, bgm_gain=0.32, duck=0.45) -> np.ndarray:
-    """voice_events: [(start_sec, samples)], sfx_events: [(start_sec, name, gain)]. Returns stereo float32."""
+def _ramp(n, a: float, b: float) -> np.ndarray:
+    t = np.arange(n) / SR
+    return np.clip((t - a) / max(b - a, 0.01), 0, 1).astype(np.float32)
+
+
+def mix(total: float, voice_events, sfx_events, bpm=112, climax=None, bgm_gain=0.32, duck=0.45,
+        matsuri_from: float | None = None, matsuri_full: float | None = None, stems: bool = False):
+    """voice_events: [(start_sec, samples)], sfx_events: [(start_sec, name, gain)]. Returns stereo float32
+    (and {"voice", "music_sfx"} stems when stems=True).
+    matsuri_from/full: the festival band fades in from far away (low-passed) at `matsuri_from` and takes
+    over from the cinematic loop by `matsuri_full`."""
     n = int(total * SR)
     voice = np.zeros(n, np.float32)
     for at, x in voice_events:
@@ -192,15 +270,29 @@ def mix(total: float, voice_events, sfx_events, bpm=112, climax=None, bgm_gain=0
     for at, name, g in sfx_events:
         place(fx, SFX[name](), at, g)
     music = bgm(total, bpm=bpm, climax=climax)
+    if matsuri_from is not None:
+        full = matsuri_full if matsuri_full is not None else matsuri_from + 10
+        perc, flute = matsuri(total, bpm)
+        near = _ramp(n, matsuri_from + (full - matsuri_from) * 0.25, full)
+        far = _ramp(n, matsuri_from, matsuri_from + 1.5) * (1 - near)
+        band = lowpass(perc, 350) * 1.6 * far + perc * near + flute * _ramp(n, full - 1.0, full + 0.5)
+        fade = int(1.2 * SR)
+        band[-fade:] *= np.linspace(1, 0, fade)
+        music = music * (1 - 0.8 * near) + band * 1.1
     # sidechain-style ducking from voice envelope
     envv = np.abs(voice)
     win = int(0.12 * SR)
     envv = np.convolve(envv, np.ones(win) / win, mode="same")
     duck_env = 1 - duck * np.clip(envv / 0.08, 0, 1)
-    out = voice * 1.0 + music * bgm_gain * duck_env + fx * 0.8
+    bed = music * bgm_gain * duck_env + fx * 0.8
+    out = voice * 1.0 + bed
     peak = float(np.max(np.abs(out))) or 1.0
-    out = out / peak * 0.95
-    return np.stack([out, out], axis=1).astype(np.float32)
+    g = 0.95 / peak
+    stereo = np.stack([out * g, out * g], axis=1).astype(np.float32)
+    if not stems:
+        return stereo
+    return stereo, {"voice": np.stack([voice * g] * 2, axis=1).astype(np.float32),
+                    "music_sfx": np.stack([bed * g] * 2, axis=1).astype(np.float32)}
 
 
 def write_wav(path: Path, stereo: np.ndarray):
