@@ -467,14 +467,25 @@ def imo_vs_uzu(cv: Canvas, t, dur, P, ctx: SceneCtx):
 # ---------------------------------------------------------------- s8: the whirlpool keeps turning
 @scene("uzu_ochi")
 def uzu_ochi(cv: Canvas, t, dur, P, ctx: SceneCtx):
-    xf = strait_view(cv, t, lerp(0.95, 1.05, t / max(dur, 0.1)), spin=1.6)
+    xf = strait_view(cv, t, lerp(0.95, 1.05, t / max(dur, 0.1)), cy=P.get("whirl_shift", 0), spin=1.6)
     if t < 0.3:
         cv.rect(0, 0, W, H, fill=(255, 255, 255, int(200 * (1 - t / 0.3))))
     p = seg(t, P.get("text_at", 0.6), 0.5)
     if p > 0:
         sc = 0.7 + 0.3 * ease_out_back(p)
-        cv.rect(96, 560, 912, 900, fill=C["paper"] + (int(244 * clamp(p * 2)),), outline=C["sub"] + (255,), width=8,
-                radius=28)
-        for i, ln in enumerate(P.get("lines", ["やはり、", "最強は渦潮。"])):
-            cv.rich_line(504, 660 + i * 130, split_emphasis(ln, P.get("emphasis", []), C["ink"], C["accent"]),
-                         P.get("size", 104), scale=sc, alpha=clamp(p * 2))
+        lines = [(ln, P.get("size", 104)) if isinstance(ln, str) else (ln[0], ln[1]) for ln in
+                 P.get("lines", ["やはり、", "最強は渦潮。"])]
+        gap = 1.32
+        hgt = sum(sz * gap for _, sz in lines)
+        y0 = P.get("center_y", 730) - hgt / 2
+        cv.rect(80, y0 - 50, 928, y0 + hgt + 40, fill=C["paper"] + (int(244 * clamp(p * 2)),), outline=C["sub"] + (255,),
+                width=8, radius=28)
+        y = y0
+        for ln, sz in lines:
+            cv.rich_line(504, y + sz * gap / 2, split_emphasis(ln, P.get("emphasis", []), C["ink"], C["accent"]), sz,
+                         scale=sc, alpha=clamp(p * 2))
+            y += sz * gap
+        if P.get("footer"):
+            fp = seg(t, P.get("text_at", 0.6) + 0.8, 0.4)
+            cv.text(504, y0 + hgt + 90, P["footer"], 30, C["paper"], family="sans", weight=800, alpha=fp, stroke=5,
+                    stroke_fill=SEA_DEEP)
