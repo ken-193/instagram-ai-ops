@@ -133,5 +133,5 @@ def test_render_survives_zero_scale_text():
     from pipeline.render.engine import C, Canvas
     for ss in (1, 2):
         cv = Canvas(ss)
-        cv.rich_line(540, 500, [("見た目 約2倍", C["white"])], 78, scale=0.001)
-        cv.text(540, 500, "x", 0.2, C["white"])
+        cv.rich_line(540, 500, [("見た目 約2倍", C["ink"])], 78, scale=0.001)
+        cv.text(540, 500, "x", 0.2, C["ink"])
