@@ -76,15 +76,7 @@
   "approved_by": "ken-193",
   "approved_at": "2026-11-01T06:16:38+00:00",
   "approved_revision": 2,
-  "muse": {
-    "queue_folder_id": "1ZN7E164f6IXZMR9ZWeelW5v7nEisAHxN",
-    "files": {
-      "reel.mp4": "10hI2Y56WXQrKIYFRupUPOTpE4U1TZI-I",
-      "caption.txt": "19LEhxXSXWJLLFUrkn5a2aS9RJ5-fugDD",
-      "thumbnail.jpg": "1vT4wEEt9nXfgCdwitwFP0wmj-dei3f4t"
-    },
-    "handed_off_at": "2026-11-01T06:17:01+00:00"
-  },
+  "muse": null,
   "withdrawals": [
     {
       "at": "2026-11-01T10:17:36+00:00",
