@@ -26,6 +26,34 @@ def _run_ff(args) -> str:
     return r.stderr + ("" if r.returncode == 0 else f"\nEXIT {r.returncode}")
 
 
+def screen_strings(script: dict) -> list[str]:
+    """Every string the renderer draws with the heading font (headlines, labels, stamps, tags, subtitles)."""
+    keys = ("headline", "label", "stamp", "question", "pin_label", "big_label", "text", "footer")
+    out = []
+
+    def walk(v, key=None):
+        if isinstance(v, dict):
+            for k, x in v.items():
+                walk(x, k)
+        elif isinstance(v, list):
+            for x in v:
+                walk(x, key)
+        elif isinstance(v, str) and key in keys:
+            out.append(v)
+    for sc in script["scenes"]:
+        walk(sc.get("params", {}))
+        out += [ln["text"] for ln in sc["narration"]]
+    return out
+
+
+def missing_glyphs(script: dict) -> list[str]:
+    from fontTools.ttLib import TTFont
+
+    cmap = TTFont(str(ROOT / BRAND["fonts"]["heavy"])).getBestCmap()
+    bad = {ch for s in screen_strings(script) for ch in s if ch not in "|\n " and ord(ch) not in cmap}
+    return sorted(bad)
+
+
 def run(video: Path, script: dict, timeline: dict, backend: str | None = None) -> dict:
     checks: list[dict] = []
 
@@ -71,6 +99,9 @@ def run(video: Path, script: dict, timeline: dict, backend: str | None = None) -
     tp = re.findall(r"Peak:\s+(-?[\d.]+) dBFS", lo)
     lufs = float(m[-1]) if m else None
     add("loudness about -14 LUFS", lufs is not None and -17 <= lufs <= -11, f"I={lufs} LUFS, true peak={tp[-1] if tp else '?'} dBFS")
+
+    bad = missing_glyphs(script)
+    add("all on-screen characters exist in the font", not bad, "missing: " + "".join(bad) if bad else "ok")
 
     sub = BRAND["subtitle"]
     add("subtitle band inside safe area", SAFE["top"] < sub["center_y"] < 1920 - SAFE["bottom"] - 90,

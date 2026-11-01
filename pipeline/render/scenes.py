@@ -396,7 +396,11 @@ def power_ochi(cv: Canvas, t, dur, P, ctx: SceneCtx):
 
 @scene("outro_question")
 def outro_question(cv: Canvas, t, dur, P, ctx: SceneCtx):
-    draw_whirlpool(cv, 540, 820, 330, t * 5, alpha=0.55)
+    bg = P.get("bg", "whirlpool")
+    if bg == "whirlpool":
+        draw_whirlpool(cv, 540, 820, 330, t * 5, alpha=0.55)
+    elif bg == "dance":
+        draw_dancers(cv, t, rows=4, cols=7, top=560, bottom=900, alpha=0.5)
     headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=330, size=84)
     qp = seg(t, ctx.line_start(1, dur * 0.45), 0.45)
     if qp > 0:
@@ -404,3 +408,235 @@ def outro_question(cv: Canvas, t, dur, P, ctx: SceneCtx):
         cv.text(540, 1050, P.get("question", ""), 70 * (0.7 + 0.3 * ease_out_back(qp)), C["paper"], alpha=clamp(qp * 2), stroke_fill=C["sub"])
     if P.get("footer"):
         cv.text(540, 1470, P["footer"], 38, C["sub"], family="sans", weight=800, alpha=clamp(t * 2))
+
+
+# ---------------------------------------------------------------- people / crowds
+def draw_person(cv: Canvas, x, y, s, color, pose=0.0, dance=False):
+    """Simple pictogram person standing at (x, y = feet). s = height in px.
+    dance=True raises both arms (Awa-odori style); pose (radians) swings them."""
+    k = cv.ss
+    head_r = s * 0.11
+    neck = (x, y - s * 0.74)
+    hip = (x, y - s * 0.36)
+    cv.circle(x, y - s * 0.86, head_r, fill=color + (255,))
+    w = max(2, s * 0.09)
+    cv.line([neck, hip], fill=color + (255,), width=w)
+    sw = math.sin(pose)
+    cv.line([hip, (x - s * 0.16 - sw * s * 0.04, y)], fill=color + (255,), width=w)
+    cv.line([hip, (x + s * 0.16 - sw * s * 0.04, y)], fill=color + (255,), width=w)
+    shoulder = (x, y - s * 0.68)
+    if dance:
+        for side in (-1, 1):
+            elbow = (x + side * s * 0.2, y - s * (0.84 + 0.06 * sw * side))
+            hand = (x + side * s * (0.16 + 0.08 * sw), y - s * (1.06 + 0.05 * sw * side))
+            cv.line([shoulder, elbow, hand], fill=color + (255,), width=w * 0.85)
+    else:
+        for side in (-1, 1):
+            cv.line([shoulder, (x + side * s * 0.17, y - s * 0.42)], fill=color + (255,), width=w * 0.85)
+
+
+def draw_dancers(cv: Canvas, t, rows=5, cols=7, top=520, bottom=1150, alpha=1.0, accent_every=5):
+    """Rows of Awa-odori dancers in loose perspective (smaller and paler at the back)."""
+    for r in range(rows):
+        f = r / max(1, rows - 1)                       # 0 = back row, 1 = front row
+        y = lerp(top, bottom, f)
+        size = lerp(70, 150, f)
+        n = cols + (rows - 1 - r)
+        for c in range(n):
+            x = 120 + (840 / max(1, n - 1)) * c + (r % 2) * 18
+            phase = t * 6.5 + c * 0.9 + r * 1.3
+            bob = abs(math.sin(phase)) * size * 0.06
+            base = C["accent"] if (r * 7 + c) % accent_every == 0 else C["sub"] if (r + c) % 3 == 0 else C["ink"]
+            col = mix(C["bg"], base, (0.35 + 0.65 * f) * alpha)
+            draw_person(cv, x, y - bob, size, col, pose=phase, dance=True)
+
+
+@lru_cache(maxsize=4)
+def pref_points(iso: str, n: int, seed: int = 5):
+    """n random lon/lat points inside a prefecture (rejection sampling on its polygons)."""
+    rings = next(p["rings"] for p in japan() if p["iso"] == iso)
+    lons = [x for r in rings for x, _ in r]
+    lats = [y for r in rings for _, y in r]
+
+    def inside(px, py):
+        hit = False
+        for ring in rings:
+            j = len(ring) - 1
+            for i in range(len(ring)):
+                xi, yi = ring[i]
+                xj, yj = ring[j]
+                if (yi > py) != (yj > py) and px < (xj - xi) * (py - yi) / (yj - yi + 1e-12) + xi:
+                    hit = not hit
+                j = i
+        return hit
+
+    rnd = random.Random(seed)
+    pts = []
+    while len(pts) < n:
+        x, y = rnd.uniform(min(lons), max(lons)), rnd.uniform(min(lats), max(lats))
+        if inside(x, y):
+            pts.append((x, y, rnd.random()))
+    return pts
+
+
+@scene("crowd_hook")
+def crowd_hook(cv: Canvas, t, dur, P, ctx: SceneCtx):
+    """People from all over the globe stream into one glowing point (Tokushima)."""
+    cx, cy, r = 540, 800, 250
+    draw_earth(cv, cx, cy, r)
+    tx, ty = cx + r * 0.42, cy - r * 0.18
+    rnd = random.Random(9)
+    k = cv.ss
+    layer, d = cv.overlay()
+    for i in range(220):
+        a, rr = rnd.uniform(0, math.tau), r * math.sqrt(rnd.random()) * 0.95
+        sx, sy = cx + math.cos(a) * rr, cy + math.sin(a) * rr
+        start = rnd.uniform(0, dur * 0.55)
+        p = ease_in_out(seg(t, start, dur * 0.4))
+        bend = math.sin(p * math.pi) * 60 * (1 if i % 2 else -1)
+        x = lerp(sx, tx, p) + bend * 0.3
+        y = lerp(sy, ty, p) - bend
+        col = C["accent"] if i % 6 == 0 else C["ink"]
+        rad = 5.5 * (1 - 0.6 * p)
+        d.ellipse([(x - rad) * k, (y - rad) * k, (x + rad) * k, (y + rad) * k], fill=col + (235,))
+    cv.img.alpha_composite(layer)
+    pulse = 0.5 + 0.5 * math.sin(t * 7)
+    gather = seg(t, dur * 0.3, dur * 0.6)
+    cv.glow(lambda dd, kk: dd.ellipse([(tx - 30) * kk, (ty - 30) * kk, (tx + 30) * kk, (ty + 30) * kk],
+                                        fill=C["accent"] + (255,)), radius=30, strength=0.4 + 0.6 * gather * pulse)
+    cv.circle(tx, ty, 12 + 10 * gather, fill=C["accent"] + (255,), outline=C["paper"] + (255,), width=3)
+    if P.get("pin_label"):
+        cv.text(tx, ty - 60, P["pin_label"], 46, C["accent"], alpha=gather, stroke=4)
+    headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=300, size=P.get("size", 84))
+
+
+@scene("big_counter")
+def big_counter(cv: Canvas, t, dur, P, ctx: SceneCtx):
+    """Label + big number counting up, a growing grid of people icons, then a multiplier stamp."""
+    headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=300, size=70)
+    cp = seg(t, ctx.line_start(P.get("count_on_line", 0), 0.3), P.get("count_dur", 1.4))
+    counter_text(cv, 540, 470, P["from"], P["to"] if cp > 0 else P["from"], cp, unit=P.get("unit", ""),
+                 prefix=P.get("prefix", ""), size=P.get("size", 110))
+    grow = ease_out(seg(t, ctx.line_start(P.get("grid_on_line", 1), dur * 0.4), 1.6))
+    cols, rows = 12, 9
+    shown = int(1 + grow * (cols * rows - 1))
+    for i in range(shown):
+        c, rr = i % cols, i // cols
+        x, y = 150 + c * 70, 620 + rr * 62
+        col = C["accent"] if i == 0 else C["sub"] if i % 7 == 0 else C["ink"]
+        draw_person(cv, x, y + 50, 52, mix(C["bg"], col, 0.9))
+    mp = seg(t, ctx.line_start(P.get("stamp_on_line", 1), dur * 0.6), 0.5)
+    if mp > 0 and P.get("stamp"):
+        sc = 0.6 + 0.4 * ease_out_back(mp)
+        cv.rect(170, 1050, 910, 1180, fill=C["paper"] + (245,), outline=C["accent"] + (255,), width=5, radius=24)
+        cv.rich_line(540, 1115, split_emphasis(P["stamp"], P.get("stamp_emphasis", []), C["ink"], C["accent"]), 76,
+                     stroke=0, scale=sc, alpha=clamp(mp * 2))
+
+
+@scene("tatami")
+def tatami(cv: Canvas, t, dur, P, ctx: SceneCtx):
+    """Top view of one tatami mat that fills up with people (heads + shoulders)."""
+    headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=300, size=70)
+    x0, y0, w, h = 330, 470, 420, 680           # ~1:1.6 like a real mat, vertical
+    cv.rect(x0, y0, x0 + w, y0 + h, fill=(214, 201, 150, 255), outline=C["sub_dark"] + (255,), width=14, radius=6)
+    for i in range(1, 22):                       # woven texture
+        yy = y0 + h * i / 22
+        cv.line([(x0 + 12, yy), (x0 + w - 12, yy)], fill=(190, 176, 122, 255), width=2)
+    n = P.get("people", 3)
+    seats = P.get("seats", [(0.5, 0.2), (0.28, 0.62), (0.72, 0.62), (0.5, 0.92)])
+    for i in range(n):
+        pp = ease_out_back(seg(t, ctx.line_start(P.get("fill_on_line", 1), 0.4) + i * 0.35, 0.4))
+        if pp <= 0:
+            continue
+        fx, fy = seats[i % len(seats)]
+        x, y = x0 + w * fx, y0 + h * fy - 60
+        sc = 0.4 + 0.6 * pp
+        col = C["accent"] if i == 0 else C["ink"]
+        cv.circle(x, y + 38 * sc, 92 * sc, fill=mix(C["bg"], col, 0.55) + (230,))   # shoulders
+        cv.circle(x, y, 48 * sc, fill=col + (255,))                                     # head
+    lp = seg(t, ctx.line_start(P.get("label_on_line", 1), dur * 0.6), 0.4)
+    if lp > 0 and P.get("label"):
+        cv.rect(150, 1160 - 66, 930, 1160 + 66, fill=C["paper"] + (245,), outline=C["accent"] + (255,), width=5, radius=22)
+        cv.rich_line(540, 1160, split_emphasis(P["label"], P.get("label_emphasis", []), C["ink"], C["accent"]), 68,
+                     stroke=0, scale=0.7 + 0.3 * ease_out_back(lp), alpha=clamp(lp * 2))
+
+
+@scene("crowd_map")
+def crowd_map(cv: Canvas, t, dur, P, ctx: SceneCtx):
+    """Zoomed prefecture map that fills with a jittering crowd."""
+    iso = P.get("iso", "JP-36")
+    cam = (P.get("lon", 134.3), P.get("lat", 33.95), P.get("scale", 360))
+    draw_japan(cv, cam, highlight=iso, hl_color=C["sub_light"], hl_alpha=1.0, base_alpha=0.9)
+    fill = ease_in_out(seg(t, ctx.line_start(P.get("fill_on_line", 0), 0.2), dur * 0.75))
+    pts = pref_points(iso, 1400)
+    k = cv.ss
+    layer, d = cv.overlay()
+    for i, (lo, la, rnd) in enumerate(pts):
+        if rnd > fill:
+            continue
+        x, y = proj(lo, la, cam)
+        x += math.sin(t * 9 + i) * 1.6
+        y += math.cos(t * 7 + i * 1.7) * 1.6
+        col = C["accent"] if i % 9 == 0 else C["ink"] if i % 2 else C["sub_dark"]
+        d.ellipse([(x - 4) * k, (y - 4) * k, (x + 4) * k, (y + 4) * k], fill=col + (240,))
+    cv.img.alpha_composite(layer)
+    headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=290, size=74)
+    for j, tag in enumerate(P.get("tags", [])):
+        tp = seg(t, ctx.line_start(tag.get("on_line", 1), dur * 0.5) + j * 0.25, 0.4)
+        if tp <= 0:
+            continue
+        x, y = proj(tag["lon"], tag["lat"], cam)
+        w, _ = cv.text_size(tag["text"], 40)
+        cv.rect(x - w / 2 - 18, y - 34, x + w / 2 + 18, y + 34, fill=C["paper"] + (240,), outline=C["sub"] + (255,),
+                width=3, radius=14)
+        cv.text(x, y, tag["text"], 40 * (0.7 + 0.3 * ease_out_back(tp)), C["ink"], alpha=clamp(tp * 2))
+
+
+@scene("world_empty")
+def world_empty(cv: Canvas, t, dur, P, ctx: SceneCtx):
+    """Globe dotted with people who vanish everywhere except one hot spot; '0人' tags pop up."""
+    cx, cy, r = 540, 800, 260
+    draw_earth(cv, cx, cy, r)
+    hx, hy = cx + r * 0.42, cy - r * 0.18
+    fade = ease_in_out(seg(t, ctx.line_start(P.get("fade_on_line", 0), 0.2), dur * 0.5))
+    rnd = random.Random(13)
+    k = cv.ss
+    layer, d = cv.overlay()
+    for i in range(260):
+        a, rr = rnd.uniform(0, math.tau), r * math.sqrt(rnd.random()) * 0.93
+        x, y = cx + math.cos(a) * rr, cy + math.sin(a) * rr
+        vanish = rnd.uniform(0, 1)
+        if vanish < fade:
+            continue
+        d.ellipse([(x - 4) * k, (y - 4) * k, (x + 4) * k, (y + 4) * k], fill=C["ink"] + (220,))
+    cv.img.alpha_composite(layer)
+    pulse = 0.5 + 0.5 * math.sin(t * 6)
+    cv.glow(lambda dd, kk: dd.ellipse([(hx - 34) * kk, (hy - 34) * kk, (hx + 34) * kk, (hy + 34) * kk],
+                                        fill=C["accent"] + (255,)), radius=34, strength=0.5 + 0.5 * pulse)
+    cv.circle(hx, hy, 18, fill=C["accent"] + (255,), outline=C["paper"] + (255,), width=3)
+    for j, tag in enumerate(P.get("tags", [])):
+        tp = seg(t, ctx.line_start(tag.get("on_line", 1), dur * 0.5) + j * 0.3, 0.4)
+        if tp <= 0:
+            continue
+        x, y = tag["x"], tag["y"]
+        w, _ = cv.text_size(tag["text"], 44)
+        cv.rect(x - w / 2 - 20, y - 38, x + w / 2 + 20, y + 38, fill=C["paper"] + (245,), outline=C["ink"] + (255,),
+                width=3, radius=16)
+        cv.rich_line(x, y, split_emphasis(tag["text"], ["0人"], C["ink"], C["accent"]), 44,
+                     scale=0.7 + 0.3 * ease_out_back(tp), alpha=clamp(tp * 2))
+    headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=300, size=74)
+
+
+@scene("dance_crowd")
+def dance_crowd(cv: Canvas, t, dur, P, ctx: SceneCtx):
+    """Everyone dancing (Awa-odori). Optional counter and stamp panel."""
+    draw_dancers(cv, t, rows=P.get("rows", 5), cols=P.get("cols", 7), top=560, bottom=1180)
+    headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=300, size=76)
+    if P.get("stamp"):
+        sp = seg(t, ctx.line_start(P.get("stamp_on_line", 1), dur * 0.5), 0.5)
+        if sp > 0:
+            sx, sy = shake(t, 3 * (1 - sp))
+            cv.rect(130, 470, 950, 600, fill=C["paper"] + (245,), outline=C["accent"] + (255,), width=5, radius=24)
+            cv.rich_line(540 + sx, 535 + sy, split_emphasis(P["stamp"], P.get("stamp_emphasis", []), C["ink"],
+                                                            C["accent"]),
+                         66, scale=0.6 + 0.4 * ease_out_back(sp), alpha=clamp(sp * 2))

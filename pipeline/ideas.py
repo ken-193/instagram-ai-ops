@@ -49,7 +49,7 @@ def past_titles() -> list[str]:
     if not IDEA_DB.exists():
         return []
     with open(IDEA_DB, encoding="utf-8-sig") as f:
-        return [r["仮説"] for r in csv.DictReader(f) if r.get("制作状況") not in ("候補", "", None)]
+        return [r["仮説"] for r in csv.DictReader(f) if r.get("制作状況") not in ("候補", "制作中", "", None)]
 
 
 def rank(ideas: list[dict]) -> list[dict]:

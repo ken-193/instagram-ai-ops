@@ -1,0 +1,575 @@
+{
+  "post_id": "IG-20261101-001",
+  "title": "もしも世界82億人が全員徳島に引っ越したら？",
+  "summary": "世界人口約82億人が徳島県（約4,147km²）に全員引っ越したら、1人あたり約0.5㎡、畳1枚に約3人。山の上まで人で埋まり、徳島以外の地球は無人に。身動きできない人類が始めたのは、史上最大の阿波おどり。最後は『踊る阿呆に見る阿呆』の見る側が地球に1人もいない、という逆転で締める思考実験。",
+  "premise": "2025年の世界人口（国連推計 約82.3億人）が全員、徳島県の全面積（4,147km²、山地・河川を含む）に均等に立つと仮定。食料・住居・移動手段などの現実的な制約は考えない。人口密度・比率はすべて単純な割り算による概算。",
+  "categories": [
+    "data_estimate",
+    "thought_experiment",
+    "fiction"
+  ],
+  "genre": "社会・経済 / 徳島",
+  "target_audience": "雑学・もしも系リールが好きな10〜40代、徳島・四国の人、阿波おどりを知っている人",
+  "hook": "もしも、世界の82億人が全員、徳島に引っ越したら？",
+  "tokushima_ending": {
+    "type": "徳島の名物が意外な解決策 / 前半の仮説が徳島で逆転",
+    "description": "身動きできない82億人が、どうせなら踊ろうと人類全員参加の阿波おどりを始める。『踊る阿呆に見る阿呆』のはずが、見る側が地球に1人も残っていない、という阿波おどりを知る人ほど笑える逆転。最後に『あなたは踊る？見る？』でコメントを誘う。"
+  },
+  "bgm": {
+    "mood": "にぎやか・軽快、終盤でお祭りのように盛り上がる",
+    "bpm": 120,
+    "climax_scene": "s6"
+  },
+  "tts": {
+    "backend": "ondoku",
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1,
+    "pitch": 0.0
+  },
+  "scenes": [
+    {
+      "id": "s1",
+      "type": "crowd_hook",
+      "narration": [
+        {
+          "text": "もしも、|世界の82億人が|全員、徳島に引っ越したら？",
+          "tts": "もしも、世界の82億人が、全員、とくしまに引っ越したら？"
+        }
+      ],
+      "emphasis": [
+        "82億人",
+        "徳島"
+      ],
+      "on_screen_text": [
+        "もしも世界82億人が",
+        "全員 徳島に",
+        "引っ越したら？"
+      ],
+      "params": {
+        "headline": [
+          "もしも世界82億人が",
+          "全員 徳島に",
+          "引っ越したら？"
+        ],
+        "emphasis": [
+          "82億人",
+          "徳島に"
+        ],
+        "pin_label": "徳島",
+        "size": 80
+      },
+      "animation": "地球の上の無数の人（点）が、徳島の位置へ一斉に流れ込む。徳島の点が脈打ちながら大きくなる。",
+      "camera": "地球を正面に固定",
+      "sfx": [
+        "whoosh",
+        "riser"
+      ],
+      "video_prompt": "Vertical 9:16 motion graphics on warm beige paper background, stylized globe with thousands of tiny people dots streaming toward one glowing terracotta point in Japan, deep green and terracotta palette, no text",
+      "min_duration": 3.5
+    },
+    {
+      "id": "s2",
+      "type": "big_counter",
+      "narration": [
+        {
+          "text": "徳島の人口は、|約70万人。",
+          "tts": "とくしまの人口は、約70万人。"
+        },
+        {
+          "text": "それが一気に、|約1万2千倍に。",
+          "tts": "それが一気に、約1万2千倍に。"
+        }
+      ],
+      "emphasis": [
+        "約70万人",
+        "約1万2千倍"
+      ],
+      "on_screen_text": [
+        "徳島県の人口",
+        "700,000 → 8,200,000,000人",
+        "約1万2千倍"
+      ],
+      "params": {
+        "headline": [
+          "徳島県の人口"
+        ],
+        "emphasis": [],
+        "from": 700000,
+        "to": 8200000000,
+        "unit": "人",
+        "size": 84,
+        "count_on_line": 1,
+        "count_dur": 1.6,
+        "grid_on_line": 1,
+        "stamp_on_line": 1,
+        "stamp": "人口 約1万2千倍",
+        "stamp_emphasis": [
+          "約1万2千倍"
+        ]
+      },
+      "animation": "人口カウンターが70万から82億へ跳ね上がり、人のアイコンが画面いっぱいに増える。最後に倍率のパネル。",
+      "camera": "正面固定",
+      "sfx": [
+        "tick",
+        "ding"
+      ],
+      "video_prompt": "Vertical 9:16 infographic on beige, population counter rapidly increasing, grid of small person pictograms multiplying to fill the frame, deep green and terracotta accents",
+      "min_duration": 5.0
+    },
+    {
+      "id": "s3",
+      "type": "tatami",
+      "narration": [
+        {
+          "text": "1人あたりの広さは、|約0.5平方メートル。",
+          "tts": "1人あたりの広さは、約0.5平方メートル。"
+        },
+        {
+          "text": "畳1枚に、|約3人。",
+          "tts": "たたみ1枚に、約3人。"
+        }
+      ],
+      "emphasis": [
+        "約0.5平方メートル",
+        "約3人"
+      ],
+      "on_screen_text": [
+        "1人あたり 約0.5m²",
+        "畳1枚に 約3人"
+      ],
+      "params": {
+        "headline": [
+          "1人あたり 約0.5m²"
+        ],
+        "emphasis": [
+          "約0.5m²"
+        ],
+        "people": 3,
+        "fill_on_line": 1,
+        "label_on_line": 1,
+        "label": "畳1枚に 約3人",
+        "label_emphasis": [
+          "約3人"
+        ]
+      },
+      "animation": "真上から見た畳1枚に、人が1人、2人、3人とぎゅっと入ってくる。",
+      "camera": "真上からの俯瞰",
+      "sfx": [
+        "whoosh",
+        "tick"
+      ],
+      "video_prompt": "Vertical 9:16 top-down view of a single tatami mat on beige background, three people seen from above squeezing onto it, flat illustration, deep green border",
+      "min_duration": 4.5
+    },
+    {
+      "id": "s4",
+      "type": "crowd_map",
+      "narration": [
+        {
+          "text": "徳島県は、|約8割が山。",
+          "tts": "とくしま県は、約8割が山。"
+        },
+        {
+          "text": "剣山の山頂も、|吉野川の上も、ぎゅうぎゅう。",
+          "tts": "つるぎさんの山頂も、よしのがわの上も、ぎゅうぎゅう。"
+        }
+      ],
+      "emphasis": [
+        "約8割が山",
+        "ぎゅうぎゅう"
+      ],
+      "on_screen_text": [
+        "徳島県 まるごと満員",
+        "剣山も満員",
+        "吉野川の上も"
+      ],
+      "params": {
+        "headline": [
+          "徳島県 まるごと満員"
+        ],
+        "emphasis": [
+          "満員"
+        ],
+        "iso": "JP-36",
+        "lon": 134.2,
+        "lat": 33.93,
+        "scale": 700,
+        "fill_on_line": 0,
+        "tags": [
+          {
+            "text": "剣山の山頂も",
+            "lon": 134.094,
+            "lat": 33.854,
+            "on_line": 1
+          },
+          {
+            "text": "吉野川の上も",
+            "lon": 134.3,
+            "lat": 34.1,
+            "on_line": 1
+          }
+        ]
+      },
+      "animation": "徳島県の地図が、山も川も含めて人の点でみるみる埋まっていく。剣山と吉野川にラベル。",
+      "camera": "徳島県にズームした地図、固定",
+      "sfx": [
+        "rumble"
+      ],
+      "video_prompt": "Vertical 9:16 stylized map of Tokushima prefecture on beige paper, gradually filling with thousands of tiny people dots covering mountains and the river, deep green outlines, terracotta accents",
+      "min_duration": 5.0
+    },
+    {
+      "id": "s5",
+      "type": "world_empty",
+      "narration": [
+        {
+          "text": "そのころ、|徳島以外の地球は、無人。",
+          "tts": "そのころ、とくしま以外の地球は、無人。"
+        },
+        {
+          "text": "東京もニューヨークも、|人口0人。",
+          "tts": "東京もニューヨークも、人口ゼロ人。"
+        }
+      ],
+      "emphasis": [
+        "無人",
+        "0人"
+      ],
+      "on_screen_text": [
+        "地球は ほぼ無人",
+        "東京 0人",
+        "ニューヨーク 0人"
+      ],
+      "params": {
+        "headline": [
+          "徳島以外",
+          "地球は無人"
+        ],
+        "emphasis": [
+          "無人"
+        ],
+        "fade_on_line": 0,
+        "tags": [
+          {
+            "text": "東京 0人",
+            "x": 300,
+            "y": 610,
+            "on_line": 1
+          },
+          {
+            "text": "ニューヨーク 0人",
+            "x": 380,
+            "y": 1040,
+            "on_line": 1
+          },
+          {
+            "text": "パリ 0人",
+            "x": 760,
+            "y": 1010,
+            "on_line": 1
+          }
+        ]
+      },
+      "animation": "地球上の人の点が次々と消え、徳島の一点だけが赤く光る。世界の都市に『0人』のタグ。",
+      "camera": "地球を正面に固定",
+      "sfx": [
+        "whoosh"
+      ],
+      "video_prompt": "Vertical 9:16 stylized globe on beige background, people dots disappearing everywhere except one glowing terracotta spot, empty-city labels, minimal motion graphics",
+      "min_duration": 4.5
+    },
+    {
+      "id": "s6",
+      "type": "dance_crowd",
+      "narration": [
+        {
+          "text": "身動きできない82億人が、|始めたのは…",
+          "tts": "身動きできない82億人が、始めたのは…"
+        },
+        {
+          "text": "人類全員参加の、|阿波おどり！",
+          "tts": "人類全員参加の、あわおどり！"
+        },
+        {
+          "text": "いつもの人出の、|約1万5千倍。",
+          "tts": "いつものひとでの、約1万5千倍。"
+        }
+      ],
+      "emphasis": [
+        "阿波おどり",
+        "約1万5千倍"
+      ],
+      "on_screen_text": [
+        "人類全員参加の",
+        "阿波おどり",
+        "いつもの人出の 約1万5千倍"
+      ],
+      "params": {
+        "headline": [
+          "人類全員参加の",
+          "阿波おどり"
+        ],
+        "emphasis": [
+          "阿波おどり"
+        ],
+        "rows": 5,
+        "cols": 7,
+        "stamp": "いつもの人出の 約1万5千倍",
+        "stamp_emphasis": [
+          "約1万5千倍"
+        ],
+        "stamp_on_line": 2
+      },
+      "animation": "画面いっぱいに人が両手を上げて阿波おどりを踊り出す。人出の倍率パネルがポップ。",
+      "camera": "正面からの群衆ショット",
+      "sfx": [
+        "riser",
+        "impact"
+      ],
+      "video_prompt": "Vertical 9:16 flat illustration of an enormous crowd dancing Awa-odori with both hands raised, rows of pictogram people on beige background, festive, deep green and terracotta palette",
+      "min_duration": 6.0
+    },
+    {
+      "id": "s7",
+      "type": "dance_crowd",
+      "narration": [
+        {
+          "text": "踊る阿呆に、|見る阿呆。",
+          "tts": "おどるあほうに、みるあほう。"
+        },
+        {
+          "text": "でも、見る阿呆は|地球に1人も残っていない。",
+          "tts": "でも、みるあほうは、地球に1人も残っていない。"
+        }
+      ],
+      "emphasis": [
+        "見る阿呆",
+        "1人も"
+      ],
+      "on_screen_text": [
+        "踊る阿呆に",
+        "見る阿呆",
+        "見る阿呆 0人"
+      ],
+      "params": {
+        "headline": [
+          "踊る阿呆に",
+          "見る阿呆"
+        ],
+        "emphasis": [
+          "見る阿呆"
+        ],
+        "rows": 4,
+        "cols": 6,
+        "stamp": "見る阿呆 0人",
+        "stamp_emphasis": [
+          "0人"
+        ],
+        "stamp_on_line": 1
+      },
+      "animation": "踊り続ける群衆の上に『見る阿呆 0人』のスタンプ。",
+      "camera": "正面固定",
+      "sfx": [
+        "impact"
+      ],
+      "video_prompt": "Vertical 9:16 crowd of pictogram people all dancing, nobody watching, beige background, playful",
+      "min_duration": 4.5
+    },
+    {
+      "id": "s8",
+      "type": "outro_question",
+      "narration": [
+        {
+          "text": "あなたなら、|踊る？見る？",
+          "tts": "あなたなら、おどる？みる？"
+        }
+      ],
+      "emphasis": [
+        "踊る？見る？"
+      ],
+      "on_screen_text": [
+        "あなたなら",
+        "踊る？見る？"
+      ],
+      "params": {
+        "headline": [
+          "あなたなら"
+        ],
+        "emphasis": [],
+        "question": "踊る？見る？",
+        "bg": "dance"
+      },
+      "animation": "背景で踊る群衆が薄く続く中、質問パネルがポップ。",
+      "camera": "固定",
+      "sfx": [
+        "whoosh"
+      ],
+      "video_prompt": "Vertical 9:16 soft background of dancing crowd, space for question text, beige and deep green",
+      "min_duration": 3.0
+    }
+  ],
+  "fact_checks": [
+    {
+      "claim": "世界人口は約82億人（2025年の推計）",
+      "status": "verified",
+      "source_ids": [
+        "un_wpp2024",
+        "ined_wpp2024",
+        "statisticstimes_2025"
+      ],
+      "note": "2024年の約82億人は国連推計（INED要約）で確認。2025年の約82.3億人は国連推計を引用する二次資料の値。"
+    },
+    {
+      "claim": "徳島県の面積は約4,147km²、山地が約8割",
+      "status": "verified",
+      "source_ids": [
+        "tokushima_gaiyo"
+      ]
+    },
+    {
+      "claim": "1人あたりの広さは約0.5㎡",
+      "status": "estimate",
+      "method": "4,147km² = 41.47億㎡ ÷ 82.3億人 ≈ 0.50㎡/人。山地・河川を含む県全面積に均等に立つと仮定。",
+      "source_ids": [
+        "tokushima_gaiyo",
+        "statisticstimes_2025"
+      ]
+    },
+    {
+      "claim": "畳1枚（1.62㎡）に約3人",
+      "status": "estimate",
+      "method": "1.62㎡ ÷ 0.50㎡/人 ≈ 3.2人。1.62㎡は不動産表示で用いる畳1枚あたりの基準面積。",
+      "source_ids": [
+        "smtrc_tatami"
+      ]
+    },
+    {
+      "claim": "徳島県の人口は約70万人",
+      "status": "verified",
+      "source_ids": [
+        "tokushima_jinkou"
+      ],
+      "note": "令和5年1月1日現在の推計人口 701,962人。直近はやや減少しているため『約70万人』と表現。"
+    },
+    {
+      "claim": "82億人は今の徳島県人口の約1万2千倍",
+      "status": "estimate",
+      "method": "82.3億 ÷ 70万 ≈ 11,760 → 約1万2千倍。",
+      "source_ids": [
+        "statisticstimes_2025",
+        "tokushima_jinkou"
+      ]
+    },
+    {
+      "claim": "剣山は徳島県の最高峰（標高1955m）",
+      "status": "verified",
+      "source_ids": [
+        "kotobank_tsurugi"
+      ],
+      "note": "動画内では標高の数値は使用せず、山頂として登場。"
+    },
+    {
+      "claim": "阿波おどりの人出は2023年に約54万人（主催者推計）",
+      "status": "verified",
+      "source_ids": [
+        "awaodori_2023"
+      ],
+      "note": "2023年は台風で最終日が中止。主催者推計は主要地点の人数の合計で、重複の可能性がある。"
+    },
+    {
+      "claim": "82億人はいつもの人出の約1万5千倍",
+      "status": "estimate",
+      "method": "82.3億 ÷ 54万（2023年の主催者推計）≈ 15,240 → 約1万5千倍。",
+      "source_ids": [
+        "awaodori_2023",
+        "statisticstimes_2025"
+      ]
+    },
+    {
+      "claim": "人類全員が阿波おどりを踊る／見る阿呆が0人",
+      "status": "fiction",
+      "note": "オチのためのフィクション。『踊る阿呆に見る阿呆』は阿波おどりの伝統的な囃子詞。"
+    }
+  ],
+  "sources": [
+    {
+      "id": "un_wpp2024",
+      "title": "United Nations, World Population Prospects 2024",
+      "url": "https://www.un.org/development/desa/pd/world-population-prospects-2024",
+      "accessed": "2026-11-01",
+      "used_for": "世界人口の公式推計（2024年版）"
+    },
+    {
+      "id": "ined_wpp2024",
+      "title": "INED: 2024, the United Nations publishes new world population projections",
+      "url": "https://www.ined.fr/en/everything_about_population/demographic-facts-sheets/focus-on/2024-les-nations-unies-publient-de-nouvelles-projections-de-population-mondiale/",
+      "accessed": "2026-11-01",
+      "used_for": "2024年の世界人口 約82億人"
+    },
+    {
+      "id": "statisticstimes_2025",
+      "title": "StatisticsTimes: World population (UN WPP 2024 data)",
+      "url": "https://m.statisticstimes.com/demographics/world-population.php",
+      "accessed": "2026-11-01",
+      "used_for": "2025年7月1日時点 約82.3億人（国連データの二次引用）"
+    },
+    {
+      "id": "tokushima_gaiyo",
+      "title": "徳島県の概要｜徳島県ホームページ",
+      "url": "https://www.pref.tokushima.lg.jp/kenseijoho/tokushimakennitsuite/tokushimakennogaiyo/",
+      "accessed": "2026-11-01",
+      "used_for": "県面積 4,147.00km²（令和6年7月1日時点）、山地が約8割"
+    },
+    {
+      "id": "tokushima_jinkou",
+      "title": "徳島県 推計人口（月報）",
+      "url": "https://www.pref.tokushima.lg.jp/statistics/month/jinkou/",
+      "accessed": "2026-11-01",
+      "used_for": "推計人口 約70万人（令和5年1月1日 701,962人）"
+    },
+    {
+      "id": "smtrc_tatami",
+      "title": "三井住友トラスト不動産 用語集（畳数の表示）",
+      "url": "https://smtrc.jp/useful/glossary/detail/n/3751",
+      "accessed": "2026-11-01",
+      "used_for": "畳1枚あたり1.62㎡（表示基準）"
+    },
+    {
+      "id": "kotobank_tsurugi",
+      "title": "コトバンク「剣山」",
+      "url": "https://kotobank.jp/word/%E5%89%A3%E5%B1%B1",
+      "accessed": "2026-11-01",
+      "used_for": "剣山 標高1955m、徳島県の最高峰"
+    },
+    {
+      "id": "awaodori_2023",
+      "title": "徳島市 2023阿波おどり 開催結果報告書",
+      "url": "https://www.city.tokushima.tokushima.jp/kankou/awaodori/2023_awaodori_re.files/honpen.pdf",
+      "accessed": "2026-11-01",
+      "used_for": "2023年の人出 約54万人（主催者推計）"
+    }
+  ],
+  "caption": "もしも世界82億人が、全員徳島に引っ越したら…？🌏➡️🏯\n\n徳島県の面積は約4,147km²。82億人で割ると、1人あたり約0.5㎡。畳1枚に約3人です。\nそして身動きできない人類が始めたのは――。\n\n📐 この動画の前提\n・世界人口約82億人（国連推計）が、山や川も含めた徳島県の全面積に均等に立つと仮定した思考実験です\n・数値はすべて単純な割り算による概算です（人出は2023年の主催者推計 約54万人で計算）\n・人類全員の阿波おどりはフィクションです😂\n\nあなたは踊る？見る？ コメントで教えて👇\n\nナレーション音声: 音読さん（ondoku3.com）\n地図: Natural Earth",
+  "hashtags": [
+    "#もしも",
+    "#もしもシリーズ",
+    "#思考実験",
+    "#雑学",
+    "#世界人口",
+    "#徳島",
+    "#徳島県",
+    "#阿波おどり",
+    "#阿波踊り",
+    "#剣山",
+    "#吉野川",
+    "#AI動画"
+  ],
+  "pinned_comment": "【計算メモ】徳島県 約4,147km²＝41.47億㎡ ÷ 82.3億人 ≈ 0.5㎡/人。畳(1.62㎡)に約3人。県人口約70万人の約1万2千倍、阿波おどりの人出（2023年 約54万人）の約1万5千倍です🕺",
+  "thumbnail_text": "82億人が全員徳島に！？",
+  "production_notes": [
+    "ナレーションは音読さん（声: Masaru）。キャプションに音読さんのクレジットを残す。",
+    "読みは tts をひらがなで指定（徳島→とくしま、剣山→つるぎさん、吉野川→よしのがわ、阿呆→あほう、人出→ひとで、畳→たたみ）。",
+    "人出の数値は年によって変動し、主催者推計は重複を含みうるため、キャプションで2023年の推計と明記。",
+    "徳島や阿波おどりを揶揄しない。『阿呆』は阿波おどりの囃子詞として肯定的に使う。"
+  ]
+}
