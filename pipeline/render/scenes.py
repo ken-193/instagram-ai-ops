@@ -640,3 +640,140 @@ def dance_crowd(cv: Canvas, t, dur, P, ctx: SceneCtx):
             cv.rich_line(540 + sx, 535 + sy, split_emphasis(P["stamp"], P.get("stamp_emphasis", []), C["ink"],
                                                             C["accent"]),
                          66, scale=0.6 + 0.4 * ease_out_back(sp), alpha=clamp(sp * 2))
+
+
+# ---------------------------------------------------------------- space trip
+def draw_rocket(cv: Canvas, x, y, angle, size=60):
+    """Small rocket pointing along `angle` (radians, 0 = right)."""
+    ca, sa = math.cos(angle), math.sin(angle)
+
+    def P(u, v):  # u along the rocket, v across
+        return (x + ca * u * size - sa * v * size, y + sa * u * size + ca * v * size)
+
+    flame = 0.25 + 0.1 * math.sin(cv.ss * 1000 + x)
+    cv.polygon([P(-0.55, -0.12), P(-0.55 - flame - 0.3, 0), P(-0.55, 0.12)], fill=C["accent"] + (230,))
+    cv.polygon([P(-0.45, -0.18), P(-0.75, -0.38), P(-0.3, -0.18)], fill=C["accent"] + (255,))
+    cv.polygon([P(-0.45, 0.18), P(-0.75, 0.38), P(-0.3, 0.18)], fill=C["accent"] + (255,))
+    cv.polygon([P(-0.55, -0.2), P(0.3, -0.2), P(0.7, 0), P(0.3, 0.2), P(-0.55, 0.2)], fill=C["paper"] + (255,),
+               outline=C["ink"] + (255,), width=3)
+    wx, wy = P(0.15, 0)
+    cv.circle(wx, wy, size * 0.09, fill=C["sub"] + (255,), outline=C["ink"] + (255,), width=2)
+
+
+def draw_galaxy(cv: Canvas, cx, cy, R, t):
+    rnd = random.Random(21)
+    k = cv.ss
+    layer, d = cv.overlay()
+    for i in range(900):
+        arm = i % 2
+        f = rnd.random() ** 0.7
+        a = arm * math.pi + f * 4.2 + t * 0.15 + rnd.gauss(0, 0.25)
+        rr = R * f
+        x, y = cx + math.cos(a) * rr, cy + math.sin(a) * rr * 0.55
+        col = C["sub"] if f > 0.3 else C["accent"]
+        s = 1.6 + 2.2 * (1 - f)
+        d.ellipse([(x - s) * k, (y - s) * k, (x + s) * k, (y + s) * k], fill=col + (int(110 + 120 * (1 - f)),))
+    cv.img.alpha_composite(layer)
+    cv.glow(lambda dd, kk: dd.ellipse([(cx - R * 0.18) * kk, (cy - R * 0.1) * kk, (cx + R * 0.18) * kk,
+                                         (cy + R * 0.1) * kk], fill=C["accent"] + (255,)), radius=R * 0.15, strength=0.6)
+
+
+def draw_cosmic_web(cv: Canvas, cx, cy, R, t):
+    rnd = random.Random(33)
+    k = cv.ss
+    pts = [(cx + R * math.sqrt(rnd.random()) * math.cos(a), cy + R * math.sqrt(rnd.random()) * math.sin(a))
+           for a in (rnd.uniform(0, math.tau) for _ in range(140))]
+    layer, d = cv.overlay()
+    for i, (x, y) in enumerate(pts):
+        for (x2, y2) in pts[i + 1:i + 4]:
+            if (x - x2) ** 2 + (y - y2) ** 2 < (R * 0.28) ** 2:
+                d.line([(x * k, y * k), (x2 * k, y2 * k)], fill=C["sub"] + (90,), width=int(2 * k))
+        s = 3 + 3 * (0.5 + 0.5 * math.sin(t * 3 + i))
+        d.ellipse([(x - s) * k, (y - s) * k, (x + s) * k, (y + s) * k], fill=C["ink"] + (200,))
+    cv.img.alpha_composite(layer)
+    cv.circle(cx, cy, R + 14, outline=C["accent"] + (220,), width=5)
+
+
+@scene("rocket_launch")
+def rocket_launch(cv: Canvas, t, dur, P, ctx: SceneCtx):
+    """Big Earth at the bottom; a rocket lifts off from an UNLABELLED dot (the reveal comes later)."""
+    ex, ey, er = 540, 1560, 640
+    draw_earth(cv, ex, ey, er)
+    sx, sy = ex + er * 0.22, ey - er * 0.975          # launch site on the rim (deliberately unnamed)
+    cv.circle(sx, sy, 9, fill=C["accent"] + (255,), outline=C["paper"] + (255,), width=3)
+    p = ease_in_out(seg(t, 0.4, dur * 0.85))
+    rx, ry = lerp(sx, 800, p), lerp(sy, 640, p)
+    for j in range(14):                               # exhaust trail
+        q = max(0.0, p - j * 0.02)
+        tx, ty = lerp(sx, 800, q), lerp(sy, 640, q)
+        cv.circle(tx, ty, 10 + j * 1.5, fill=C["line"] + (int(200 * (1 - j / 14) * min(1, p * 4)),))
+    draw_rocket(cv, rx, ry, math.atan2(640 - sy, 800 - sx), 110)
+    headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=300, size=P.get("size", 86))
+
+
+@scene("cosmic_jump")
+def cosmic_jump(cv: Canvas, t, dur, P, ctx: SceneCtx):
+    """One stop of a zoom-out trip: destination object + distance + light-travel time; rocket cruising."""
+    obj = P.get("object", "moon")
+    cx, cy = 540, 760
+    app = ease_out(seg(t, 0, 0.8))
+    if obj == "moon":
+        draw_moon(cv, cx, cy, 240 * app, glow=0.4)
+    elif obj == "sun":
+        R = 220 * app
+        cv.glow(lambda d, k: d.ellipse([(cx - R * 1.1) * k, (cy - R * 1.1) * k, (cx + R * 1.1) * k, (cy + R * 1.1) * k],
+                                        fill=C["accent"] + (255,)), radius=R * 0.35 + 10, strength=0.6)
+        for i in range(16):
+            a = i / 16 * math.tau + t * 0.3
+            cv.line([(cx + math.cos(a) * R * 1.12, cy + math.sin(a) * R * 1.12),
+                     (cx + math.cos(a) * R * 1.32, cy + math.sin(a) * R * 1.32)], fill=C["accent"] + (220,), width=8)
+        cv.circle(cx, cy, R, fill=C["accent"] + (255,))
+    elif obj == "probe":
+        k = 1.4 * app
+        cv.line([(cx - 900, cy + 300), (cx, cy)], fill=C["muted"] + (140,), width=3)
+        cv.circle(cx, cy, 70 * k, fill=C["paper"] + (255,), outline=C["ink"] + (255,), width=5)
+        cv.circle(cx, cy, 12 * k, fill=C["ink"] + (255,))
+        cv.line([(cx, cy), (cx + 130 * k, cy - 60 * k)], fill=C["ink"] + (255,), width=6)
+        cv.line([(cx, cy), (cx - 40 * k, cy + 140 * k)], fill=C["ink"] + (255,), width=6)
+        cv.rect(cx - 30 * k, cy + 70 * k, cx + 30 * k, cy + 110 * k, fill=C["sub"] + (255,), radius=6)
+    elif obj == "galaxy":
+        draw_galaxy(cv, cx, cy, 360 * app, t)
+    elif obj == "universe":
+        draw_cosmic_web(cv, cx, cy, 340 * app, t)
+    rp = seg(t, 0.2, dur)
+    draw_rocket(cv, lerp(130, 260, rp), lerp(1110, 1060, rp) + math.sin(t * 3) * 6, -0.35, 60)
+    headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=300, size=P.get("size", 76))
+    for j, (key, y) in enumerate((("distance", 1075), ("light", 1160))):
+        if not P.get(key):
+            continue
+        lp = seg(t, ctx.line_start(P.get(f"{key}_on_line", j), 0.3), 0.45)
+        if lp > 0:
+            runs = split_emphasis(P[key], P.get("value_emphasis", []), C["ink"], C["accent"])
+            cv.rich_line(600, y, runs, 70 if j == 0 else 54, stroke=4, scale=0.7 + 0.3 * ease_out_back(lp),
+                         alpha=clamp(lp * 2))
+
+
+@scene("universe_loop")
+def universe_loop(cv: Canvas, t, dur, P, ctx: SceneCtx):
+    """Closed universe: a rocket going 'straight' follows the loop and returns to the start marker."""
+    cx, cy, R = 540, 800, 310
+    cv.circle(cx, cy, R, outline=C["sub"] + (255,), width=10)
+    rnd = random.Random(4)
+    for _ in range(60):
+        a, rr = rnd.uniform(0, math.tau), R * math.sqrt(rnd.random()) * 0.92
+        cv.circle(cx + math.cos(a) * rr, cy + math.sin(a) * rr, rnd.uniform(2, 5), fill=C["muted"] + (150,))
+    start_a = -math.pi / 2
+    sx, sy = cx + math.cos(start_a) * R, cy + math.sin(start_a) * R
+    cv.circle(sx, sy, 18, fill=C["accent"] + (255,), outline=C["paper"] + (255,), width=4)
+    lp = ease_in_out(seg(t, ctx.line_start(P.get("loop_on_line", 1), dur * 0.3), dur * 0.6))
+    a = start_a + lp * math.tau
+    for j in range(1, 40):                            # trail along the loop
+        q = max(0.0, lp - j * 0.012)
+        aa = start_a + q * math.tau
+        cv.circle(cx + math.cos(aa) * R, cy + math.sin(aa) * R, 6, fill=C["accent"] + (int(200 * (1 - j / 40)),))
+    draw_rocket(cv, cx + math.cos(a) * R, cy + math.sin(a) * R, a + math.pi / 2, 64)
+    headline(cv, P.get("headline", []), P.get("emphasis", []), t, y0=300, size=74)
+    if lp >= 0.98 and P.get("arrive_label"):
+        ap = seg(t, ctx.line_start(P.get("loop_on_line", 1), dur * 0.3) + dur * 0.6, 0.4)
+        cv.text(sx, sy - 70, P["arrive_label"], 52 * (0.7 + 0.3 * ease_out_back(ap)), C["accent"], alpha=clamp(ap * 2),
+                stroke=5)

@@ -1,0 +1,173 @@
+{
+  "post_id": "IG-20261101-002",
+  "title": "もしも宇宙の果てまで行けたら？",
+  "summary": "月→太陽→人類最遠の探査機ボイジャー1号→天の川銀河→観測できる宇宙と、実データで壮大にスケールアップ。最後に『もし宇宙が閉じていたら、まっすぐ進むと元の場所に戻る』という仮説で一周し、たどり着いた出発地点が実は徳島だった、と淡々と明かす。視聴者が『最後に徳島かい！』とツッコみたくなる構成の試作。",
+  "premise": "距離・光の到達時間は公開資料の値。宇宙を一周する部分は、NASA(WMAP)が説明する『閉じた宇宙ならまっすぐ進むといつか出発点に戻る』という仮説を前提にしたフィクション（観測では宇宙はほぼ平坦とされ、閉じているとは確認されていない）。出発地点（徳島）はオチのための設定。",
+  "categories": ["scientific", "fiction"],
+  "genre": "科学・宇宙 / 徳島（落差オチ）",
+  "target_audience": "宇宙・雑学系リールが好きな10〜40代。徳島を知らない人もツッコめる構成",
+  "hook": "もしも、宇宙の果てまで行けたら？",
+  "tokushima_ending": {
+    "type": "壮大な話が徳島の日常に戻って終わる（落差オチ『最後に徳島かい！』）",
+    "description": "最後の数秒まで徳島を一切匂わせず、宇宙規模の話で引っ張る。宇宙を一周して戻った出発地点を『ちなみに、徳島県です』と淡々と明かす落差でツッコミを誘い、『ツッコミはコメントで』で締める。"
+  },
+  "bgm": {"mood": "壮大・シネマティック。オチの直前で一瞬止めるイメージ", "bpm": 100, "climax_scene": "s7"},
+  "tts": {"backend": "ondoku", "voice": "ja-JP-MasaruMultilingualNeural", "speed": 1.1, "pitch": 0.0},
+  "scenes": [
+    {
+      "id": "s1", "type": "rocket_launch",
+      "narration": [{"text": "もしも、|宇宙の果てまで|行けたら？", "tts": "もしも、宇宙の果てまで、行けたら？"}],
+      "emphasis": ["宇宙の果て"],
+      "on_screen_text": ["もしも", "宇宙の果てまで", "行けたら？"],
+      "params": {"headline": ["もしも", "宇宙の果てまで", "行けたら？"], "emphasis": ["宇宙の果てまで"], "size": 88},
+      "animation": "大きな地球の縁から、名前を伏せた一点からロケットが打ち上がる。",
+      "camera": "地球を下に置いた見上げ構図",
+      "sfx": ["rumble", "whoosh"],
+      "video_prompt": "Vertical 9:16 flat illustration on beige, huge Earth at the bottom, a small rocket lifting off from an unnamed dot leaving a soft trail, deep green and terracotta palette, no text",
+      "min_duration": 3.2
+    },
+    {
+      "id": "s2", "type": "cosmic_jump",
+      "narration": [
+        {"text": "まずは月。|約38万km。", "tts": "まずは、つき。約38万キロ。"},
+        {"text": "光なら、|わずか1.3秒。", "tts": "光なら、わずか1.3秒。"}
+      ],
+      "emphasis": ["約38万km", "1.3秒"],
+      "on_screen_text": ["月", "約38万km", "光で約1.3秒"],
+      "params": {"object": "moon", "headline": ["月"], "emphasis": [], "distance": "約38万km", "light": "光で 約1.3秒",
+                 "value_emphasis": ["約38万km", "約1.3秒"], "distance_on_line": 0, "light_on_line": 1},
+      "animation": "月が現れ、距離と光の到達時間が表示される。左下を小さなロケットが進む。",
+      "camera": "正面", "sfx": ["whoosh"],
+      "video_prompt": "Vertical 9:16, the Moon on beige background with a tiny rocket cruising, minimal infographic",
+      "min_duration": 3.5
+    },
+    {
+      "id": "s3", "type": "cosmic_jump",
+      "narration": [
+        {"text": "太陽までは|約1億5千万km。", "tts": "太陽までは、約1億5千万キロ。"},
+        {"text": "光でも|約8分20秒。", "tts": "光でも、約8分20秒。"}
+      ],
+      "emphasis": ["約1億5千万km", "約8分20秒"],
+      "on_screen_text": ["太陽", "約1億5千万km", "光で約8分20秒"],
+      "params": {"object": "sun", "headline": ["太陽"], "emphasis": [], "distance": "約1億5千万km", "light": "光で 約8分20秒",
+                 "value_emphasis": ["約1億5千万km", "約8分20秒"], "distance_on_line": 0, "light_on_line": 1},
+      "animation": "テラコッタ色の太陽が光線を回転させながら現れる。",
+      "camera": "正面", "sfx": ["whoosh"],
+      "video_prompt": "Vertical 9:16, stylized terracotta sun with rotating rays on beige background, tiny rocket",
+      "min_duration": 3.5
+    },
+    {
+      "id": "s4", "type": "cosmic_jump",
+      "narration": [
+        {"text": "人類最遠の探査機、|ボイジャー1号でも、", "tts": "人類最遠の探査機、ボイジャー1号でも、"},
+        {"text": "打ち上げから49年で、|やっと光で1日の距離。", "tts": "打ち上げから49年で、やっと、光で1日の距離。"}
+      ],
+      "emphasis": ["ボイジャー1号", "光で1日"],
+      "on_screen_text": ["ボイジャー1号", "約259億km", "光で約1日"],
+      "params": {"object": "probe", "headline": ["ボイジャー1号"], "emphasis": ["ボイジャー1号"], "distance": "約259億km",
+                 "light": "光で 約1日（2026年11月）", "value_emphasis": ["約259億km", "約1日"], "distance_on_line": 0, "light_on_line": 1},
+      "animation": "パラボラアンテナの探査機が、遠くから続く細い軌跡の先に浮かぶ。",
+      "camera": "正面", "sfx": ["whoosh"],
+      "video_prompt": "Vertical 9:16, flat illustration of the Voyager probe with dish antenna drifting in empty space, beige background",
+      "min_duration": 4.5
+    },
+    {
+      "id": "s5", "type": "cosmic_jump",
+      "narration": [{"text": "天の川銀河の直径は、|約10万光年。", "tts": "あまのがわ銀河の直径は、約10万光年。"}],
+      "emphasis": ["約10万光年"],
+      "on_screen_text": ["天の川銀河", "直径 約10万光年"],
+      "params": {"object": "galaxy", "headline": ["天の川銀河"], "emphasis": [], "distance": "直径 約10万光年",
+                 "value_emphasis": ["約10万光年"], "distance_on_line": 0},
+      "animation": "点で描いた渦巻銀河がゆっくり回転しながら広がる。",
+      "camera": "正面", "sfx": ["whoosh", "riser"],
+      "video_prompt": "Vertical 9:16, spiral galaxy made of dots in deep green and terracotta on beige, slowly rotating",
+      "min_duration": 3.0
+    },
+    {
+      "id": "s6", "type": "cosmic_jump",
+      "narration": [{"text": "観測できる宇宙は、|直径約930億光年。", "tts": "観測できる宇宙は、直径、約930億光年。"}],
+      "emphasis": ["約930億光年"],
+      "on_screen_text": ["観測できる宇宙", "直径 約930億光年"],
+      "params": {"object": "universe", "headline": ["観測できる宇宙"], "emphasis": [], "distance": "直径 約930億光年",
+                 "value_emphasis": ["約930億光年"], "distance_on_line": 0},
+      "animation": "銀河の点が網目状につながる宇宙の大規模構造。縁をテラコッタの円が囲む。",
+      "camera": "正面", "sfx": ["whoosh"],
+      "video_prompt": "Vertical 9:16, cosmic web of connected dots inside a circular boundary on beige, minimal",
+      "min_duration": 3.0
+    },
+    {
+      "id": "s7", "type": "universe_loop",
+      "narration": [
+        {"text": "でも、もし宇宙が|丸く閉じていたら…", "tts": "でも、もし宇宙が、丸く閉じていたら…"},
+        {"text": "まっすぐ進み続けると、|元の場所に戻ってくる。", "tts": "まっすぐ進み続けると、元の場所に戻ってくる。"}
+      ],
+      "emphasis": ["丸く閉じていたら", "元の場所"],
+      "on_screen_text": ["もし宇宙が閉じていたら", "出発地点"],
+      "params": {"headline": ["もし宇宙が", "閉じていたら"], "emphasis": ["閉じていたら"], "loop_on_line": 1, "arrive_label": "出発地点"},
+      "animation": "円形の宇宙の縁をロケットが一周し、出発点の印に戻ってくる。",
+      "camera": "正面", "sfx": ["riser"],
+      "video_prompt": "Vertical 9:16, a rocket traveling around a circular closed universe and returning to its starting marker, beige and deep green",
+      "min_duration": 5.0
+    },
+    {
+      "id": "s8", "type": "japan_zoom",
+      "narration": [
+        {"text": "宇宙を一周して、|たどり着いたのは…", "tts": "宇宙を一周して、たどり着いたのは…"},
+        {"text": "出発地点。|ちなみに、徳島県です。", "tts": "出発地点。ちなみに、とくしま県です。"}
+      ],
+      "emphasis": ["徳島県"],
+      "on_screen_text": ["出発地点", "徳島"],
+      "params": {"headline": ["たどり着いたのは…"], "emphasis": [], "highlight": "JP-36", "zoom_on_line": 1, "zoom_dur": 1.2,
+                 "target": {"lon": 134.4, "lat": 34.0, "scale": 420}, "pin": {"lon": 134.55, "lat": 34.07, "label": "出発地点"},
+                 "big_label": "徳島"},
+      "animation": "日本地図から徳島へ一気にズーム。徳島が光り、『出発地点』のピンが落ちる。",
+      "camera": "日本全体 → 徳島へ急ズーム", "sfx": ["impact"],
+      "video_prompt": "Vertical 9:16 map of Japan on beige, rapid zoom into Tokushima which lights up deep green, a terracotta pin labelled start point",
+      "min_duration": 4.5
+    },
+    {
+      "id": "s9", "type": "outro_question",
+      "narration": [
+        {"text": "宇宙の果てまで行っても、|最後は徳島。", "tts": "宇宙の果てまで行っても、最後は、とくしま。"},
+        {"text": "ツッコミは、|コメントで。", "tts": "ツッコミは、コメントで。"}
+      ],
+      "emphasis": ["最後は徳島"],
+      "on_screen_text": ["宇宙の果てまで行っても", "最後は徳島", "ツッコミはコメントで"],
+      "params": {"headline": ["宇宙の果てまで", "行っても", "最後は徳島"], "emphasis": ["最後は徳島"], "question": "ツッコミはコメントで", "bg": "none"},
+      "animation": "淡々とした締めの文字。最後にコメント誘導のパネル。",
+      "camera": "固定", "sfx": ["ding"],
+      "video_prompt": "Vertical 9:16 plain beige background with space for text",
+      "min_duration": 3.5
+    }
+  ],
+  "fact_checks": [
+    {"claim": "月までの平均距離は約38万km", "status": "verified", "source_ids": ["nasa_moon"]},
+    {"claim": "月の光は地球まで約1.3秒", "status": "estimate", "method": "384,400km ÷ 光速 299,792km/s ≈ 1.28秒 → 約1.3秒。", "source_ids": ["nasa_moon"]},
+    {"claim": "太陽まで約1億5千万km、光で約8分20秒", "status": "verified", "source_ids": ["smithsonian_sunlight"]},
+    {"claim": "ボイジャー1号は人類が送った最も遠い探査機で、2026年11月に地球から光で約1日（約259億km）の距離に達する", "status": "verified", "source_ids": ["earthsky_voyager", "toms_voyager"], "note": "NASAの発表として2026年11月18日ごろと報じられている（日付は報道により13〜18日と幅がある）。"},
+    {"claim": "ボイジャー1号は打ち上げから49年", "status": "estimate", "method": "1977年打ち上げ → 2026年で49年。", "source_ids": ["toms_voyager"]},
+    {"claim": "天の川銀河の直径は約10万光年", "status": "verified", "source_ids": ["nasa_milkyway"]},
+    {"claim": "観測できる宇宙の直径は約930億光年", "status": "verified", "source_ids": ["britannica_observable"]},
+    {"claim": "閉じた宇宙なら、まっすぐ進むといつか出発点に戻る", "status": "verified", "source_ids": ["nasa_wmap_shape"], "note": "仮説上の宇宙の性質としての説明。WMAPなどの観測では宇宙はほぼ平坦とされ、閉じていることは確認されていない。"},
+    {"claim": "宇宙を一周して出発地点（徳島）に戻る", "status": "fiction", "note": "閉じた宇宙を仮定した上でのフィクション。人類が宇宙を一周することは不可能。出発地点を徳島とするのはオチのための設定。"}
+  ],
+  "sources": [
+    {"id": "nasa_moon", "title": "NASA Science - Moon Facts", "url": "https://science.nasa.gov/moon/facts/", "accessed": "2026-11-01", "used_for": "月の平均距離 384,400km"},
+    {"id": "smithsonian_sunlight", "title": "Smithsonian National Air and Space Museum - How long does it take light from the Sun to reach Earth?", "url": "https://howthingsfly.si.edu/ask-an-explainer/how-long-does-it-take-light-sun-get-earth", "accessed": "2026-11-01", "used_for": "太陽まで平均1億5千万km、光で約8分20秒"},
+    {"id": "earthsky_voyager", "title": "EarthSky: Voyager 1 will be 1 light-day from Earth on November 17-18, 2026", "url": "https://earthsky.org/space/voyager-1-1-light-day-from-earth-november-17-18-2026/", "accessed": "2026-11-01", "used_for": "NASA発表の1光日到達日"},
+    {"id": "toms_voyager", "title": "Tom's Hardware: Voyager 1 approaches one light-day milestone (25.9 billion km)", "url": "https://www.tomshardware.com/tech-industry/after-nearly-fifty-years-voyager-1-spacecraft-approaches-one-light-day-milestone-25-9-billion-km-distance-from-earth-ensures-one-day-of-latency-for-commands", "accessed": "2026-11-01", "used_for": "1光日＝約259億km、打ち上げから約50年"},
+    {"id": "nasa_milkyway", "title": "NASA Imagine the Universe - The Milky Way", "url": "https://imagine.gsfc.nasa.gov/science/featured_science/milkyway", "accessed": "2026-11-01", "used_for": "天の川銀河の直径 約10万光年"},
+    {"id": "britannica_observable", "title": "Britannica - observable universe", "url": "https://www.britannica.com/print/article/2215399", "accessed": "2026-11-01", "used_for": "観測できる宇宙の直径 約930億光年"},
+    {"id": "nasa_wmap_shape", "title": "NASA WMAP - Shape of the Universe", "url": "https://map.gsfc.nasa.gov/universe/uni_shape.html", "accessed": "2026-11-01", "used_for": "閉じた宇宙では一方向に進むと出発点に戻る／観測では平坦に近い"}
+  ],
+  "caption": "もしも宇宙の果てまで行けたら…？🚀\n\n月まで光で約1.3秒、太陽まで約8分20秒。人類最遠の探査機ボイジャー1号は、2026年11月にやっと『光で1日』の距離へ。\nそしてまっすぐ進み続けた先にあったのは――。\n\n📐 この動画の前提\n・距離や光の到達時間はNASAなどの公開資料の値です\n・『宇宙が丸く閉じていたら一周して戻る』は仮説の話です（観測では宇宙はほぼ平坦とされています）\n・出発地点が徳島なのはフィクションです😂\n\n最後、ツッコんだ人はコメントで👇\n\nナレーション音声: 音読さん（ondoku3.com）\n地図: Natural Earth",
+  "hashtags": ["#もしも", "#もしもシリーズ", "#宇宙", "#雑学", "#ボイジャー", "#天の川銀河", "#思考実験", "#徳島", "#徳島県", "#AI動画"],
+  "pinned_comment": "【メモ】月 約38万km（光で約1.3秒）／太陽 約1億5千万km（約8分20秒）／ボイジャー1号 約259億km（2026年11月に光で1日）／天の川銀河 直径約10万光年／観測できる宇宙 直径約930億光年。出発地点はずっと徳島でした🚀",
+  "thumbnail_text": "宇宙の果てまで行ったら…",
+  "production_notes": [
+    "【試作】コンセプト『最後に徳島かい！』とツッコみたくなる落差オチ。最後の場面まで徳島を画面にも台詞にも出さない（冒頭の打ち上げ地点も名前を伏せる）。",
+    "オチの台詞は淡々と（『ちなみに、徳島県です』）。説明しすぎない。",
+    "ボイジャー1号の『光で1日』は2026年11月中旬の話。投稿日が大きくずれる場合は表現を見直す。",
+    "閉じた宇宙は仮説であることをキャプションで明記する。"
+  ]
+}
