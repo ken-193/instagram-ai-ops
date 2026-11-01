@@ -46,8 +46,8 @@ def full_caption(post_dir: Path) -> str:
 # ---------------------------------------------------------------- guard
 def guard(post_id: str) -> None:
     st = state.load(post_id)
-    if st["status"] in ("published", "publishing", "approved"):
-        sys.exit(f"{post_id} is {st['status']}; refusing to re-render")
+    if st["status"] not in state.RERENDERABLE:
+        sys.exit(f"{post_id} is {st['status']}; refusing to re-render (use /withdraw first if it must change)")
     if st.get("render_attempts", 0) >= LIMITS["max_render_attempts_per_post"]:
         sys.exit(f"{post_id}: render attempt limit reached ({LIMITS['max_render_attempts_per_post']})")
     ledger = ROOT / "state" / "costs.json"
@@ -81,6 +81,8 @@ def submit(post_id: str) -> None:
     if not meta.get("qc_passed"):
         raise SystemExit("QC did not pass; not sending for approval")
     st = state.load(post_id)
+    if st["status"] not in state.RERENDERABLE:  # checked before touching Drive or the issue
+        raise SystemExit(f"{post_id} is {st['status']}; not replacing an approved/queued version")
     if st["status"] in ("drafted", "revision_requested", "failed"):
         state.transition(st, "rendered", "pipeline", "build + QC passed")
     if st["status"] == "pending_approval":  # re-render while waiting: replace the version under review
@@ -218,6 +220,25 @@ def handoff(post_id: str) -> None:
     notify.push("Muse投稿キューに追加", f"{post_id} を投稿できます")
 
 
+def withdraw(post_id: str) -> None:
+    """After /withdraw: take the queued files out of 11_Muse投稿キュー so Muse cannot post them."""
+    from . import drive
+
+    st = state.load(post_id)
+    if st["status"] != "revision_requested" or not st.get("withdrawals"):
+        raise SystemExit(f"{post_id} was not withdrawn")
+    w = st["withdrawals"][-1]
+    for fid in (w.get("muse") or {}).get("files", {}).values():
+        drive.move(fid, st["drive"]["folder_id"])
+    drive.rename(st["drive"]["folder_id"], post_id)
+    st["muse"] = None
+    state.save(st)
+    git_commit(f"{post_id}: withdrawn from Muse queue")
+    if st.get("issue_number"):
+        notify.issue_comment(st["issue_number"], "↩️ Museの投稿キューから取り下げました（キューのファイルは投稿フォルダへ移動済み）。"
+                                                 "修正版を作成すると、新しい承認依頼が届きます。")
+
+
 def posted(post_id: str) -> None:
     """After /posted: move queue files out of Muse's folder (no double post) and file everything in 07."""
     from . import drive
@@ -313,6 +334,8 @@ def main(argv=None):
         publish(argv[1])
     elif cmd == "posted":
         posted(argv[1])
+    elif cmd == "withdraw":
+        withdraw(argv[1])
     elif cmd == "insights":
         print(collect_insights())
     elif cmd == "guard":

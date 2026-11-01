@@ -23,8 +23,8 @@ TRANSITIONS: dict[str, set[str]] = {
     "rendered": {"pending_approval", "failed"},
     "pending_approval": {"approved", "revision_requested", "rejected", "rendered"},
     "revision_requested": {"drafted", "rendered", "rejected"},
-    "approved": {"publishing", "handed_off", "rejected"},
-    "handed_off": {"published", "rejected"},  # in Drive 11_Muse投稿キュー, waiting for Muse to post
+    "approved": {"publishing", "handed_off", "rejected", "revision_requested"},
+    "handed_off": {"published", "rejected", "revision_requested"},  # in Drive 11_Muse投稿キュー, waiting for Muse
     "publishing": {"published", "publish_unknown", "publish_failed"},
     "publish_unknown": {"published", "publish_failed", "approved"},
     "publish_failed": {"approved", "rejected"},
@@ -32,6 +32,11 @@ TRANSITIONS: dict[str, set[str]] = {
     "published": set(),
     "rejected": set(),
 }
+
+
+# Only these states may be (re-)rendered and sent for review. Anything approved, queued for Muse,
+# publishing or finished must be withdrawn first (/withdraw) — never silently replaced.
+RERENDERABLE = {"drafted", "revision_requested", "failed", "rendered", "pending_approval"}
 
 
 class TransitionError(Exception):
@@ -79,6 +84,17 @@ def approve(st: dict, actor: str, owner: str, reel_sha256: str) -> dict:
         raise TransitionError("reel changed since it was sent for review; re-review the latest version")
     return transition(st, "approved", actor, "approved via GitHub issue comment", approved_sha256=reel_sha256,
                       approved_by=actor, approved_at=now(), approved_revision=st.get("revision", 0))
+
+
+def withdraw(st: dict, actor: str, owner: str, reason: str) -> dict:
+    """Owner pulls an approved / queued version back (e.g. a late change request) before it is posted."""
+    if actor.lower() != owner.lower():
+        raise TransitionError(f"{actor} is not allowed to withdraw (owner: {owner})")
+    if st["status"] not in ("approved", "handed_off"):
+        raise TransitionError(f"cannot withdraw while status is {st['status']}")
+    st.setdefault("withdrawals", []).append({"at": now(), "by": actor, "reason": reason,
+                                              "revision": st.get("revision"), "muse": st.get("muse")})
+    return transition(st, "revision_requested", actor, f"withdrawn: {reason}")
 
 
 def mark_posted(st: dict, actor: str, owner: str, url: str) -> dict:

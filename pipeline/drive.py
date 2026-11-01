@@ -115,10 +115,18 @@ def copy(file_id: str, parent: str, name: str) -> str:
     """Copy a file into `parent` as `name`; reuses an existing copy with that name (idempotent)."""
     existing = find(name, parent)
     if existing:
-        return existing["id"]
+        if md5(existing["id"]) == md5(file_id):
+            return existing["id"]
+        raise RuntimeError(f"{name} already exists in the target folder with different content; resolve it manually")
     r = requests.post(f"{API}/files/{file_id}/copy", headers=_h(), json={"name": name, "parents": [parent]}, timeout=120)
     r.raise_for_status()
     return r.json()["id"]
+
+
+def md5(file_id: str) -> str | None:
+    r = requests.get(f"{API}/files/{file_id}", headers=_h(), params={"fields": "md5Checksum"}, timeout=30)
+    r.raise_for_status()
+    return r.json().get("md5Checksum")
 
 
 def rename(file_id: str, name: str) -> None:
