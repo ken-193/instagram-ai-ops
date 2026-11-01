@@ -53,7 +53,7 @@ def build_timeline(script: dict, backend: str, cache: Path, kw: dict | None = No
             d = len(x) / tts.SR
             lines.append({"text": ln["text"], "start": round(cur, 3), "end": round(cur + d, 3)})
             voice_events.append((t + cur, x))
-            cur += d + GAP
+            cur += d + GAP + ln.get("pause_after", 0.0)  # optional dramatic pause after this line
         dur = max(sc.get("min_duration", 2.0), cur - GAP + TAIL)
         scenes.append({"id": sc["id"], "type": sc["type"], "start": round(t, 3), "end": round(t + dur, 3),
                        "duration": round(dur, 3), "lines": lines})

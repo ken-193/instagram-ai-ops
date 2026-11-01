@@ -374,7 +374,7 @@ def imo_to_naruto(cv: Canvas, t, dur, P, ctx: SceneCtx):
         if tb < 0.3:
             cv.rect(0, 0, W, H, fill=(255, 255, 255, int(255 * (1 - tb / 0.3))))
         if P.get("place"):
-            pp = seg(t, ctx.line_start(0, 0) + 1.4, 0.4)
+            pp = seg(t, ctx.line_start(P.get("place_on_line", 0), 0) + (0.1 if P.get("place_on_line") else 1.4), 0.4)
             cv.text(540, 330, P["place"], 96 * (0.7 + 0.3 * ease_out_back(pp)), C["ink"], stroke=8, alpha=pp)
 
 
