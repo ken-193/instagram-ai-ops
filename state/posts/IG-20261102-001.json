@@ -1,0 +1,51 @@
+{
+  "post_id": "IG-20261102-001",
+  "status": "pending_approval",
+  "revision": 1,
+  "history": [
+    {
+      "at": "2026-11-02T11:40:53+00:00",
+      "from": "drafted",
+      "to": "rendered",
+      "actor": "pipeline",
+      "note": "build + QC passed"
+    },
+    {
+      "at": "2026-11-02T11:41:23+00:00",
+      "from": "rendered",
+      "to": "pending_approval",
+      "actor": "pipeline",
+      "note": "rev 1 sent for review"
+    }
+  ],
+  "render_attempts": 1,
+  "publish_attempts": 0,
+  "drive": {
+    "folder_id": "1jsT3TXebusTq2VmFzyzxxXJLWH7PBx3N",
+    "files": {
+      "reel.mp4": "1yIygodDJL8jAtLIjKf-ADMXfA_-xNcEq",
+      "thumbnail.jpg": "1k8MgbtKFhPS6p78DXvLGx8hCxYD3F976",
+      "script.md": "1Nf6BSQRH03IfujmcSoQmMY1J-x4dULbs",
+      "script.json": "10mpP8LYlD0HVdN8iJgdUP6_0mxOJGkwx",
+      "caption.txt": "11hJBTGAPCsOSbu1h0T3ed4l8bQPkEiwA",
+      "sources.md": "13NLNI3kh6S3usuMr7WHRzXaKFx4ihnf-",
+      "metadata.json": "1DXmFVKpg7ef_0yLwE813afec4wp-z_u9",
+      "quality_check.md": "14j9X6wZDu8AVV3F_iA3lMv8epaOBLIk4",
+      "narration_check.md": "11NwvKR2hA4nyQiQmQcB3iIE_dwnNivQC",
+      "subtitles.srt": "11cjdw-hPo2pJqStJOKh3Xnl6r3UHTYxl",
+      "narration.wav": "1FUtaoPCiOHbDUIv_d-qf_cKqhFk5Ag1V",
+      "bgm_sfx.wav": "1p5cff2swYwJfocXsGYNNVbfSa9SGyyhv",
+      "ai_video_prompts.md": "11FX2fhJ2GydYvkOPywkmc9a8dCX3CQBF",
+      "scenes/01_s1_kaiju_arrival.mp4": "1NTa4TWm5LbgON3WYArEN9L3eqo-Rp0QL",
+      "scenes/02_s2_kaiju_rampage.mp4": "19jUxFczecXEZrTK8s_F2tNhvcUo3nos5",
+      "scenes/03_s3_awa_arrive.mp4": "1rUVykuzkL4oqIJm7S989AsYEWmGGwr3K",
+      "scenes/04_s4_awa_battle.mp4": "1wwdwsOe2gJ-9KQ-GQilAamXwCBjIv1Y6",
+      "scenes/05_s5_awa_finale.mp4": "11h_QAFBv09xlo5dGulDciYQHxgdnr7wN",
+      "scenes/06_s6_awa_victory.mp4": "1b-zT5SdYvgAEAqMU03H2ML1ls9ilT3MA"
+    }
+  },
+  "ig": {},
+  "insights": {},
+  "reel_sha256": "400e102de78cc0a67f28746fffd0f6a7bb52179353e85a5725e7629a0b81d462",
+  "issue_number": 28
+}

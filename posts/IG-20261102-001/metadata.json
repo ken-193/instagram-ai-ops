@@ -1,0 +1,32 @@
+{
+  "post_id": "IG-20261102-001",
+  "title": "阿波踊り VS 巨大怪獣 ― 最強の祭りはどっちだ？",
+  "built_at": "2026-11-02T11:40:01+00:00",
+  "duration_sec": 49.4,
+  "tts_backend": "ondoku",
+  "tts_options": {
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1,
+    "pitch": 0.0
+  },
+  "tts_chars_sent": 46,
+  "tts_model": null,
+  "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
+  "render": {
+    "engine": "pipeline.render (Pillow+ffmpeg)",
+    "supersampling": 2,
+    "fps": 30,
+    "size": "1080x1920"
+  },
+  "reel_sha256": "400e102de78cc0a67f28746fffd0f6a7bb52179353e85a5725e7629a0b81d462",
+  "reel_bytes": 23248559,
+  "qc_passed": true,
+  "build_seconds": 393.3,
+  "cost_usd": 0.0,
+  "categories": [
+    "fiction"
+  ],
+  "tokushima_ending_type": "徳島の阿波踊りが巨大怪獣に勝つ（予想外の勝者）",
+  "hook": "緊急事態。巨大怪獣が出現。",
+  "preview_quality": false
+}
