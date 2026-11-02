@@ -1,7 +1,7 @@
 {
   "post_id": "IG-20261102-001",
   "title": "阿波踊り VS 巨大怪獣 ― 最強の祭りはどっちだ？",
-  "built_at": "2026-11-02T11:40:01+00:00",
+  "built_at": "2026-11-02T12:16:38+00:00",
   "duration_sec": 49.4,
   "tts_backend": "ondoku",
   "tts_options": {
@@ -9,7 +9,7 @@
     "speed": 1.1,
     "pitch": 0.0
   },
-  "tts_chars_sent": 46,
+  "tts_chars_sent": null,
   "tts_model": null,
   "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
   "render": {
@@ -18,10 +18,10 @@
     "fps": 30,
     "size": "1080x1920"
   },
-  "reel_sha256": "400e102de78cc0a67f28746fffd0f6a7bb52179353e85a5725e7629a0b81d462",
-  "reel_bytes": 23248559,
+  "reel_sha256": "3c3e45d6faf11aeb6201b70f51c851057ba91cfa604fadf9b0791ab49cb356b2",
+  "reel_bytes": 23003763,
   "qc_passed": true,
-  "build_seconds": 393.3,
+  "build_seconds": 388.1,
   "cost_usd": 0.0,
   "categories": [
     "fiction"

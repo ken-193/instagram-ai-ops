@@ -6,12 +6,12 @@
 
 ## s1（0.0〜5.6秒 / 5.6秒）
 
-- 映像: ブロックで組まれた街。地鳴りとともに、オリジナルの紫の怪獣（一本角・背中に水色の結晶）がビルの間から現れる。足が着地するたびに地面が揺れ、砂煙が上がる。最後に顔を見上げると咆哮。
+- 映像: ブロックで組まれた街。地鳴りとともに、オリジナルの黒い怪獣（一本角・背中に赤い結晶）がビルの間から現れる。足が着地するたびに地面が揺れ、砂煙が上がる。最後に顔を見上げると咆哮。
 - カメラ: ①地面すれすれの超ローアングルで足が着地（強いシェイク）②ビルの間を縫う横移動で全身 ③真下から顔へ急接近（咆哮でシェイク）
 - ナレーション: 
 
 ```
-Voxel / blocky low-poly 3D (block-built world), vertical 9:16, cinematic monster-movie camera, a giant original purple kaiju with one crystal horn and glowing teal crystal shards on its back stomps between block buildings; ultra-low ground shot as its huge foot slams down with camera shake, lateral move between buildings, then a fast push-in on its roaring face from below, no text, no logos
+Voxel / blocky low-poly 3D (block-built world), vertical 9:16, cinematic monster-movie camera, a giant original black kaiju with one red crystal horn and angular red crystal shards on its back stomps between block buildings; ultra-low ground shot as its huge foot slams down with camera shake, lateral move between buildings, then a fast push-in on its roaring face from below, no text, no logos
 ```
 
 ## s2（5.6〜11.8秒 / 6.2秒）

@@ -37,10 +37,10 @@
 |---|---|
 | ナレーション |  |
 | 画面内テキスト | 緊急事態。 / 巨大怪獣が出現。 |
-| アニメーション | ブロックで組まれた街。地鳴りとともに、オリジナルの紫の怪獣（一本角・背中に水色の結晶）がビルの間から現れる。足が着地するたびに地面が揺れ、砂煙が上がる。最後に顔を見上げると咆哮。 |
+| アニメーション | ブロックで組まれた街。地鳴りとともに、オリジナルの黒い怪獣（一本角・背中に赤い結晶）がビルの間から現れる。足が着地するたびに地面が揺れ、砂煙が上がる。最後に顔を見上げると咆哮。 |
 | カメラワーク | ①地面すれすれの超ローアングルで足が着地（強いシェイク）②ビルの間を縫う横移動で全身 ③真下から顔へ急接近（咆哮でシェイク） |
 | 効果音 | rumble@0, stomp@0.58, stomp@1.73, stomp@2.88, stomp@4.03, roar@4.1, stomp@5.18 |
-| 動画生成プロンプト | Voxel / blocky low-poly 3D (block-built world), vertical 9:16, cinematic monster-movie camera, a giant original purple kaiju with one crystal horn and glowing teal crystal shards on its back stomps between block buildings; ultra-low ground shot as its huge foot slams down with camera shake, lateral move between buildings, then a fast push-in on its roaring face from below, no text, no logos |
+| 動画生成プロンプト | Voxel / blocky low-poly 3D (block-built world), vertical 9:16, cinematic monster-movie camera, a giant original black kaiju with one red crystal horn and angular red crystal shards on its back stomps between block buildings; ultra-low ground shot as its huge foot slams down with camera shake, lateral move between buildings, then a fast push-in on its roaring face from below, no text, no logos |
 
 字幕タイミング:
 
@@ -165,6 +165,7 @@
 
 - オーナー指定の企画（阿波踊り VS 巨大怪獣）と、追加のカメラワーク・演出指示（ブロック調3D、巨大な阿波踊りの踊り手、映画的カメラ）に沿って制作。後の指示を優先し、踊り手は怪獣サイズの巨人＋地上の踊り手の軍団（群衆はスプライトで表現）。
 - 3Dはコードで書いた自前のレンダラー（pipeline/render/voxel3d.py：透視投影・陰影・霧・前面からの描画順）。物理は決定論的なシミュレーション（破片・車の放物線運動とバウンド、怪獣の吹き飛び、衝撃波・波紋）で、どのフレームも独立に描ける。
-- 『ブロック調』はMinecraft等の既存ゲームの素材・ロゴ・キャラクターは使わず、オリジナルの造形。怪獣も既存作品に似せないオリジナル（紫の体・一本角・背中の水色の結晶）。
+- 『ブロック調』はMinecraft等の既存ゲームの素材・ロゴ・キャラクターは使わず、オリジナルの造形。怪獣も既存作品に似せないオリジナル（黒い体・一本角・背中の赤い結晶。光る背びれ状にならないよう角ばった結晶片）。
 - ナレーションは3か所（s2・s3・s6）。s1はテロップ、s4・s5は効果音とBGMだけで展開。群衆の掛け声（ヤットサー）は音声合成できないため入れていない。
 - 流血・残酷描写なし。怪獣は倒れて目が消え、頭上で星が回る（コミカルな表現）。
+- 2026-11-02 オーナー指示で怪獣の体色を黒に変更（名前は付けない）。既存の怪獣作品と区別するため、背中の結晶と角は水色→赤にした。

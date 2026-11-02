@@ -4,7 +4,7 @@
 
 | チェック | 結果 | 詳細 | ブロッキング |
 |---|---|---|---|
-| file exists | OK | 23248559 bytes | yes |
+| file exists | OK | 23003763 bytes | yes |
 | video codec H.264 | OK | h264 | yes |
 | pixel format yuv420p | OK | yuv420p | yes |
 | resolution 1080x1920 (9:16) | OK | 1080x1920 | yes |
@@ -12,7 +12,7 @@
 | audio AAC 48kHz | OK | aac 48000Hz ch=2 | yes |
 | duration within limits | OK | 49.40s (limits 15-60) | yes |
 | duration matches timeline | OK | video 49.40s / timeline 49.4s | yes |
-| file size < 300MB (Instagram API) | OK | 23.2 MB | yes |
+| file size < 300MB (Instagram API) | OK | 23.0 MB | yes |
 | full decode without errors | OK | clean | yes |
 | no long black segments | OK | 0 segment(s) [] | yes |
 | no frozen segments > 2.5s | OK | 0 segment(s) [] | no |
