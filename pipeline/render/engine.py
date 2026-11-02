@@ -89,12 +89,31 @@ class Canvas:
         return font(int(size * self.ss), family, weight)
 
     # -- shapes
+    @staticmethod
+    def _translucent(*cols) -> bool:
+        return any(c is not None and len(c) == 4 and c[3] < 255 for c in cols)
+
+    def _blend(self, box, draw):
+        """Draw a translucent shape on a small layer and alpha-composite it, so it blends with what is
+        underneath (ImageDraw on an RGBA image would overwrite the pixels, alpha included)."""
+        x0, y0 = max(0, int(box[0]) - 2), max(0, int(box[1]) - 2)
+        x1, y1 = min(self.img.width, int(box[2]) + 3), min(self.img.height, int(box[3]) + 3)
+        if x1 <= x0 or y1 <= y0:
+            return
+        layer = Image.new("RGBA", (x1 - x0, y1 - y0), (0, 0, 0, 0))
+        draw(ImageDraw.Draw(layer), x0, y0)
+        self.img.alpha_composite(layer, (x0, y0))
+
     def circle(self, x, y, r, fill=None, outline=None, width=0):
         if r <= 0:
             return
         s = self.ss
-        self.d.ellipse([(x - r) * s, (y - r) * s, (x + r) * s, (y + r) * s], fill=fill, outline=outline,
-                       width=int(width * s))
+        box = [(x - r) * s, (y - r) * s, (x + r) * s, (y + r) * s]
+        if self._translucent(fill, outline):
+            self._blend(box, lambda d, ox, oy: d.ellipse([box[0] - ox, box[1] - oy, box[2] - ox, box[3] - oy], fill=fill,
+                                                         outline=outline, width=int(width * s)))
+            return
+        self.d.ellipse(box, fill=fill, outline=outline, width=int(width * s))
 
     def line(self, pts, fill, width=4):
         self.d.line([self.pt(*p) for p in pts], fill=fill, width=int(width * self.ss), joint="curve")
@@ -106,18 +125,32 @@ class Canvas:
         radius = min(radius, (x1 - x0) / 2, (y1 - y0) / 2)
         width = min(width, (x1 - x0) / 2, (y1 - y0) / 2)
         box = [x0 * s, y0 * s, x1 * s, y1 * s]
-        if radius * s < 1 or min(x1 - x0, y1 - y0) * s < 8:
-            self.d.rectangle(box, fill=fill, outline=outline, width=int(width * s))
-            return
-        try:
-            self.d.rounded_rectangle(box, radius=radius * s, fill=fill, outline=outline, width=int(width * s))
-        except ValueError:  # Pillow rejects some tiny rounded boxes after rounding
-            self.d.rectangle(box, fill=fill, outline=outline, width=int(width * s))
+
+        def draw(d, ox, oy):
+            b = [box[0] - ox, box[1] - oy, box[2] - ox, box[3] - oy]
+            if radius * s < 1 or min(x1 - x0, y1 - y0) * s < 8:
+                d.rectangle(b, fill=fill, outline=outline, width=int(width * s))
+                return
+            try:
+                d.rounded_rectangle(b, radius=radius * s, fill=fill, outline=outline, width=int(width * s))
+            except ValueError:  # Pillow rejects some tiny rounded boxes after rounding
+                d.rectangle(b, fill=fill, outline=outline, width=int(width * s))
+        if self._translucent(fill, outline):
+            self._blend(box, draw)
+        else:
+            draw(self.d, 0, 0)
 
     def polygon(self, pts, fill=None, outline=None, width=1):
         if len(pts) < 3:
             return
-        self.d.polygon([self.pt(*p) for p in pts], fill=fill, outline=outline, width=max(1, int(width * self.ss)))
+        pp = [self.pt(*p) for p in pts]
+        if self._translucent(fill, outline):
+            xs, ys = [p[0] for p in pp], [p[1] for p in pp]
+            self._blend([min(xs), min(ys), max(xs), max(ys)],
+                        lambda d, ox, oy: d.polygon([(x - ox, y - oy) for x, y in pp], fill=fill, outline=outline,
+                                                    width=max(1, int(width * self.ss))))
+            return
+        self.d.polygon(pp, fill=fill, outline=outline, width=max(1, int(width * self.ss)))
 
     def paste(self, layer: Image.Image, x: int = 0, y: int = 0):
         self.img.alpha_composite(layer, (int(x * self.ss), int(y * self.ss)))

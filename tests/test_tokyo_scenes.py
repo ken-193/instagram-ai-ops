@@ -47,3 +47,32 @@ def test_matsuri_band_and_stems():
 def test_srt_format():
     tl = {"scenes": [{"start": 1.0, "lines": [{"text": "東京に、|謎の大群", "start": 0.2, "end": 1.5}]}]}
     assert build.srt(tl) == "1\n00:00:01,200 --> 00:00:02,620\n東京に、\n謎の大群\n"
+
+
+IMO = json.loads((ROOT / "posts/IG-20261101-004/script.json").read_text(encoding="utf-8"))
+
+
+def test_imo_script_valid_and_scenes_render():
+    assert validate(IMO, set(SCENES)) == []
+    assert qc.missing_glyphs(IMO) == []
+    for sc in IMO["scenes"]:
+        for t in (0.0, 2.6, 5.5, 7.5):
+            cv = Canvas(1)
+            SCENES[sc["type"]](cv, t, sc.get("min_duration", 6), sc["params"],
+                               SceneCtx(t_global=t, lines=[(0.2, 1.8)] if sc["narration"] else []))
+
+
+def test_translucent_fill_blends_instead_of_overwriting():
+    cv = Canvas(1)
+    cv.rect(0, 0, 100, 100, fill=(255, 255, 255, 128))
+    px = cv.finish().getpixel((50, 50))
+    assert 200 < px[0] < 255   # beige mixed with white, not pure white
+
+
+def test_silent_scene_needs_min_duration_and_timed_sfx():
+    bad = json.loads(json.dumps(IMO))
+    del bad["scenes"][6]["min_duration"]
+    assert any("min_duration" in e for e in validate(bad, set(SCENES)))
+    tl = {"scenes": [{"start": 10.0, "lines": []}]}
+    ev = build.sfx_events({"scenes": [{"sfx": ["boom@6.6"]}]}, tl)
+    assert ev == [(16.6, "boom", 0.9)]

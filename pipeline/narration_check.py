@@ -63,10 +63,10 @@ def compare(expected_tts: str, transcript: str) -> dict:
             "diff": diff(e, r) if e != r else ""}
 
 
-def transcribe(model, audio: np.ndarray, sr: int) -> str:
+def transcribe(model, audio: np.ndarray, sr: int, vad: bool = False) -> str:
     x = audio if sr == 16000 else np.interp(np.linspace(0, len(audio) - 1, int(len(audio) * 16000 / sr)),
                                              np.arange(len(audio)), audio).astype(np.float32)
-    segs, _ = model.transcribe(x, language="ja", beam_size=5, vad_filter=False, condition_on_previous_text=False,
+    segs, _ = model.transcribe(x, language="ja", beam_size=5, vad_filter=vad, condition_on_previous_text=False,
                                temperature=0.0)
     return "".join(s.text for s in segs).strip()
 
@@ -132,6 +132,11 @@ def main(argv=None):
             audio = tts.synth(expected, backend, ROOT / ".cache/tts", **opts)
             heard = transcribe(model, audio, tts.SR)
             r = {"scene": sc["id"], "text": ln["text"], "tts": expected, "transcript": heard, **compare(expected, heard)}
+            if not r["exact"]:  # Whisper sometimes fills a long pause with "……": retry with silence removed
+                heard2 = transcribe(model, audio, tts.SR, vad=True)
+                r2 = {**r, "transcript": heard2, **compare(expected, heard2)}
+                if r2["similarity"] > r["similarity"]:
+                    r = r2
             rows.append(r)
             clips += [audio, gap]
             print(f"{'OK ' if r['exact'] else 'DIF' if r['ok'] else 'NG '} {sc['id']} {int(r['similarity'] * 100):3d}%  "

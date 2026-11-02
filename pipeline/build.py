@@ -46,14 +46,14 @@ def build_timeline(script: dict, backend: str, cache: Path, kw: dict | None = No
     kw = tts_kwargs(script, backend) if kw is None else kw
     scenes, voice_events, t = [], [], 0.0
     for sc in script["scenes"]:
-        cur = LEAD
+        cur = sc.get("lead", LEAD)  # a scene may hold its first line back (e.g. let the picture play first)
         lines = []
         for ln in sc["narration"]:
             x = tts.synth(ln.get("tts") or strip_hints(ln["text"]), backend, cache, **kw)
             d = len(x) / tts.SR
             lines.append({"text": ln["text"], "start": round(cur, 3), "end": round(cur + d, 3)})
             voice_events.append((t + cur, x))
-            cur += d + GAP
+            cur += d + GAP + ln.get("pause_after", 0.0)  # optional dramatic pause after this line
         dur = max(sc.get("min_duration", 2.0), cur - GAP + TAIL)
         scenes.append({"id": sc["id"], "type": sc["type"], "start": round(t, 3), "end": round(t + dur, 3),
                        "duration": round(dur, 3), "lines": lines})
@@ -146,7 +146,10 @@ def sfx_events(script, timeline):
     ev = []
     for sc, meta in zip(script["scenes"], timeline["scenes"]):
         for name in sc.get("sfx", []):
-            if name == "riser":
+            if "@" in name:  # "impact@6.6" = at 6.6 s into the scene
+                nm, at = name.split("@", 1)
+                ev.append((meta["start"] + float(at), nm, 0.9 if nm in ("impact", "rumble", "boom") else 0.7))
+            elif name == "riser":
                 ev.append((max(0.0, meta["end"] - 2.0), name, 0.7))
             elif name in ("impact", "ding"):
                 at = meta["start"] + (meta["lines"][1]["start"] if len(meta["lines"]) > 1 else 0.3)
@@ -234,7 +237,9 @@ def main(argv=None):
         return next((s["start"] for s in timeline["scenes"] if s["id"] == sid), None) if sid else None
     mixdown, stems = audio.mix(timeline["total"], voice, sfx_events(script, timeline), bpm=bg.get("bpm", 112),
                                climax=climax, matsuri_from=scene_start(bg.get("matsuri_from_scene")),
-                               matsuri_full=scene_start(bg.get("matsuri_full_scene")), stems=True)
+                               matsuri_full=scene_start(bg.get("matsuri_full_scene")), stems=True,
+                               music_env=[(scene_start(e["scene"]) + e["t"], e["gain"]) for e in bg.get("envelope", [])
+                                          if scene_start(e["scene"]) is not None] or None)
     audio.write_wav(out / "audio.wav", mixdown)
     audio.write_wav(out / "narration.wav", stems["voice"])
     audio.write_wav(out / "bgm_sfx.wav", stems["music_sfx"])

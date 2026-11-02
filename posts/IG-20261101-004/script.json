@@ -1,0 +1,455 @@
+{
+  "post_id": "IG-20261101-004",
+  "title": "焼き芋を100万個焼いたらどうなる？",
+  "summary": "家庭の焼き芋1本から、10個→1万個→巨大工場→100万個とスケールアップ。100万個が合体して巨大鳴門金時になり、空を飛んで鳴門海峡へ。渦潮に吸い込まれ、大爆発の水柱。それでも渦潮は何事もなく回り続け最後は『こんな大きな渦潮が見れるベストな時期は、春と秋』。",
+  "premise": "完全なフィクション。100万個を焼く・合体する・空を飛ぶ・渦潮で爆発する、はすべて架空。実在の事実はキャプションの豆知識（鳴門の渦潮の大きさ、なると金時）のみ。",
+  "categories": [
+    "fiction"
+  ],
+  "genre": "食・グルメ / 徳島（日常→壮大→渦潮オチ）",
+  "target_audience": "焼き芋・グルメ系、映画っぽい展開が好きな10〜40代。徳島を知らない人にも渦潮の強さが伝わる構成",
+  "hook": "焼き芋を100万個焼いたらどうなる？",
+  "tokushima_ending": {
+    "type": "徳島の自然（鳴門の渦潮）の圧倒的な強さ → 実際に見に行ける時期の案内",
+    "description": "巨大鳴門金時が渦潮に吸い込まれて大爆発しても、渦潮は何事もなかったように回り続ける。最後に『こんな大きな渦潮が見れるベストな時期は、春（3月下旬〜4月下旬）と秋（9月下旬〜10月下旬）です。』のテロップで、実際の観光につなげて締める。"
+  },
+  "bgm": {
+    "mood": "前半はコミカル、後半はシネマティック。鳴門到着で音を弱め、飲み込まれた直後は無音→爆発で最大。",
+    "bpm": 112,
+    "climax_scene": "s7",
+    "envelope": [
+      {
+        "scene": "s6",
+        "t": 0.0,
+        "gain": 1.0
+      },
+      {
+        "scene": "s6",
+        "t": 2.0,
+        "gain": 0.8
+      },
+      {
+        "scene": "s6",
+        "t": 3.4,
+        "gain": 0.12
+      },
+      {
+        "scene": "s7",
+        "t": 1.4,
+        "gain": 0.2
+      },
+      {
+        "scene": "s7",
+        "t": 5.0,
+        "gain": 1.0
+      },
+      {
+        "scene": "s7",
+        "t": 5.3,
+        "gain": 0.0
+      },
+      {
+        "scene": "s7",
+        "t": 6.55,
+        "gain": 0.0
+      },
+      {
+        "scene": "s7",
+        "t": 6.7,
+        "gain": 1.0
+      },
+      {
+        "scene": "s8",
+        "t": 0.6,
+        "gain": 0.55
+      },
+      {
+        "scene": "s8",
+        "t": 9.0,
+        "gain": 0.55
+      }
+    ]
+  },
+  "tts": {
+    "backend": "ondoku",
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1,
+    "pitch": 0.0
+  },
+  "export_scene_clips": true,
+  "scenes": [
+    {
+      "id": "s1",
+      "type": "imo_home",
+      "narration": [
+        {
+          "text": "焼き芋を|100万個焼いたら、|どうなる？",
+          "tts": "焼きいもを、100万個焼いたら、どうなる？"
+        }
+      ],
+      "emphasis": [
+        "100万個"
+      ],
+      "on_screen_text": [
+        "焼き芋を",
+        "100万個焼いたら",
+        "どうなる？"
+      ],
+      "params": {
+        "headline": [
+          "焼き芋を",
+          "100万個焼いたら",
+          "どうなる？"
+        ],
+        "emphasis": [
+          "100万個"
+        ],
+        "hsize": 82,
+        "size": 420
+      },
+      "animation": "家のテーブルの上でほかほかの焼き芋が1本、湯気を立てている。",
+      "camera": "正面・ほぼ固定",
+      "sfx": [
+        "ding"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, a single freshly baked Japanese sweet potato (red-purple skin with charred spots, split open showing golden flesh) on paper on a wooden kitchen table, gentle steam rising, warm cozy light, close-up, no text",
+      "min_duration": 3.8
+    },
+    {
+      "id": "s2",
+      "type": "imo_count",
+      "narration": [
+        {
+          "text": "10個、100個、|1000個、1万個。",
+          "tts": "10個、100個、せん個、1万個。"
+        }
+      ],
+      "emphasis": [],
+      "on_screen_text": [
+        "10個",
+        "100個",
+        "1,000個",
+        "10,000個"
+      ],
+      "params": {
+        "unit": "個"
+      },
+      "animation": "焼き芋がポンポンと増え、10個→100個→1000個→1万個と画面を埋め尽くしていく。",
+      "camera": "段階的にズームアウト",
+      "sfx": [
+        "tick"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, baked sweet potatoes multiplying on a huge tray, from 10 to 100 to 1000 to 10000, camera pulling back each time, steam everywhere, playful, no text",
+      "min_duration": 4.4
+    },
+    {
+      "id": "s3",
+      "type": "imo_factory",
+      "narration": [
+        {
+          "text": "巨大な焼き芋工場が|動き出し、",
+          "tts": "巨大な、焼きいも工場が、動き出し、"
+        },
+        {
+          "text": "街は、|湯気に包まれた。",
+          "tts": "街は、湯気に、包まれた。"
+        }
+      ],
+      "emphasis": [
+        "焼き芋工場",
+        "湯気"
+      ],
+      "on_screen_text": [
+        "焼き芋工場",
+        "個数カウンター"
+      ],
+      "params": {
+        "from": 10000,
+        "to": 500000,
+        "unit": "個",
+        "factory_label": "焼き芋工場"
+      },
+      "animation": "街の真ん中に巨大な焼き芋工場。ベルトコンベアを焼き芋が流れ、5本の煙突から湯気がもくもくと立ちのぼる。",
+      "camera": "引きの固定（湯気が増えていく）",
+      "sfx": [
+        "whoosh"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, a giant sweet-potato baking factory in a small Japanese town, conveyor belts full of roasted sweet potatoes, chimneys pouring thick white steam over the town, comedic scale, no text",
+      "min_duration": 4.6
+    },
+    {
+      "id": "s4",
+      "type": "imo_million",
+      "narration": [
+        {
+          "text": "ついに、|100万個が焼き上がった。",
+          "tts": "ついに、100万個が、焼き上がった。"
+        }
+      ],
+      "emphasis": [
+        "100万個"
+      ],
+      "on_screen_text": [
+        "1,000,000個",
+        "100万個 焼き上がり！"
+      ],
+      "params": {
+        "from": 500000,
+        "to": 1000000,
+        "unit": "個",
+        "stamp": "100万個 焼き上がり！",
+        "stamp_emphasis": [
+          "100万個"
+        ],
+        "stamp_delay": 1.0,
+        "factory_label": "焼き芋工場"
+      },
+      "animation": "街全体が真っ白な湯気に包まれ、カウンターが100万個に到達。",
+      "camera": "固定",
+      "sfx": [
+        "ding"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, an entire town disappearing into thick white steam from baked sweet potatoes, golden light glowing through the steam, no text",
+      "min_duration": 3.6
+    },
+    {
+      "id": "s5",
+      "type": "imo_merge",
+      "narration": [
+        {
+          "text": "そして、|100万個の焼き芋が|一つになった。",
+          "tts": "そして、100万個の焼きいもが、一つになった。"
+        }
+      ],
+      "emphasis": [
+        "一つ"
+      ],
+      "on_screen_text": [
+        "（テロップなし）"
+      ],
+      "params": {
+        "size": 760,
+        "lift_at": 0.55
+      },
+      "animation": "四方から焼き芋が集まり、山のように巨大な鳴門金時が誕生。湯気と金色の光をまとい、地面から浮き上がって雲を突き抜けて上昇する。",
+      "camera": "正面 → 上昇する芋を追いかけて雲を抜ける",
+      "sfx": [
+        "riser",
+        "whoosh@3.6"
+      ],
+      "video_prompt": "Photorealistic epic vertical 9:16, millions of baked sweet potatoes swirl together and fuse into one mountain-sized Naruto Kintoki sweet potato (red-purple skin, charred spots, golden flesh glowing through a crack), steam pouring off it, it lifts off the ground and flies up through the clouds, camera follows, fantasy, no text",
+      "min_duration": 6.4
+    },
+    {
+      "id": "s6",
+      "type": "imo_to_naruto",
+      "narration": [
+        {
+          "text": "たどり着いたのは…",
+          "tts": "たどり着いたのは。",
+          "pause_after": 0.5
+        },
+        {
+          "text": "鳴門。",
+          "tts": "なると。"
+        }
+      ],
+      "emphasis": [
+        "鳴門"
+      ],
+      "on_screen_text": [
+        "鳴門"
+      ],
+      "params": {
+        "place": "鳴門",
+        "arrive_at": 2.4,
+        "place_on_line": 1
+      },
+      "animation": "雲の上を飛び、日本の海岸線を見下ろしながら徳島へ。鳴門海峡の真上に到着し、渦潮の上で静止する。",
+      "camera": "上空からの俯瞰で追跡 → 鳴門海峡の真上で静止",
+      "sfx": [
+        "whoosh"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, a giant flying sweet potato soaring above a sea of clouds, the coastline of Japan below, arriving over the Naruto Strait in Tokushima with the Onaruto Bridge and huge swirling whirlpools, it stops and hovers, tense silence, cinematic, no text",
+      "min_duration": 7.0,
+      "lead": 2.9
+    },
+    {
+      "id": "s7",
+      "type": "imo_vs_uzu",
+      "narration": [],
+      "emphasis": [],
+      "on_screen_text": [
+        "（ナレーション・テロップなし）"
+      ],
+      "params": {
+        "pull_at": 1.4,
+        "gone_at": 5.2,
+        "boom_at": 6.6
+      },
+      "animation": "渦潮の上に浮かぶ巨大鳴門金時が少しずつ渦の中心に引き寄せられる。空中で回転して抵抗するが、吸い込まれて消える。水しぶき→一瞬の静寂→渦の中心から大爆発、巨大な水柱と水しぶき。",
+      "camera": "真上の俯瞰（引いて大きさを比較）→ 海面すれすれの横からの水柱",
+      "sfx": [
+        "riser@1.6",
+        "whoosh@4.6",
+        "splash@5.2",
+        "boom@6.6",
+        "impact@6.6"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, top-down drone view: the giant sweet potato hovers over a huge Naruto whirlpool, is slowly pulled in, spins and resists, then gets swallowed into the vortex with a big splash; a moment of calm; then a massive explosion from the vortex center, a towering water column and spray, low-angle shot from sea level, blockbuster climax, no text",
+      "min_duration": 10.0
+    },
+    {
+      "id": "s8",
+      "type": "uzu_ochi",
+      "narration": [],
+      "emphasis": [],
+      "on_screen_text": [
+        "こんな大きな渦潮が見れるベストな時期は、春（3月下旬〜4月下旬）と秋（9月下旬〜10月下旬）です。",
+        "※目安。大潮の日がねらい目（観潮船の時刻表で確認を）"
+      ],
+      "params": {
+        "lines": [
+          [
+            "こんな大きな渦潮が",
+            66
+          ],
+          [
+            "見れるベストな時期は",
+            66
+          ],
+          [
+            "春（3月下旬〜4月下旬）と",
+            50
+          ],
+          [
+            "秋（9月下旬〜10月下旬）です。",
+            50
+          ]
+        ],
+        "emphasis": [
+          "大きな渦潮",
+          "春",
+          "秋",
+          "3月下旬〜4月下旬",
+          "9月下旬〜10月下旬"
+        ],
+        "text_at": 0.7,
+        "center_y": 520,
+        "footer": "※目安。大潮の日がねらい目（観潮船の時刻表で確認を）",
+        "whirl_shift": -230
+      },
+      "animation": "再び上空から鳴門海峡。何事もなかったかのように渦潮が回り続ける。中央に大きく『こんな大きな渦潮が見れるベストな時期は、春（3月下旬〜4月下旬）と秋（9月下旬〜10月下旬）です。』",
+      "camera": "真上・ゆっくりズーム",
+      "sfx": [
+        "impact@0.7"
+      ],
+      "video_prompt": "Photorealistic vertical 9:16, aerial top-down view of the Naruto whirlpools calmly swirling as if nothing happened, spring or autumn light, empty centre area for a title card, no text",
+      "min_duration": 6.4
+    }
+  ],
+  "fact_checks": [
+    {
+      "claim": "焼き芋を100万個焼き、合体して巨大な鳴門金時になって空を飛ぶ",
+      "status": "fiction",
+      "note": "架空の設定。"
+    },
+    {
+      "claim": "巨大鳴門金時が渦潮に吸い込まれ、大爆発で水柱が上がる",
+      "status": "fiction",
+      "note": "架空の演出。渦潮で爆発は起きない。"
+    },
+    {
+      "claim": "鳴門の渦潮は大潮のとき直径が最大約30mに達するといわれる",
+      "status": "verified",
+      "source_ids": [
+        "naruto_city_uzushio",
+        "tokushima_pref_naruto"
+      ],
+      "note": "鳴門市・徳島県の資料（検索結果の抜粋で確認、PDF本文は未読）。旅行サイトには約20mとするものもあるため『最大約30mといわれる』と表現。"
+    },
+    {
+      "claim": "なると金時は徳島県のブランドさつまいも",
+      "status": "verified",
+      "source_ids": [
+        "furusato_narutokintoki"
+      ],
+      "note": "鳴門市のふるさと納税返礼品の掲載情報（検索結果の抜粋で確認）。"
+    },
+    {
+      "claim": "100万個の焼き芋の重さは約250トン",
+      "status": "estimate",
+      "method": "1本約250gと仮定（大きさで大きく変わる）。250g × 1,000,000 = 250,000kg = 約250トン。"
+    },
+    {
+      "claim": "渦潮が大きくなるのは春と秋の大潮のころ",
+      "status": "verified",
+      "source_ids": [
+        "tokushima_pref_naruto",
+        "kobe_np_uzushio"
+      ],
+      "note": "徳島県資料『春と秋の大潮時に最大』、神戸新聞『春と秋は大潮時の潮の流れが速く渦も大きくなりやすい』（いずれも検索結果の抜粋で確認）。"
+    },
+    {
+      "claim": "ベストな時期は春（3月下旬〜4月下旬）と秋（9月下旬〜10月下旬）",
+      "status": "assumption",
+      "note": "オーナー指定の期間。公的資料で『3月下旬〜4月下旬／9月下旬〜10月下旬』という具体的な期間は確認できていない（春・秋の大潮が大きいことは確認済み）。実際は大潮の日に左右されるため、画面とキャプションに『目安』と明記。"
+    }
+  ],
+  "sources": [
+    {
+      "id": "naruto_city_uzushio",
+      "title": "鳴門市 広報資料（渦潮）",
+      "url": "https://www.city.naruto.tokushima.jp/promotion/narutomade/2021/pdf/03-04.pdf",
+      "accessed": "2026-11-01",
+      "used_for": "大潮時に渦の直径が最大約30m"
+    },
+    {
+      "id": "tokushima_pref_naruto",
+      "title": "徳島県 まるごと徳島 モデルコース（鳴門）",
+      "url": "https://marugotopavilion.pref.tokushima.lg.jp/assets/pdf/about/model_course/02_naruto.pdf",
+      "accessed": "2026-11-01",
+      "used_for": "春と秋の大潮時に直径30mに達する渦潮"
+    },
+    {
+      "id": "furusato_narutokintoki",
+      "title": "ふるさとチョイス 鳴門市 なると金時",
+      "url": "https://www.furusato-tax.jp/product/detail/36202/366326",
+      "accessed": "2026-11-01",
+      "used_for": "なると金時は徳島県のブランド品種"
+    },
+    {
+      "id": "kobe_np_uzushio",
+      "title": "神戸新聞 渦潮の記事（2023年3月）",
+      "url": "https://www.kobe-np.co.jp/news/sougou/202303/0016151608.shtml",
+      "accessed": "2026-11-01",
+      "used_for": "春と秋は大潮時の潮流が速く渦が大きくなりやすい"
+    }
+  ],
+  "caption": "焼き芋を100万個焼いたら、どうなる…？🍠💨\n\n10個、100個、1万個…そして100万個。\nひとつになった巨大な鳴門金時が向かった先は――鳴門海峡🌀\n\n📝 この動画はフィクションです\n・100万個の焼き芋が合体する、空を飛ぶ、渦潮で大爆発する…はすべて架空の演出です\n・100万個の重さは、1本250gと仮定すると約250トン（概算）\n\n💡 ちなみに本当の話\n・鳴門の渦潮は、春と秋の大潮のころ直径が最大約30mに達するといわれています\n・見に行くなら春（3月下旬〜4月下旬）と秋（9月下旬〜10月下旬）が目安。いちばん大きいのは大潮の日なので、観潮船の時刻表で確認を🌀\n・なると金時は徳島のブランドさつまいもです\n\n見に行くなら春？秋？👇\n\nナレーション音声: 音読さん（ondoku3.com）\n映像・音楽: コードで生成したオリジナル\n地図: Natural Earth",
+  "hashtags": [
+    "#もしも",
+    "#もしもシリーズ",
+    "#焼き芋",
+    "#焼きいも",
+    "#なると金時",
+    "#鳴門金時",
+    "#鳴門",
+    "#渦潮",
+    "#鳴門の渦潮",
+    "#徳島",
+    "#徳島県",
+    "#AI動画",
+    "#思考実験"
+  ],
+  "pinned_comment": "【見頃の目安】春（3月下旬〜4月下旬）と秋（9月下旬〜10月下旬）。大潮の日は直径が最大約30mになるといわれています🌀 観潮船の時刻表で潮の時間を確認してから行くのがおすすめ。おやつはもちろん、なると金時で🍠",
+  "thumbnail_text": "焼き芋を100万個焼いたらどうなる？",
+  "production_notes": [
+    "オーナー指定の構成で制作。2026-11-01 オチを変更：『やはり、最強は渦潮。』→『こんな大きな渦潮が見れるベストな時期は、春（3月下旬〜4月下旬）と秋（9月下旬〜10月下旬）です。』（文言はオーナー指定のまま）。期間は公的資料で未確認のため画面に『※目安。大潮の日がねらい目』を添えた。",
+    "前半はリポジトリ・Driveに既存台本が見つからなかったため、指示の説明（家庭→10/100/1000/1万個→巨大工場→街が湯気→100万個）から新規に作成。後半のナレーションは2か所のみ、s7・s8はナレーションなし。",
+    "なると金時の皮は実物どおり赤紫色にし、焼き目と割れ目からのぞく黄金色の中身、金色の光で『黄金色』を表現。",
+    "実写風のAI動画生成サービスは未接続（max_ai_video_seconds_per_post=0）。映像はコード生成のアニメーション。video_prompt / ai_video_prompts.md は実写版を作る場合の英語プロンプト。",
+    "BGMは鳴門到着で弱め、飲み込まれた直後は無音、爆発で最大（bgm.envelope）。",
+    "地域への配慮：渦潮の迫力を称え、実際に見に行ける時期の案内で締める。誰も傷つかない架空の演出。"
+  ]
+}
