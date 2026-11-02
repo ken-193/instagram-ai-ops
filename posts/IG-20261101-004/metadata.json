@@ -1,0 +1,32 @@
+{
+  "post_id": "IG-20261101-004",
+  "title": "焼き芋を100万個焼いたらどうなる？",
+  "built_at": "2026-11-02T00:18:21+00:00",
+  "duration_sec": 46.827,
+  "tts_backend": "ondoku",
+  "tts_options": {
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1,
+    "pitch": 0.0
+  },
+  "tts_chars_sent": 121,
+  "tts_model": null,
+  "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
+  "render": {
+    "engine": "pipeline.render (Pillow+ffmpeg)",
+    "supersampling": 2,
+    "fps": 30,
+    "size": "1080x1920"
+  },
+  "reel_sha256": "67dedf74c537fb36aebab28e32fe0e03480a700e9ac20c2be2b13ab457e9b682",
+  "reel_bytes": 18343180,
+  "qc_passed": true,
+  "build_seconds": 396.8,
+  "cost_usd": 0.0,
+  "categories": [
+    "fiction"
+  ],
+  "tokushima_ending_type": "徳島の自然（鳴門の渦潮）の圧倒的な強さ → 実際に見に行ける時期の案内",
+  "hook": "焼き芋を100万個焼いたらどうなる？",
+  "preview_quality": false
+}

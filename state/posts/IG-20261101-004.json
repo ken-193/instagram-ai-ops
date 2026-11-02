@@ -1,0 +1,52 @@
+{
+  "post_id": "IG-20261101-004",
+  "status": "pending_approval",
+  "revision": 1,
+  "history": [
+    {
+      "at": "2026-11-02T00:18:25+00:00",
+      "from": "drafted",
+      "to": "rendered",
+      "actor": "pipeline",
+      "note": "build + QC passed"
+    },
+    {
+      "at": "2026-11-02T00:19:03+00:00",
+      "from": "rendered",
+      "to": "pending_approval",
+      "actor": "pipeline",
+      "note": "rev 1 sent for review"
+    }
+  ],
+  "render_attempts": 1,
+  "publish_attempts": 0,
+  "drive": {
+    "folder_id": "1ZLr81xCssUpsmxt92KluoDhN-atLGrkX",
+    "files": {
+      "reel.mp4": "1kXOa8BJdjcTliKlF8hSyHKPhitA2lJ-c",
+      "thumbnail.jpg": "1oeRkj1HtxE_GkYlnSyU1XEuYIccCPN9A",
+      "script.md": "1PktJRuw9AN3l8Asg8CTZs1QUx_g19nnS",
+      "script.json": "1PAtdp7tCNOkGzUhdXSDbmTN7xgilMk45",
+      "caption.txt": "1AHt6b66UmzzL6hI72yuI2ahyBrhNG1LZ",
+      "sources.md": "1RJokPQbk8rZJ_I96LLx_TPOjKsS4rFqV",
+      "metadata.json": "1tmLa1xUyLPiYQ6aE0QlQOf__gtWM8GGv",
+      "quality_check.md": "10tqmNwe0EIpAe_reWWItXsvfMCk53lkC",
+      "subtitles.srt": "1vfETRtwuuYy4dH_a5usTqIkwqzJtIqCr",
+      "narration.wav": "1TwVrZbk5qHQqaXcEcRPxUoXowbQUvPns",
+      "bgm_sfx.wav": "15jY6bA0pEKAa45bPvuBueWGUxvrGgG7S",
+      "ai_video_prompts.md": "1d5V3tVvYgP_ZuLORZDjxrwaRRKsC6Q8b",
+      "scenes/01_s1_imo_home.mp4": "1q91e_m9-0NuRKjtLzWJd_i0mPcqDRonl",
+      "scenes/02_s2_imo_count.mp4": "1nAQfhHVB2duUqAHVkXqG6qoMRYRpuvUa",
+      "scenes/03_s3_imo_factory.mp4": "1uaxUXPK_UTYTW9UOuwE2YyZHnVzbUTIW",
+      "scenes/04_s4_imo_million.mp4": "1dvMARyGky3KoA7mVeTdHlZdQr77esLzh",
+      "scenes/05_s5_imo_merge.mp4": "1XNJ2FsQmQqqrC5LXxdK7IcxJAuZ9JVMs",
+      "scenes/06_s6_imo_to_naruto.mp4": "1nycFuXhbSMZS418D8cdb7GmXKj31KopG",
+      "scenes/07_s7_imo_vs_uzu.mp4": "1tySmFliHNPEwy_1ZJawLjPHfeouaF6QZ",
+      "scenes/08_s8_uzu_ochi.mp4": "1EX9x_LxYdsSiXqu5x3h5Eh9JRrxBQiJb"
+    }
+  },
+  "ig": {},
+  "insights": {},
+  "reel_sha256": "67dedf74c537fb36aebab28e32fe0e03480a700e9ac20c2be2b13ab457e9b682",
+  "issue_number": 26
+}
