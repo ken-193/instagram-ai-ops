@@ -143,3 +143,32 @@ def test_qc_flags_characters_missing_from_heading_font():
     assert missing_glyphs(s) == []
     s["scenes"][2]["params"]["headline"] = ["1人あたり 約0.5㎡"]
     assert missing_glyphs(s) == ["㎡"]
+
+
+def test_drive_upload_retries_transient_errors(tmp_path, monkeypatch):
+    from pipeline import drive
+
+    f = tmp_path / "a.txt"
+    f.write_text("x")
+    calls = {"put": 0}
+
+    class R:
+        def __init__(self, code, js=None):
+            self.status_code, self._js, self.headers = code, js or {}, {"Location": "https://upload"}
+
+        def raise_for_status(self):
+            if self.status_code >= 400:
+                raise RuntimeError(self.status_code)
+
+        def json(self):
+            return self._js
+
+    def put(*a, **k):
+        calls["put"] += 1
+        return R(502) if calls["put"] == 1 else R(200, {"id": "F1"})
+    monkeypatch.setattr(drive, "find", lambda *a, **k: None)
+    monkeypatch.setattr(drive, "_h", lambda: {})
+    monkeypatch.setattr(drive.requests, "request", lambda *a, **k: R(200))
+    monkeypatch.setattr(drive.requests, "put", put)
+    monkeypatch.setattr("time.sleep", lambda s: None)
+    assert drive.upload(f, "P") == "F1" and calls["put"] == 2

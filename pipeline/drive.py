@@ -84,13 +84,23 @@ def upload(local: Path, parent: str, name: str | None = None) -> str:
     meta = {"name": name} if existing else {"name": name, "parents": [parent]}
     url = f"{UPLOAD}/{existing['id']}" if existing else UPLOAD
     method = "PATCH" if existing else "POST"
-    init = requests.request(method, url, headers={**_h(), "X-Upload-Content-Type": mime},
-                            params={"uploadType": "resumable"}, json=meta, timeout=30)
-    init.raise_for_status()
-    with open(local, "rb") as f:
-        r = requests.put(init.headers["Location"], data=f, headers={"Content-Type": mime}, timeout=600)
-    r.raise_for_status()
-    return r.json()["id"]
+    import time
+
+    for attempt in range(4):  # Google answers 5xx / 429 now and then: start a fresh upload session and retry
+        init = requests.request(method, url, headers={**_h(), "X-Upload-Content-Type": mime},
+                                params={"uploadType": "resumable"}, json=meta, timeout=30)
+        if init.status_code in (429, 500, 502, 503, 504) and attempt < 3:
+            time.sleep(5 * 2 ** attempt)
+            continue
+        init.raise_for_status()
+        with open(local, "rb") as f:
+            r = requests.put(init.headers["Location"], data=f, headers={"Content-Type": mime}, timeout=600)
+        if r.status_code in (429, 500, 502, 503, 504) and attempt < 3:
+            time.sleep(5 * 2 ** attempt)
+            continue
+        r.raise_for_status()
+        return r.json()["id"]
+    raise RuntimeError(f"Drive upload kept failing: {name}")
 
 
 def download(file_id: str, dest: Path) -> Path:
