@@ -17,10 +17,10 @@ from .scenes import SceneCtx, scene
 from .voxel3d import I3, Camera, Scene3D, ballistic, debris_field, rx, ry, rz
 
 # ---------------------------------------------------------------- palette (scene colours)
-K_BODY = (104, 74, 146)
-K_DARK = (72, 50, 104)
-K_BELLY = (200, 176, 214)
-K_CRYSTAL = (70, 206, 196)
+K_BODY = (52, 50, 56)
+K_DARK = (30, 29, 34)
+K_BELLY = (92, 88, 96)
+K_CRYSTAL = (232, 72, 48)
 K_EYE = (255, 168, 40)
 K_CLAW = (240, 236, 222)
 SKIN = (240, 204, 168)
@@ -121,7 +121,7 @@ STAND_H = 28.5
 
 def kaiju(sc: Scene3D, pos, yaw=0.0, pitch=0.0, roll=0.0, walk=0.0, roar=0.0, swipe=0.0, lean=0.0, t=0.0,
           dazed=False, scale=1.0):
-    """Purple, single-horned, crystal-backed brute. pos = centre of mass. Faces -z at yaw 0."""
+    """Black, single-horned brute with red crystal shards. pos = centre of mass. Faces -z at yaw 0."""
     pos = np.asarray(pos, float)
     R = ry(yaw) @ rx(pitch) @ rz(roll)
 
@@ -531,7 +531,7 @@ def awa_arrive(cv: Canvas, t, dur, P, ctx: SceneCtx):
     else:                                          # C: dolly forward on the drums -> face-off two-shot
         steps = (t - 3.7) / (BEAT * 2)
         q = (math.floor(steps) + ease_out(steps % 1)) / max(1, (dur - 3.7) / (BEAT * 2))
-        eye, tgt = V(-40, 9, lerp(-100, -66, clamp(q))), V(-8, 24, 30)
+        eye, tgt = V(-12, 7, lerp(-100, -64, clamp(q))), V(-10, 26, 30)
         fov = 54
     eye, tgt, roll = shake_cam(eye, tgt, t, impacts)
     sc = Scene3D(Camera(eye, tgt, fov, roll), sky=((132, 160, 186), (236, 220, 196)), fog=(220, 210, 194))
