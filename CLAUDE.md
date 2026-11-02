@@ -19,7 +19,8 @@
    - 画面にシリーズ名や「次回も〜」の予告は入れない（BRAND_GUIDELINES.md）。
 5. `python -m pipeline.schema posts/<id>/script.json` → `python -m pipeline.build <id> --preview` で試作。
    フレームを数枚書き出して目視確認（文字の重なり・はみ出し・安全領域）。尺は15〜60秒（目標30〜45秒）。
-6. `python -m pytest -q tests` が通ることを確認してコミット。main に入ると produce ワークフローが本番レンダリング→Drive→承認依頼を行う。
+6. `python -m pytest -q tests` が通ることを確認してコミット。main に入ると produce ワークフローが本番レンダリング→**ナレーション読み上げチェック**（音読さんの音声をWhisperで聞き取り、台本の読みと照合。1行でも一致率85%未満なら承認依頼を出さない）→Drive→承認依頼を行う。
+   長い「……」の後の単語は聞き取りが落ちやすいので、別の行に分けて `pause_after` で間を作る（例: 「たどり着いたのは…」「鳴門。」）。
 
 ## 投稿の仕組み（Muse）
 承認後は Drive `11_Muse投稿キュー` に承認済みの版だけをコピーし、Museが投稿する（docs/MUSE_HANDOFF.md）。

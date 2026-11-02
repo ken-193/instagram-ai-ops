@@ -73,6 +73,18 @@ def record_cost(usd: float) -> None:
 
 
 # ---------------------------------------------------------------- submit for approval
+def narration_check_line(post_dir: Path) -> str:
+    p = post_dir / "out/narration_check.json"
+    if not p.exists():
+        return "- ナレーション読み上げチェック: 未実施"
+    r = json.loads(p.read_text(encoding="utf-8"))
+    lines = r.get("lines", [])
+    ok = sum(1 for x in lines if x.get("ok"))
+    exact = sum(1 for x in lines if x.get("exact"))
+    return (f"- ナレーション読み上げチェック: {ok}/{len(lines)} 行 OK（完全一致 {exact} 行、音声認識 {r.get('model')}）"
+            if lines else "- ナレーション読み上げチェック: ナレーションなし")
+
+
 def submit(post_id: str) -> None:
     from . import drive
 
@@ -99,7 +111,8 @@ def submit(post_id: str) -> None:
                       ("caption.txt", post_dir / "caption.txt"), ("sources.md", post_dir / "sources.md"),
                       ("metadata.json", post_dir / "metadata.json"), ("quality_check.md", post_dir / "quality_check.md")]:
         files[name] = drive.upload(src, folder, name)
-    extras = [("subtitles.srt", post_dir / "out/subtitles.srt"), ("narration.wav", post_dir / "out/narration.wav"),
+    extras = [("narration_check.md", post_dir / "out/narration_check.md"),
+              ("subtitles.srt", post_dir / "out/subtitles.srt"), ("narration.wav", post_dir / "out/narration.wav"),
               ("bgm_sfx.wav", post_dir / "out/bgm_sfx.wav"), ("ai_video_prompts.md", post_dir / "ai_video_prompts.md")]
     for name, src in extras:  # optional deliverables (not part of what Muse posts)
         if src.exists():
@@ -118,7 +131,8 @@ def submit(post_id: str) -> None:
         f"- 投稿ID: `{post_id}` / 版: rev {st['revision']} / 尺: {meta['duration_sec']:.1f}秒",
         f"- 動画（iPhoneのDriveアプリで再生）: {drive.web_link(files['reel.mp4'])}",
         f"- フォルダ: {drive.web_link(folder, folder=True)}",
-        f"- reel sha256: `{meta['reel_sha256'][:16]}…`（承認はこのファイルに紐づきます）", "",
+        f"- reel sha256: `{meta['reel_sha256'][:16]}…`（承認はこのファイルに紐づきます）",
+        narration_check_line(post_dir), "",
         "### キャプション", "", "```", full_caption(post_dir), "```", "",
         "### 返信で操作（オーナーのみ有効）", "",
         "- `/approve` … この版を承認して公開", "- `/revise 修正内容` … 修正して作り直し", "- `/reject 理由` … 却下（公開しない）", "",

@@ -112,7 +112,26 @@ def sfx_boom(dur=3.5):
     return ((sub + roar + spray) * 0.8).astype(np.float32)
 
 
-SFX = {"splash": sfx_splash, "boom": sfx_boom, "whoosh": sfx_whoosh, "impact": sfx_impact, "ding": sfx_ding, "tick": sfx_tick, "riser": sfx_riser,
+def sfx_roar(dur=2.2):
+    t = _t(dur)
+    f = 70 + 40 * np.sin(np.pi * t / dur) - 25 * t / dur
+    ph = np.cumsum(f) / SR
+    saw = 2 * (ph % 1) - 1
+    growl = saw * (0.6 + 0.4 * np.sin(2 * np.pi * 23 * t))
+    rasp = bandpass(rng.standard_normal(len(t)).astype(np.float32), 300, 2400) * 0.8
+    env = np.clip(t / 0.15, 0, 1) * np.clip((dur - t) / 0.6, 0, 1)
+    return (lowpass((growl * 0.7 + rasp).astype(np.float32), 2600) * env * 0.9).astype(np.float32)
+
+
+def sfx_stomp(dur=1.0):
+    t = _t(dur)
+    f = 55 * np.exp(-t * 4) + 30
+    body = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 4.5)
+    thud = lowpass(rng.standard_normal(len(t)).astype(np.float32), 400) * np.exp(-t * 12)
+    return (body + thud * 0.8).astype(np.float32)
+
+
+SFX = {"roar": sfx_roar, "stomp": sfx_stomp, "splash": sfx_splash, "boom": sfx_boom, "whoosh": sfx_whoosh, "impact": sfx_impact, "ding": sfx_ding, "tick": sfx_tick, "riser": sfx_riser,
        "rumble": sfx_rumble}
 
 
