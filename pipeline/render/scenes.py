@@ -779,3 +779,4 @@ def universe_loop(cv: Canvas, t, dur, P, ctx: SceneCtx):
                 stroke=5)
 from . import scenes_tokyo  # noqa: E402,F401  (registers the Tokyo scenes)
 from . import scenes_imo  # noqa: E402,F401  (registers the yakiimo / Naruto scenes)
+from . import scenes_kaiju  # noqa: E402,F401  (registers the voxel kaiju scenes)

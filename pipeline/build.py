@@ -148,7 +148,7 @@ def sfx_events(script, timeline):
         for name in sc.get("sfx", []):
             if "@" in name:  # "impact@6.6" = at 6.6 s into the scene
                 nm, at = name.split("@", 1)
-                ev.append((meta["start"] + float(at), nm, 0.9 if nm in ("impact", "rumble", "boom") else 0.7))
+                ev.append((meta["start"] + float(at), nm, 0.9 if nm in ("impact", "rumble", "boom", "roar", "stomp") else 0.7))
             elif name == "riser":
                 ev.append((max(0.0, meta["end"] - 2.0), name, 0.7))
             elif name in ("impact", "ding"):

@@ -56,7 +56,17 @@ jobs:
         run: python -m pipeline.ops guard "${{ steps.pid.outputs.id }}"
       - name: Build + QC
         run: python -m pipeline.build "${{ steps.pid.outputs.id }}"
+      - uses: actions/cache@v4  # Whisper model for the narration readback check
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-medium
+      - name: Narration readback check (every line must be read as written)
+        run: |
+          pip install -q faster-whisper==1.2.1
+          # re-uses the narration the build just synthesised (.cache/tts): no extra 音読さん characters
+          python -m pipeline.narration_check "${{ steps.pid.outputs.id }}" --out "posts/${{ steps.pid.outputs.id }}/out" --model medium
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: reel-${{ steps.pid.outputs.id }}
           path: posts/${{ steps.pid.outputs.id }}/out/
