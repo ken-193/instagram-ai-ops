@@ -129,7 +129,7 @@ def main(argv=None):
     for sc in script["scenes"]:
         for ln in sc["narration"]:
             expected = ln.get("tts") or strip_hints(ln["text"])
-            audio = tts.synth(expected, backend, ROOT / ".cache/tts", **opts)
+            audio = tts.synth(expected, backend, ROOT / ".cache/tts", **build.line_kwargs(opts, ln, backend))
             heard = transcribe(model, audio, tts.SR)
             r = {"scene": sc["id"], "text": ln["text"], "tts": expected, "transcript": heard, **compare(expected, heard)}
             if not r["exact"]:  # Whisper sometimes fills a long pause with "……": retry with silence removed

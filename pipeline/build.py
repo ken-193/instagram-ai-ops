@@ -42,6 +42,13 @@ def tts_kwargs(script: dict, backend: str, voice: str | None = None, style: str 
     return {}
 
 
+def line_kwargs(kw: dict, ln: dict, backend: str) -> dict:
+    """Per-line voice overrides (e.g. a character's line in another voice / pitch)."""
+    if backend != "ondoku":
+        return kw
+    return {**kw, **{k: ln[k] for k in ("voice", "pitch", "speed") if k in ln}}
+
+
 def build_timeline(script: dict, backend: str, cache: Path, kw: dict | None = None) -> tuple[dict, list]:
     kw = tts_kwargs(script, backend) if kw is None else kw
     scenes, voice_events, t = [], [], 0.0
@@ -49,7 +56,8 @@ def build_timeline(script: dict, backend: str, cache: Path, kw: dict | None = No
         cur = sc.get("lead", LEAD)  # a scene may hold its first line back (e.g. let the picture play first)
         lines = []
         for ln in sc["narration"]:
-            x = tts.synth(ln.get("tts") or strip_hints(ln["text"]), backend, cache, **kw)
+            x = tts.synth(ln.get("tts") or strip_hints(ln["text"]), backend, cache, **line_kwargs(kw, ln, backend))
+            x = x * ln.get("gain", 1.0)
             d = len(x) / tts.SR
             lines.append({"text": ln["text"], "start": round(cur, 3), "end": round(cur + d, 3)})
             voice_events.append((t + cur, x))
