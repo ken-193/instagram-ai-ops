@@ -1,0 +1,32 @@
+{
+  "post_id": "IG-20261103-001",
+  "title": "もしも桃太郎がすだちから生まれたら？",
+  "built_at": "2026-11-03T22:23:07+00:00",
+  "duration_sec": 51.033,
+  "tts_backend": "ondoku",
+  "tts_options": {
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1,
+    "pitch": 0.0
+  },
+  "tts_chars_sent": 125,
+  "tts_model": null,
+  "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
+  "render": {
+    "engine": "pipeline.render (Pillow+ffmpeg)",
+    "supersampling": 2,
+    "fps": 30,
+    "size": "1080x1920"
+  },
+  "reel_sha256": "e29ec423c2980123dde0cbf39b9c06f3d153174383e79eb5ec256dac088cd23f",
+  "reel_bytes": 14040154,
+  "qc_passed": true,
+  "build_seconds": 920.3,
+  "cost_usd": 0.0,
+  "categories": [
+    "fiction"
+  ],
+  "tokushima_ending_type": "壮大な戦いのオチで徳島の特産品を明かす（すだち・全国の出荷量の約98%）",
+  "hook": "昔々、あるところに…巨大なすだちが流れてきました。",
+  "preview_quality": false
+}

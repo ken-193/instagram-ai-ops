@@ -1,0 +1,53 @@
+{
+  "post_id": "IG-20261103-001",
+  "status": "pending_approval",
+  "revision": 1,
+  "history": [
+    {
+      "at": "2026-11-03T22:25:41+00:00",
+      "from": "drafted",
+      "to": "rendered",
+      "actor": "pipeline",
+      "note": "build + QC passed"
+    },
+    {
+      "at": "2026-11-03T22:26:25+00:00",
+      "from": "rendered",
+      "to": "pending_approval",
+      "actor": "pipeline",
+      "note": "rev 1 sent for review"
+    }
+  ],
+  "render_attempts": 1,
+  "publish_attempts": 0,
+  "drive": {
+    "folder_id": "1b39O9BHRSEfQj_HMQPFmHM2p0EQcihV-",
+    "files": {
+      "reel.mp4": "1KXrR5F64oK_39hHJXs4ru53iuKOsPrpZ",
+      "thumbnail.jpg": "12tU5ubpfkKDrL7LMDefVidH6RMK34_bd",
+      "script.md": "1vh2ySPY2YF_VdhhXycxyhNcdte-lG2na",
+      "script.json": "1P2jc_YxvY5kjZOIg2SwXX60hDTskMVXB",
+      "caption.txt": "1qycA6Ouq3_ek6Jq1XKkhHVDZz70hcFZx",
+      "sources.md": "1e4hGgaUlrc7WLkCJRI5HRpDKOrMENlVn",
+      "metadata.json": "1stEl2MUJmECOzDcfW3qS3Zhf3gpiYPj5",
+      "quality_check.md": "1Jsf6dIn00AoJ204s9AEWBxJngCZ9oXEM",
+      "narration_check.md": "1Tt1CyEwjVxSZyKxVebL1nduDxTSxuC5u",
+      "subtitles.srt": "1mRiU_m-b-PQqJbMeDI7MQLOgYX19B0M5",
+      "narration.wav": "1xV6BlhLc47d7FXZVI2pYrVDxZKSfcKD1",
+      "bgm_sfx.wav": "1VxRuPG22KUUvF-PmEHfVKpJETAHQ01y-",
+      "ai_video_prompts.md": "1At3YmNZJM6HT4fNk83HLbRR6mmiwnmHK",
+      "scenes/01_s1_sd_river.mp4": "1EDUT7IX9A7PnAaLvrntyRGdThjoEKCZG",
+      "scenes/02_s2_sd_birth.mp4": "19UAN0mJrCsNbOXOzt0M1DkbFJ91jnz-I",
+      "scenes/03_s3_sd_companions.mp4": "1B-vq2pf1ztpLLeKdqhMcX_SBqM_KBki9",
+      "scenes/04_s4_sd_oni.mp4": "1Cqd3x59wV7JNoFw5SkOy_x5i5gufGUPV",
+      "scenes/05_s5_sd_awaken.mp4": "1juizhbFczLXZhzHj7m266VMgcO7HtC3e",
+      "scenes/06_s6_sd_final.mp4": "1Q8T3B4xZ4jJi4Z6gynV6j55_sl8wCMts",
+      "scenes/07_s7_sd_ponzu.mp4": "1IM8O-3ZSILgl-uOZpDFYVOFdonMTbs2e",
+      "scenes/08_s8_sd_reveal.mp4": "1fSVwCKeyz5YK6jAfpD91FbE8DdCslHIX"
+    }
+  },
+  "ig": {},
+  "insights": {},
+  "reel_sha256": "e29ec423c2980123dde0cbf39b9c06f3d153174383e79eb5ec256dac088cd23f",
+  "issue_number": 33
+}
