@@ -1,0 +1,414 @@
+{
+  "post_id": "IG-20261103-001",
+  "title": "もしも桃太郎がすだちから生まれたら？",
+  "summary": "巨大なすだちが川を流れてきて、中から『すだち太郎』が誕生。犬・猿・キジはすだちを食べて巨大化、太郎もすだち戦士に覚醒し、果汁のエネルギー波で鬼ヶ島は大爆発。…と思ったら鬼はすだちの酸っぱさで泣きながら『……ポン酢、ある？』。最後に、このすだちが徳島県産（全国の出荷量の約98%）だと明かす。",
+  "premise": "完全なフィクション（昔話パロディ）。実在の事実は最後の『全国のすだち出荷量の約98%が徳島県産』のみ（農林水産省の資料）。",
+  "categories": [
+    "fiction"
+  ],
+  "genre": "昔話パロディ・アクション・コメディ / 徳島（最後に徳島県産を明かす）",
+  "target_audience": "昔話パロディ・アクション・シュールな笑いが好きな10〜40代。すだちを知らない人にも徳島のすだちが伝わる構成",
+  "hook": "昔々、あるところに…巨大なすだちが流れてきました。",
+  "tokushima_ending": {
+    "type": "壮大な戦いのオチで徳島の特産品を明かす（すだち・全国の出荷量の約98%）",
+    "description": "最後の数秒まで徳島を出さず、鬼の『……ポン酢、ある？』のシュールなオチの後、すだちの美しいアップで『実はこれ、徳島県産。』『全国のすだち出荷量の約98%。』『徳島のすだち。』と明かす。"
+  },
+  "bgm": {
+    "mood": "前半は穏やか、誕生から壮大に盛り上げ、爆発直後に突然停止（無音のオチ）、最後は明るく爽やかに。",
+    "bpm": 100,
+    "climax_scene": "s6",
+    "envelope": [
+      {
+        "scene": "s1",
+        "t": 0.0,
+        "gain": 0.45
+      },
+      {
+        "scene": "s2",
+        "t": 0.0,
+        "gain": 0.6
+      },
+      {
+        "scene": "s3",
+        "t": 0.0,
+        "gain": 1.0
+      },
+      {
+        "scene": "s6",
+        "t": 6.0,
+        "gain": 1.0
+      },
+      {
+        "scene": "s7",
+        "t": 0.0,
+        "gain": 0.0
+      },
+      {
+        "scene": "s7",
+        "t": 6.1,
+        "gain": 0.0
+      },
+      {
+        "scene": "s8",
+        "t": 0.2,
+        "gain": 0.55
+      }
+    ]
+  },
+  "tts": {
+    "backend": "ondoku",
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1,
+    "pitch": 0.0
+  },
+  "export_scene_clips": true,
+  "scenes": [
+    {
+      "id": "s1",
+      "type": "sd_river",
+      "min_duration": 5.4,
+      "narration": [
+        {
+          "text": "昔々、あるところに…",
+          "tts": "むかしむかし、あるところに。",
+          "pause_after": 0.3
+        },
+        {
+          "text": "巨大なすだちが、|流れてきました。",
+          "tts": "巨大なすだちが、流れてきました。"
+        }
+      ],
+      "emphasis": [
+        "巨大なすだち"
+      ],
+      "on_screen_text": [
+        "（字幕のみ）"
+      ],
+      "params": {
+        "granny_at": 3.1
+      },
+      "animation": "のどかな川を、異常に大きな緑のすだちが流れてくる。水面すれすれで追い、川岸のおばあさんが驚く。",
+      "camera": "水面すれすれの追従 → おばあさんへ寄る",
+      "sfx": [
+        "stream@0",
+        "birds@0.2",
+        "impact@0.6"
+      ],
+      "video_prompt": "Stylised 3D CG animation (rounded, soft characters, film lighting), vertical 9:16, a peaceful Japanese countryside river, a gigantic bright green sudachi citrus floats downstream, water-level tracking shot, an old woman on the bank is shocked, no text"
+    },
+    {
+      "id": "s2",
+      "type": "sd_birth",
+      "min_duration": 6.2,
+      "lead": 1.3,
+      "narration": [
+        {
+          "text": "中から出てきたのは…",
+          "tts": "中から出てきたのは。",
+          "pause_after": 0.3
+        },
+        {
+          "text": "すだち太郎。",
+          "tts": "すだちたろう。"
+        }
+      ],
+      "emphasis": [
+        "すだち太郎"
+      ],
+      "on_screen_text": [
+        "（字幕のみ）"
+      ],
+      "params": {
+        "split_at": 3.2
+      },
+      "animation": "家の土間。包丁を入れようとした瞬間に地面が揺れ、亀裂から緑の光。真っ二つに割れ、中から緑の羽織の男の子が飛び出す。",
+      "camera": "すだちへドリーイン → 割れる瞬間スロー → 飛び出す太郎を見上げ",
+      "sfx": [
+        "rumble@1.3",
+        "riser@1.2",
+        "impact@3.2",
+        "sparkle@3.3"
+      ],
+      "video_prompt": "Stylised 3D CG animation (rounded, soft characters, film lighting), vertical 9:16, inside an old Japanese farmhouse the giant sudachi glows and cracks with green light, splits in half in slow motion and a cheerful boy in a green haori with a sudachi crest jumps out, no text"
+    },
+    {
+      "id": "s3",
+      "type": "sd_companions",
+      "min_duration": 6.4,
+      "lead": 0.4,
+      "narration": [
+        {
+          "text": "仲間を集め、|鬼ヶ島へ。",
+          "tts": "仲間を集め、おにがしまへ。"
+        }
+      ],
+      "emphasis": [
+        "鬼ヶ島"
+      ],
+      "on_screen_text": [
+        "（字幕のみ）"
+      ],
+      "params": {
+        "grow_at": 2.6
+      },
+      "animation": "犬・猿・キジにきびだんごではなくすだちを渡す。食べた瞬間に緑の光に包まれ、犬は建物、猿は山、キジは空を覆うほど巨大化。",
+      "camera": "3体をテンポよくつなぐ → 巨大化をローアングルで見上げて引く",
+      "sfx": [
+        "pon@0.5",
+        "pon@1.37",
+        "pon@2.24",
+        "riser@2.6",
+        "impact@3.0",
+        "impact@3.4"
+      ],
+      "video_prompt": "Stylised 3D CG animation (rounded, soft characters, film lighting), vertical 9:16, the sudachi boy hands sudachi fruits to a dog, a monkey and a pheasant; they glow green and grow gigantic - the dog as big as a building, the monkey like a mountain, the pheasant covering the sky; low-angle looking up, no text"
+    },
+    {
+      "id": "s4",
+      "type": "sd_oni",
+      "min_duration": 5.4,
+      "lead": 2.3,
+      "narration": [
+        {
+          "text": "「何者だ！」",
+          "tts": "なにものだ！",
+          "voice": "ja-JP-KeitaNeural",
+          "pitch": -8.0,
+          "speed": 0.9
+        }
+      ],
+      "emphasis": [
+        "何者だ"
+      ],
+      "on_screen_text": [
+        "（字幕のみ）"
+      ],
+      "params": {},
+      "animation": "暗雲の鬼ヶ島。岩山の向こうから巨大な赤鬼がせり上がり、踏みつけるたびに地面が揺れて岩と砂ぼこりが舞う。手前で太郎たちが見上げる。",
+      "camera": "地面から見上げるローアングル、踏みつけでシェイク、少し傾いた構図",
+      "sfx": [
+        "stomp@1.0",
+        "stomp@2.0",
+        "roar@2.2",
+        "stomp@3.0"
+      ],
+      "video_prompt": "Stylised 3D CG animation (rounded, soft characters, film lighting), vertical 9:16, dark storm clouds over Onigashima island, a giant red oni with two horns and a tiger-striped cloth rises behind the rocks and stomps, dust and rocks fly, low-angle shot from the ground with the small heroes in the foreground, no text"
+    },
+    {
+      "id": "s5",
+      "type": "sd_awaken",
+      "min_duration": 7.2,
+      "lead": 2.5,
+      "narration": [
+        {
+          "text": "そして、|伝説の力が目覚めた。",
+          "tts": "そして、伝説の力が、目覚めた。"
+        }
+      ],
+      "emphasis": [
+        "伝説の力"
+      ],
+      "on_screen_text": [
+        "（字幕のみ）"
+      ],
+      "params": {
+        "raise_at": 1.2,
+        "grow_at": 2.4
+      },
+      "animation": "鬼が突進。太郎がすだちを掲げると空が暗転し、地割れから緑のエネルギーが噴き出す。太郎が緑の光に包まれ、すだちの果皮の鎧をまとった巨大な戦士に変身する。",
+      "camera": "突進のトラッキング → 変身を見上げながらゆっくり回り込む",
+      "sfx": [
+        "rumble@0",
+        "roar@0.3",
+        "whoosh@1.1",
+        "riser@1.4",
+        "impact@2.4",
+        "boom@4.6"
+      ],
+      "video_prompt": "Stylised 3D CG animation (rounded, soft characters, film lighting), vertical 9:16, the oni charges; the boy raises a sudachi, the sky darkens, green energy erupts from cracks in the ground and he transforms into a giant sudachi warrior with citrus-peel textured armour, orbiting low-angle camera, no text"
+    },
+    {
+      "id": "s6",
+      "type": "sd_final",
+      "min_duration": 6.8,
+      "narration": [],
+      "emphasis": [],
+      "on_screen_text": [
+        "（ナレーションなし）"
+      ],
+      "params": {
+        "squeeze_at": 0.4,
+        "fire_at": 1.6,
+        "boom_at": 3.0
+      },
+      "animation": "巨大な両手ですだちを絞ると果汁が噴き出し、緑に輝くエネルギー波となって鬼へ。鬼を飲み込んで大爆発、海面が盛り上がる。カメラは一気に引いて島全体。",
+      "camera": "絞る手のアップ → 波を追うトラッキング → 爆発をスロー → 島全体へ大きく引く",
+      "sfx": [
+        "splash@0.6",
+        "whoosh@1.55",
+        "impact@1.6",
+        "boom@3.05",
+        "impact@3.05",
+        "rumble@3.05"
+      ],
+      "video_prompt": "Stylised 3D CG animation (rounded, soft characters, film lighting), vertical 9:16, giant hands squeeze a sudachi, juice bursts out and becomes a glowing green energy wave that engulfs the oni, a huge explosion, the sea swells, camera pulls back to show the whole island, slow motion, no text"
+    },
+    {
+      "id": "s7",
+      "type": "sd_ponzu",
+      "min_duration": 6.2,
+      "lead": 1.6,
+      "narration": [
+        {
+          "text": "「……ポン酢、ある？」",
+          "tts": "ぽんず、ある？",
+          "gain": 0.75,
+          "voice": "ja-JP-KeitaNeural",
+          "pitch": -6.0,
+          "speed": 0.85
+        }
+      ],
+      "emphasis": [],
+      "on_screen_text": [
+        "（字幕のみ）"
+      ],
+      "params": {
+        "give_after": 1.8
+      },
+      "animation": "煙が晴れると、鬼は倒されたのではなく、すだちの酸っぱさで顔をくしゃくしゃにして号泣。BGMが突然止まり、無音の中で「……ポン酢、ある？」。太郎は無言ですだちを差し出し、鬼が受け取る。",
+      "camera": "泣き顔へゆっくり寄る（間を取る）",
+      "sfx": [
+        "pon@3.45"
+      ],
+      "video_prompt": "Stylised 3D CG animation (rounded, soft characters, film lighting), vertical 9:16, smoke clears: the giant oni is not defeated but crying from the sourness with a scrunched-up face and streams of tears; silence; the hero silently offers a sudachi and the oni takes it; slow push-in, no text"
+    },
+    {
+      "id": "s8",
+      "type": "sd_reveal",
+      "min_duration": 6.8,
+      "lead": 0.6,
+      "narration": [
+        {
+          "text": "ちなみに、このすだち。",
+          "tts": "ちなみに、このすだち。"
+        },
+        {
+          "text": "全国の出荷量の約98%が、|徳島県産。",
+          "tts": "全国の、出荷量の、約98パーセントが、とくしま県産。"
+        }
+      ],
+      "emphasis": [
+        "約98%",
+        "徳島県産"
+      ],
+      "on_screen_text": [
+        "実はこれ、徳島県産。",
+        "全国のすだち出荷量の約98%。",
+        "徳島のすだち。",
+        "※出荷量（農林水産省 地理的表示登録資料より）"
+      ],
+      "params": {
+        "telops": [
+          [
+            "実はこれ、徳島県産。",
+            0.8,
+            72,
+            300
+          ],
+          [
+            "全国のすだち出荷量の約98%。",
+            2.4,
+            56,
+            420
+          ],
+          [
+            "徳島のすだち。",
+            4.4,
+            110,
+            560
+          ]
+        ],
+        "emphasis": [
+          "徳島県産",
+          "約98%",
+          "徳島"
+        ],
+        "footnote": "※出荷量（農林水産省 地理的表示登録資料より）",
+        "footnote_at": 2.6,
+        "footnote_y": 650
+      },
+      "animation": "受け取ったすだちへカメラがゆっくり近づく。皮の凹凸、自然な緑、みずみずしいきらめき。爽やかな緑の背景で徳島県産を明かす。",
+      "camera": "すだちへのスロードリーイン",
+      "sfx": [
+        "sparkle@0.6",
+        "ding@2.4",
+        "sparkle@4.4"
+      ],
+      "video_prompt": "Stylised 3D CG animation (rounded, soft characters, film lighting), vertical 9:16, macro beauty shot of one fresh bright green sudachi with dimpled peel and glistening droplets on a fresh green bokeh background, slow push-in, product commercial lighting, no text"
+    }
+  ],
+  "fact_checks": [
+    {
+      "claim": "巨大なすだちから生まれたすだち太郎が鬼と戦う",
+      "status": "fiction",
+      "note": "昔話『桃太郎』を下敷きにした架空の物語。"
+    },
+    {
+      "claim": "全国のすだち出荷量の約98%を徳島県が占める",
+      "status": "verified",
+      "source_ids": [
+        "maff_gi_sudachi"
+      ],
+      "note": "農林水産省の地理的表示登録『徳島すだち』産品仕様書（検索結果の抜粋で確認、PDF本文は未読）。出荷量ベースの数字であることを画面と字幕で明記。"
+    },
+    {
+      "claim": "徳島県のすだちは収穫量全国1位",
+      "status": "verified",
+      "source_ids": [
+        "maff_tokushima_2026"
+      ],
+      "note": "農林水産省『都道府県の概要（徳島県）2026』（検索結果の抜粋で確認）。動画内では使わず、オーナー判断で『約98%』の表現を採用。"
+    }
+  ],
+  "sources": [
+    {
+      "id": "maff_gi_sudachi",
+      "title": "農林水産省 地理的表示「徳島すだち」産品仕様書",
+      "url": "https://www.maff.go.jp/j/shokusan/gi_act/register/0129/pdf/0129_specification.pdf",
+      "accessed": "2026-11-03",
+      "used_for": "全国のすだち出荷量の98%を徳島県が占める"
+    },
+    {
+      "id": "maff_tokushima_2026",
+      "title": "農林水産省 都道府県の概要（徳島県）2026",
+      "url": "https://www.maff.go.jp/j/kanbo/tiho/15sonota/2026PDF/todouhuken_gaiyou2026-36.pdf",
+      "accessed": "2026-11-03",
+      "used_for": "スダチ 収穫量全国1位"
+    }
+  ],
+  "caption": "もしも桃太郎が、すだちから生まれたら…？🟢\n\n川を流れてきたのは、巨大なすだち。\n中から出てきた『すだち太郎』と、すだちで巨大化した仲間たちが鬼ヶ島へ――。\n結末は、まさかの「……ポン酢、ある？」🍋\n\n📝 この動画はフィクションです（昔話パロディ）\n\n💡 ちなみに本当の話\n・全国のすだち出荷量の約98%が徳島県産です（農林水産省の資料より）\n・焼き魚、そば、鍋のポン酢に。秋の徳島の味です\n\nあなたはすだち、何にかける？👇\n\nナレーション音声: 音読さん（ondoku3.com）\n映像・音楽: コードで生成したオリジナル",
+  "hashtags": [
+    "#もしも",
+    "#もしもシリーズ",
+    "#すだち",
+    "#徳島すだち",
+    "#すだち太郎",
+    "#桃太郎",
+    "#昔話",
+    "#ポン酢",
+    "#徳島",
+    "#徳島県",
+    "#徳島グルメ",
+    "#アニメーション",
+    "#AI動画"
+  ],
+  "pinned_comment": "【ほんとの話】全国のすだち出荷量の約98%は徳島県産（農林水産省の資料より）🟢 焼き魚やそば、鍋のポン酢にしぼるのがおすすめです。鬼さんも納得の酸っぱさ😂",
+  "thumbnail_text": "もしも桃太郎がすだちから生まれたら？",
+  "production_notes": [
+    "オーナー指定の企画。映像方式はオーナー判断で『いつもの2D/2.5D』（自前エンジン）。Blender（Cycles）による丸みのある3D CG も試作したが、GPUがなく1コマ約10秒（1本数時間）のため不採用。ブロック形状は使わず、陰影付きの丸い形でキャラクターを造形。",
+    "『生産量日本一』は公的資料で確認できず。オーナー判断で『全国のすだち出荷量の約98%』（農林水産省 GI 資料）を採用し、出荷量ベースであることを画面に注記。",
+    "鬼の台詞（「何者だ！」「……ポン酢、ある？」）は音読さんの Keita（低めのピッチ）で、ナレーション（Masaru）と声を分けた。",
+    "爆発直後に BGM を突然止め、無音の中で鬼の一言を聞かせる（bgm.envelope）。",
+    "暴力表現はコミカルに（鬼は倒されず、酸っぱさで泣くだけ）。"
+  ]
+}

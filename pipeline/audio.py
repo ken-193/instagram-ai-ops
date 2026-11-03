@@ -131,7 +131,37 @@ def sfx_stomp(dur=1.0):
     return (body + thud * 0.8).astype(np.float32)
 
 
-SFX = {"roar": sfx_roar, "stomp": sfx_stomp, "splash": sfx_splash, "boom": sfx_boom, "whoosh": sfx_whoosh, "impact": sfx_impact, "ding": sfx_ding, "tick": sfx_tick, "riser": sfx_riser,
+def sfx_pon(dur=0.35):
+    t = _t(dur)
+    f = 900 * np.exp(-t * 9) + 300
+    return (np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 14) * 0.5).astype(np.float32)
+
+
+def sfx_sparkle(dur=1.2):
+    t = _t(dur)
+    x = sum(np.sin(2 * np.pi * midi(n) * t) * np.exp(-((t - i * 0.08) % dur) * 9) * (t >= i * 0.08)
+            for i, n in enumerate((88, 91, 95, 100)))
+    return (x * 0.18).astype(np.float32)
+
+
+def sfx_stream(dur=4.0):
+    t = _t(dur)
+    x = bandpass(rng.standard_normal(len(t)).astype(np.float32), 400, 3000)
+    mod = 0.6 + 0.4 * np.sin(2 * np.pi * 0.7 * t) * np.sin(2 * np.pi * 1.3 * t)
+    return (x * mod * 0.35 * np.clip(t / 0.5, 0, 1) * np.clip((dur - t) / 0.8, 0, 1)).astype(np.float32)
+
+
+def sfx_birds(dur=3.0):
+    out = np.zeros(int(dur * SR), np.float32)
+    for k, at in enumerate((0.2, 0.55, 1.4, 1.7, 2.3)):
+        tt = _t(0.18)
+        f = 3200 + 900 * np.sin(2 * np.pi * 14 * tt) + k * 150
+        chirp = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.sin(np.pi * tt / 0.18) * 0.15
+        place(out, chirp.astype(np.float32), at)
+    return out
+
+
+SFX = {"pon": sfx_pon, "sparkle": sfx_sparkle, "stream": sfx_stream, "birds": sfx_birds, "roar": sfx_roar, "stomp": sfx_stomp, "splash": sfx_splash, "boom": sfx_boom, "whoosh": sfx_whoosh, "impact": sfx_impact, "ding": sfx_ding, "tick": sfx_tick, "riser": sfx_riser,
        "rumble": sfx_rumble}
 
 
