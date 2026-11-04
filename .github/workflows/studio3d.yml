@@ -7,6 +7,7 @@ on:
     inputs:
       project: {description: "プロジェクト名 (studio3d/projects/<name>)", required: true}
       quality: {description: "final (1080x1920) / draft (540x960 拡大)", required: false, default: "final"}
+      reuse_run_id: {description: "やり直し時：前回の実行ID（描き終わったコマを再利用）", required: false, default: ""}
   push:
     branches: [main]
     paths: ["studio3d/projects/*/04_blender/project.json"]
@@ -14,6 +15,7 @@ on:
 permissions:
   contents: read
   issues: write
+  actions: read
 
 concurrency:
   group: studio3d-${{ github.event.inputs.project || github.sha }}
@@ -36,15 +38,21 @@ jobs:
           [ -n "$p" ] || { echo "no project"; exit 1; }
           echo "project=$p" >> "$GITHUB_OUTPUT"; echo "quality=${q:-final}" >> "$GITHUB_OUTPUT"
       - id: m
-        run: python studio3d/run.py matrix "${{ steps.p.outputs.project }}" --quality "${{ steps.p.outputs.quality }}"
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          done=""
+          if [ -n "${{ github.event.inputs.reuse_run_id }}" ]; then
+            done=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.event.inputs.reuse_run_id }}/artifacts" --paginate -q '.artifacts[] | select(.expired == false) | .name' | tr '\n' ' ')
+          fi
+          python studio3d/run.py matrix "${{ steps.p.outputs.project }}" --quality "${{ steps.p.outputs.quality }}" --done "$done"
 
   render:
     needs: plan
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
     strategy:
-      fail-fast: true
-      max-parallel: 12
+      fail-fast: false
+      max-parallel: 20
       matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
@@ -56,7 +64,7 @@ jobs:
         run: python studio3d/run.py render "${{ needs.plan.outputs.project }}" "${{ matrix.scene }}" --start ${{ matrix.start }} --end ${{ matrix.end }} --quality "${{ needs.plan.outputs.quality }}"
       - uses: actions/upload-artifact@v4
         with:
-          name: frames-${{ matrix.scene }}-${{ matrix.start }}
+          name: frames-${{ matrix.scene }}-${{ matrix.start }}-${{ matrix.end }}
           path: studio3d/projects/${{ needs.plan.outputs.project }}/05_render/frames/
           retention-days: 7
 
@@ -75,6 +83,14 @@ jobs:
         with: {python-version: "3.12", cache: pip}
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        if: github.event.inputs.reuse_run_id != ''
+        with:
+          pattern: frames-*
+          path: studio3d/projects/${{ needs.plan.outputs.project }}/05_render/frames/
+          merge-multiple: true
+          run-id: ${{ github.event.inputs.reuse_run_id }}
+          github-token: ${{ github.token }}
       - uses: actions/download-artifact@v4
         with:
           pattern: frames-*

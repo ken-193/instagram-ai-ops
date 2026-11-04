@@ -33,13 +33,34 @@ def preset(quality: str) -> dict:
     return {**cfg["presets"][quality], "fps": cfg["fps"], "chunk": cfg["chunk_frames"]}
 
 
-def matrix(name: str, quality: str) -> list[dict]:
+def covered(done: list[str]) -> dict[str, set]:
+    """Frames already rendered in an earlier run, from its artifact names frames-<scene>-<start>[-<end>]
+    (names without <end> came from 30-frame chunks)."""
+    out: dict[str, set] = {}
+    for name in done:
+        m = __import__("re").fullmatch(r"frames-(s\d+)-(\d+)(?:-(\d+))?", name.strip())
+        if m:
+            a = int(m.group(2))
+            b = int(m.group(3)) if m.group(3) else a + 30
+            out.setdefault(m.group(1), set()).update(range(a, b))
+    return out
+
+
+def matrix(name: str, quality: str, done: list[str] | None = None) -> list[dict]:
     pr, ps = project(name), preset(quality)
+    have = covered(done or [])
     out = []
     for sc in pr["scenes"]:
         n = int(round(sc["seconds"] * ps["fps"]))
-        for a in range(0, n, ps["chunk"]):
-            out.append({"scene": sc["id"], "start": a, "end": min(n, a + ps["chunk"])})
+        todo = [f for f in range(n) if f not in have.get(sc["id"], set())]
+        i = 0
+        while i < len(todo):                          # contiguous runs, split into chunks
+            a = todo[i]
+            b = a
+            while i < len(todo) and todo[i] == b and b - a < ps["chunk"]:
+                b += 1
+                i += 1
+            out.append({"scene": sc["id"], "start": a, "end": b})
     return out
 
 
@@ -77,9 +98,10 @@ def main():
     ap.add_argument("--start", type=int, default=0)
     ap.add_argument("--end", type=int, default=10 ** 6)
     ap.add_argument("--quality", default="final")
+    ap.add_argument("--done", default="", help="artifact names already rendered in an earlier run (space separated)")
     a = ap.parse_args(argv)
     if a.cmd == "matrix":
-        m = matrix(a.project, a.quality)
+        m = matrix(a.project, a.quality, a.done.split())
         line = "matrix=" + json.dumps({"include": m})
         if os.environ.get("GITHUB_OUTPUT"):
             with open(os.environ["GITHUB_OUTPUT"], "a") as f:

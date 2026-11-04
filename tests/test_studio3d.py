@@ -61,3 +61,12 @@ def test_assemble_and_qc_on_synthetic_frames(tmp_path, monkeypatch):
     qc = json.loads((proj / "07_final" / "qc.json").read_text())
     assert qc["passed"], qc
     assert (proj / "07_final" / "20990101_synthetic_contact_sheet.jpg").exists()
+
+
+def test_rerun_only_renders_missing_frames():
+    name = PROJECTS[0].parents[1].name
+    done = ["frames-s01-0-12", "frames-s01-30", "other-artifact"]
+    m = runner.matrix(name, "final", done)
+    s01 = [f for c in m if c["scene"] == "s01" for f in range(c["start"], c["end"])]
+    assert not set(s01) & (set(range(0, 12)) | set(range(30, 60)))
+    assert set(range(12, 30)) <= set(s01)
