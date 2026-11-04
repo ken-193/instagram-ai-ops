@@ -1,0 +1,14 @@
+{
+  "beauty": {
+    "file_id": "1kE06nrkjlabnkaqqTh2x5cUMQMtXWstz",
+    "sha256": "979ec7f1e4436d03691bfc2d9b7d5aef3481069d32ef3d2d31b7540ac89a1ba9",
+    "fps": 30,
+    "frames": 240
+  },
+  "river": {
+    "file_id": "1iysCPJHw9dVJRSgU7Oy_88rv8-lc2UTP",
+    "sha256": "8aebddedb17c508989e3ce88809e9773df9d30a04bfaa904288662b4c38abbf6",
+    "fps": 30,
+    "frames": 102
+  }
+}
