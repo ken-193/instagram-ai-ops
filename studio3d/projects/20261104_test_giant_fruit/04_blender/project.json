@@ -1,0 +1,9 @@
+{
+  "name": "20261104_test_giant_fruit",
+  "title": "テスト：巨大な緑色の果物が、日本の川をゆっくり流れてくる",
+  "account": "世界の仕様外",
+  "scenes": [
+    {"id": "s01", "file": "s01_aerial_crane.py", "seconds": 5.0, "camera": "俯瞰 → クレーンダウン＋ドリーイン"},
+    {"id": "s02", "file": "s02_water_tracking.py", "seconds": 5.0, "camera": "水面ローアングル・トラッキング＋手持ち揺れ"}
+  ]
+}

@@ -4,3 +4,6 @@ posts/*/out/
 *.pyc
 .pytest_cache/
 posts/*/clips/
+studio3d/projects/*/05_render/
+studio3d/projects/*/06_audio/
+studio3d/projects/*/07_final/

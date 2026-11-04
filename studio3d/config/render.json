@@ -1,0 +1,9 @@
+{
+  "comment": "Render presets. final = 1080x1920 rendered natively; draft = 540x960 upscaled (quick checks). ~29 s/frame (final) on a 4-core GitHub runner, ~7 s (draft).",
+  "fps": 30,
+  "chunk_frames": 30,
+  "presets": {
+    "final": {"width": 1080, "height": 1920, "samples": 12},
+    "draft": {"width": 540, "height": 960, "samples": 12}
+  }
+}

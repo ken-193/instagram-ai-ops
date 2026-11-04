@@ -1,0 +1,14 @@
+{
+  "comment": "Google Drive folder IDs for 世界の仕様外 (not secrets). Root = My Drive/instagram_reel_post (created 2026-11-04).",
+  "root": "1tKpxb1tuBUz7F1xCUcj_bQ-EYF8ccmVz",
+  "projects": "1Prcu9upDDQBW6Itgk5zFeOVDTjT2h8fG",
+  "assets": "1J3jgrlRMiASQIP1uWMk-XnXRtf4FCeAS",
+  "assets_sub": {
+    "sound_effects": "1YYSylsmIFqQ9a7EaxyCcAYw1E9kYRoPk",
+    "music": "1DWIh_mSiOTs-iLtS542zTrUSFXIOp-L8",
+    "models": "1py4V_mKbo7JP4y-oNkG5_cIVz6tC3Vp2",
+    "textures": "1D2uZG3NBQ2Kk2jgRIWm_wASB4PjRzlC_"
+  },
+  "completed": "12BbQ2LjgnOAh1gGWo_4PA9leCUewVVY6",
+  "project_subfolders": ["01_planning", "02_script", "03_storyboard", "04_blender", "05_render", "06_audio", "07_final"]
+}

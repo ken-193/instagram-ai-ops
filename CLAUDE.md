@@ -22,6 +22,9 @@
 6. `python -m pytest -q tests` が通ることを確認してコミット。main に入ると produce ワークフローが本番レンダリング→**ナレーション読み上げチェック**（音読さんの音声をWhisperで聞き取り、台本の読みと照合。1行でも一致率85%未満なら承認依頼を出さない）→Drive→承認依頼を行う。
    長い「……」の後の単語は聞き取りが落ちやすいので、別の行に分けて `pause_after` で間を作る（例: 「たどり着いたのは…」「鳴門。」）。
 
+## 3Dアニメーション（世界の仕様外）
+Blenderによる3D動画の制作は `studio3d/` で行い、ルールは **`studio3d/CLAUDE.md`** に従う（企画→台本→絵コンテ→Blender Python→並列レンダリング→Google Drive `instagram_reel_post` 保存）。
+
 ## 投稿の仕組み（Muse）
 承認後は Drive `11_Muse投稿キュー` に承認済みの版だけをコピーし、Museが投稿する（docs/MUSE_HANDOFF.md）。
 `11_Muse投稿キュー` には承認フロー以外から絶対に何も置かない。投稿方式は `config/publishing.json`（muse / api）。
