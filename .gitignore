@@ -3,3 +3,4 @@ __pycache__/
 posts/*/out/
 *.pyc
 .pytest_cache/
+posts/*/clips/

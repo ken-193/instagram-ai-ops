@@ -54,6 +54,9 @@ jobs:
           restore-keys: tts-
       - name: Guard (limits / duplicate protection)
         run: python -m pipeline.ops guard "${{ steps.pid.outputs.id }}"
+      - name: Fetch pre-rendered 3D clips (if the post has any)
+        run: |
+          if [ -f "posts/${{ steps.pid.outputs.id }}/clips.json" ]; then python -m pipeline.clips fetch "${{ steps.pid.outputs.id }}"; fi
       - name: Build + QC
         run: python -m pipeline.build "${{ steps.pid.outputs.id }}"
       - uses: actions/cache@v4  # Whisper model for the narration readback check

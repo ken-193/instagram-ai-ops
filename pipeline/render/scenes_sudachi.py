@@ -399,6 +399,21 @@ def finish_cam(cv: Canvas, zoom=1.0, cx=W / 2, cy=H / 2, rot=0.0):
     cv.d = ImageDraw.Draw(cv.img)
 
 
+def clip_bg(cv: Canvas, P, t) -> bool:
+    """Paste the pre-rendered 3D frame for this scene time (Blender hero shot). False -> draw the 2.5D version."""
+    if not P.get("clip"):
+        return False
+    from .. import clips
+    from .engine import RUNTIME
+    im = clips.frame(RUNTIME.get("post_dir"), P["clip"], t)
+    if im is None:
+        return False
+    if im.size != cv.img.size:
+        im = im.resize(cv.img.size, Image.LANCZOS)
+    cv.img.paste(im, (0, 0))
+    return True
+
+
 def bars(cv: Canvas):
     cv.rect(0, 0, W, 130, fill=(12, 12, 14, 220))
     cv.rect(0, H - 150, W, H, fill=(12, 12, 14, 220))
@@ -416,7 +431,9 @@ def slowmo(t, a, b, r):
 @scene("sd_river")
 def sd_river(cv: Canvas, t, dur, P, ctx: SceneCtx):
     split = P.get("granny_at", 3.1)
-    if t < split:                      # water-level tracking of the giant sudachi
+    if t < split and clip_bg(cv, P, t):   # real 3D shot (Blender) when available
+        pass
+    elif t < split:                    # water-level tracking of the giant sudachi (2.5D fallback)
         q = t / split
         sky(cv, ((150, 200, 236), (236, 240, 226)))
         hills(cv, 820, [(120, 160, 120), (86, 132, 92), (64, 110, 70)], par=t * 80)
@@ -680,6 +697,9 @@ def sd_ponzu(cv: Canvas, t, dur, P, ctx: SceneCtx):
 # ---------------------------------------------------------------- S8 the reveal (Tokushima)
 @scene("sd_reveal")
 def sd_reveal(cv: Canvas, t, dur, P, ctx: SceneCtx):
+    if clip_bg(cv, P, t):
+        _reveal_text(cv, t, P)
+        return
     cv.img.paste(gradient(cv.ss, (232, 246, 220), (176, 222, 160)), (0, 0))
     bokeh(cv, t)
     z = 1.0 + 0.12 * ease_in_out(clamp(t / dur))
@@ -695,6 +715,10 @@ def sd_reveal(cv: Canvas, t, dur, P, ctx: SceneCtx):
         cv.polygon([(x, y - s), (x + s * 0.25, y), (x, y + s), (x - s * 0.25, y)], fill=(255, 255, 255, 230))
         cv.polygon([(x - s, y), (x, y + s * 0.25), (x + s, y), (x, y - s * 0.25)], fill=(255, 255, 255, 230))
     finish_cam(cv, z, 540, 1000)
+    _reveal_text(cv, t, P)
+
+
+def _reveal_text(cv: Canvas, t, P):
     for i, (txt, at, size, y) in enumerate(P.get("telops", [])):
         p = seg(t, at, 0.4)
         if p <= 0:

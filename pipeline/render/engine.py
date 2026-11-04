@@ -19,6 +19,7 @@ W = BRAND["video"]["width"]
 H = BRAND["video"]["height"]
 FPS = BRAND["video"]["fps"]
 SAFE = BRAND["safe_area"]
+RUNTIME: dict = {"post_dir": None}   # set by the build workers (used to find pre-rendered 3D clips)
 
 
 def hex_rgb(h: str) -> tuple[int, int, int]:

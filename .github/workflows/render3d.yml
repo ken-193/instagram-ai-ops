@@ -1,0 +1,74 @@
+name: render3d
+# Render Blender (Cycles, CPU) hero shots for a post in parallel chunks, encode them to 1080x1920 mp4,
+# upload to Drive 05/3d_clips/<post_id>/ and record ids + sha256 in posts/<id>/clips.json.
+# Not a production run: no approval state change. Run it before produce when a script uses "clip" params.
+on:
+  workflow_dispatch:
+    inputs:
+      post_id: {description: "投稿ID", required: true}
+      res: {description: "render width (height = 16:9)", required: false, default: "540"}
+      samples: {description: "Cycles samples (denoised)", required: false, default: "16"}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render3d-${{ inputs.post_id }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - {shot: river, start: 0, end: 102}
+          - {shot: beauty, start: 0, end: 80}
+          - {shot: beauty, start: 80, end: 160}
+          - {shot: beauty, start: 160, end: 240}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.13", cache: pip}
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq libxrender1 libxxf86vm1 libxfixes3 libxi6 libxkbcommon0 libsm6 libgl1 libegl1
+      - run: pip install bpy==5.2.3
+      - name: Render frames
+        run: |
+          python pipeline/render3d/sudachi_shots.py -- ${{ matrix.shot }} frames/${{ matrix.shot }} \
+            --start ${{ matrix.start }} --end ${{ matrix.end }} --res ${{ inputs.res }} --samples ${{ inputs.samples }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frames-${{ matrix.shot }}-${{ matrix.start }}
+          path: frames/
+          retention-days: 7
+
+  publish:
+    needs: render
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+      GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+      GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12", cache: pip}
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with: {pattern: "frames-*", path: frames, merge-multiple: true}
+      - name: Encode + upload to Drive + record clips.json
+        run: |
+          for shot in $(ls frames); do
+            python -m pipeline.clips encode "${{ inputs.post_id }}" "$shot" "frames/$shot" "$shot.mp4"
+            python -m pipeline.clips upload "${{ inputs.post_id }}" "$shot" "$shot.mp4"
+          done
+      - name: Commit clips.json
+        run: |
+          git config user.name "reel-bot" && git config user.email "reel-bot@users.noreply.github.com"
+          git add "posts/${{ inputs.post_id }}/clips.json"
+          git commit -m "${{ inputs.post_id }}: 3D clips rendered" || exit 0
+          for i in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && break; sleep 5; done

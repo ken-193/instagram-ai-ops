@@ -74,7 +74,9 @@ _G: dict = {}
 
 
 def _init_worker(script, timeline, ss):
+    from .render import engine
     _G.update(script=script, timeline=timeline, ss=ss)
+    engine.RUNTIME["post_dir"] = ROOT / "posts" / script["post_id"]
 
 
 def _scene_at(t: float) -> int:
