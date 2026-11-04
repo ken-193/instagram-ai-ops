@@ -1,7 +1,7 @@
 {
   "post_id": "IG-20261103-001",
   "title": "もしも桃太郎がすだちから生まれたら？",
-  "built_at": "2026-11-03T22:23:07+00:00",
+  "built_at": "2026-11-04T13:01:16+00:00",
   "duration_sec": 51.033,
   "tts_backend": "ondoku",
   "tts_options": {
@@ -9,7 +9,7 @@
     "speed": 1.1,
     "pitch": 0.0
   },
-  "tts_chars_sent": 125,
+  "tts_chars_sent": null,
   "tts_model": null,
   "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
   "render": {
@@ -18,10 +18,10 @@
     "fps": 30,
     "size": "1080x1920"
   },
-  "reel_sha256": "e29ec423c2980123dde0cbf39b9c06f3d153174383e79eb5ec256dac088cd23f",
-  "reel_bytes": 14040154,
+  "reel_sha256": "3f68ed2c104228fc6de10b4c42cc833dab19e2e6d3bcd7a69029cc00b008ec69",
+  "reel_bytes": 16162307,
   "qc_passed": true,
-  "build_seconds": 920.3,
+  "build_seconds": 875.9,
   "cost_usd": 0.0,
   "categories": [
     "fiction"

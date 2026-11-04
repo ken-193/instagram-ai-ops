@@ -43,7 +43,7 @@
 |---|---|
 | ナレーション | 昔々、あるところに… 巨大なすだちが、流れてきました。 |
 | 画面内テキスト | （字幕のみ） |
-| アニメーション | のどかな川を、異常に大きな緑のすだちが流れてくる。水面すれすれで追い、川岸のおばあさんが驚く。 |
+| アニメーション | （3D・Blender）のどかな川を、異常に大きな緑のすだちが流れてくる。水面すれすれのカメラで追い、水面に映り込む。その後、川岸のおばあさんが驚く（2.5D）。 |
 | カメラワーク | 水面すれすれの追従 → おばあさんへ寄る |
 | 効果音 | stream@0, birds@0.2, impact@0.6 |
 | 動画生成プロンプト | Stylised 3D CG animation (rounded, soft characters, film lighting), vertical 9:16, a peaceful Japanese countryside river, a gigantic bright green sudachi citrus floats downstream, water-level tracking shot, an old woman on the bank is shocked, no text |
@@ -149,7 +149,7 @@
 |---|---|
 | ナレーション | ちなみに、このすだち。 全国の出荷量の約98%が、徳島県産。 |
 | 画面内テキスト | 実はこれ、徳島県産。 / 全国のすだち出荷量の約98%。 / 徳島のすだち。 / ※出荷量（農林水産省 地理的表示登録資料より） |
-| アニメーション | 受け取ったすだちへカメラがゆっくり近づく。皮の凹凸、自然な緑、みずみずしいきらめき。爽やかな緑の背景で徳島県産を明かす。 |
+| アニメーション | （3D・Blender）みずみずしいすだちと切り口のアップ。水滴、果皮の凹凸、緑のボケ背景。カメラはゆっくり回り込みながら近づく。テロップで徳島県産を明かす。 |
 | カメラワーク | すだちへのスロードリーイン |
 | 効果音 | sparkle@0.6, ding@2.4, sparkle@4.4 |
 | 動画生成プロンプト | Stylised 3D CG animation (rounded, soft characters, film lighting), vertical 9:16, macro beauty shot of one fresh bright green sudachi with dimpled peel and glistening droplets on a fresh green bokeh background, slow push-in, product commercial lighting, no text |
@@ -208,3 +208,4 @@
 - 鬼の台詞（「何者だ！」「……ポン酢、ある？」）は音読さんの Keita（低めのピッチ）で、ナレーション（Masaru）と声を分けた。
 - 爆発直後に BGM を突然止め、無音の中で鬼の一言を聞かせる（bgm.envelope）。
 - 暴力表現はコミカルに（鬼は倒されず、酸っぱさで泣くだけ）。
+- 2026-11-04 オーナー判断（案C）：s1冒頭の川のショットと s8 のすだちのアップを Blender（Cycles）の本物の3Dに差し替え。render3d ワークフローで描画（540×960 → 1080×1920 に拡大）し、Drive 05/3d_clips に保存。produce は clips.json の sha256 を照合して使う。クリップがない場合は従来の2.5Dで描く。
