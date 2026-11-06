@@ -69,6 +69,7 @@ def render(name: str, scene_id: str, start: int, end: int, quality: str) -> None
     pr, ps = project(name), preset(quality)
     sc = next(s for s in pr["scenes"] if s["id"] == scene_id)
     path = HERE / "projects" / name / "04_blender" / sc["file"]
+    sys.path.insert(0, str(path.parent))                    # lets scene files share a project-local _common.py
     spec = importlib.util.spec_from_file_location(f"scene_{scene_id}", path)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -97,11 +98,15 @@ def main():
     ap.add_argument("scene", nargs="?")
     ap.add_argument("--start", type=int, default=0)
     ap.add_argument("--end", type=int, default=10 ** 6)
-    ap.add_argument("--quality", default="final")
+    ap.add_argument("--quality", default=None, help="default: project.json quality, else final")
     ap.add_argument("--done", default="", help="artifact names already rendered in an earlier run (space separated)")
     a = ap.parse_args(argv)
+    a.quality = a.quality or project(a.project).get("quality", "final")
     if a.cmd == "matrix":
         m = matrix(a.project, a.quality, a.done.split())
+        if os.environ.get("GITHUB_OUTPUT"):
+            with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                f.write(f"quality={a.quality}\n")
         line = "matrix=" + json.dumps({"include": m})
         if os.environ.get("GITHUB_OUTPUT"):
             with open(os.environ["GITHUB_OUTPUT"], "a") as f:

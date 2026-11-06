@@ -117,6 +117,11 @@ def main(argv=None):
         if n != want:
             raise SystemExit(f"{sc['id']}: {n} frames rendered, {want} expected")
         out = rend / f"{a.project}_{sc['id']}.mp4"
+        if sc.get("hud"):                                   # on-screen text drawn on the upscaled frames
+            from . import hud
+            lay = rend / "hud" / sc["id"]
+            hud.apply(frames, lay, fps, sc["hud"], pr.get("series", {}))
+            frames = lay
         encode_scene(frames, out, fps, 1080, 1920)
         parts.append(out)
     final = fin / f"{a.project}_final.mp4"
