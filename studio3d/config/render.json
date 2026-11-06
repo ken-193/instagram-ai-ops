@@ -1,5 +1,5 @@
 {
-  "comment": "Render presets. final = 1080x1920 native; draft = 540x960 upscaled. Measured on GitHub-hosted runners (private repo): ~76 s/frame final, ~19 s draft. Chunks of 12 frames keep each job well under its time limit.",
+  "comment": "Render presets. final = 1080x1920 native; draft = 540x960 upscaled. Measured on GitHub-hosted runners (private repo): ~76 s/frame final, ~19 s draft. Chunks of 12 frames keep each job well under its time limit. hd = 720x1280 native, upscaled to 1080x1920 (the blocky-diorama look; ~8 s/frame dev box, ~20 s expected on runners).",
   "fps": 30,
   "chunk_frames": 12,
   "presets": {
@@ -12,6 +12,11 @@
       "width": 540,
       "height": 960,
       "samples": 12
+    },
+    "hd": {
+      "width": 720,
+      "height": 1280,
+      "samples": 8
     }
   }
 }

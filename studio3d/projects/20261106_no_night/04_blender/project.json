@@ -1,0 +1,215 @@
+{
+  "name": "20261106_no_night",
+  "title": "もしも地球から「夜」がなくなったら？",
+  "account": "世界の仕様外",
+  "quality": "hd",
+  "series": {
+    "question": "もしも夜がなくなったら？",
+    "keyword": "夜"
+  },
+  "scenes": [
+    {
+      "id": "s01",
+      "file": "s01_sun_returns.py",
+      "seconds": 5.0,
+      "camera": "夕暮れ → 太陽が逆戻り（ドリーイン）",
+      "hud": {
+        "big_title": true,
+        "clock": {
+          "label": "夜が来るまで",
+          "countdown": 3.0
+        },
+        "place": "日本・住宅街（夕方6時59分）",
+        "headline": "夜が、来なかった。",
+        "keyword": "夜",
+        "sub": [
+          "沈みかけた太陽が、空に戻っていく"
+        ],
+        "at": 3.1
+      }
+    },
+    {
+      "id": "s02",
+      "file": "s02_cant_sleep.py",
+      "seconds": 5.0,
+      "camera": "子ども部屋の俯瞰 → 寄り",
+      "hud": {
+        "clock": {
+          "label": "夜が消えてから",
+          "from_min": 1260,
+          "to_min": 1262,
+          "speed": 60
+        },
+        "place": "日本・子ども部屋（夜9時）",
+        "headline": "まぶしくて、眠れない",
+        "sub": [
+          "光を浴びると、眠りのホルモン",
+          "「メラトニン」が出にくくなる"
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "file": "s03_no_stars.py",
+      "seconds": 5.0,
+      "camera": "家族の周りを低くオービット",
+      "hud": {
+        "clock": {
+          "label": "夜が消えてから",
+          "from_min": 1560,
+          "to_min": 1565,
+          "speed": 60
+        },
+        "place": "日本・住宅街（夜中2時）",
+        "headline": "夜空が、消えた",
+        "keyword": "夜空",
+        "sub": [
+          "もともと世界の3人に1人は、光害で天の川が見えない",
+          "いまは全員、星が見えない"
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "file": "s04_turtles.py",
+      "seconds": 5.0,
+      "camera": "砂浜すれすれのトラッキング",
+      "hud": {
+        "clock": {
+          "label": "夜が消えてから",
+          "from_min": 11400,
+          "to_min": 11405,
+          "speed": 60
+        },
+        "place": "オーストラリア・砂浜（夜10時）",
+        "headline": "子ガメが、海に帰れない",
+        "sub": [
+          "子ガメは「いちばん明るい方」へ進んで海を目指す",
+          "いまは、どこもまぶしい"
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "file": "s05_fireflies.py",
+      "seconds": 5.0,
+      "camera": "川沿いを前進",
+      "hud": {
+        "clock": {
+          "label": "夜が消えてから",
+          "from_min": 44430,
+          "to_min": 44435,
+          "speed": 60
+        },
+        "place": "日本・川辺（6月 夜8時半）",
+        "headline": "ホタルが、恋人を見つけられない",
+        "sub": [
+          "ホタルは光の点滅で、相手を探す"
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "file": "s06_night_animals.py",
+      "seconds": 5.0,
+      "camera": "フクロウの周りをオービット",
+      "hud": {
+        "clock": {
+          "label": "夜が消えてから",
+          "from_min": 87780,
+          "to_min": 87785,
+          "speed": 60
+        },
+        "place": "世界の森（夜11時）",
+        "headline": "夜の生き物は、どこへ？",
+        "keyword": "夜",
+        "sub": [
+          "脊椎動物の約3割、無脊椎動物の約6割は夜行性"
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "file": "s07_clock_noon.py",
+      "seconds": 5.0,
+      "camera": "群衆から時計塔へクレーンアップ",
+      "hud": {
+        "clock": {
+          "label": "夜が消えてから",
+          "from_min": 144000,
+          "to_min": 144005,
+          "speed": 60
+        },
+        "place": "日本・駅前広場（夜12時）",
+        "headline": "時計は、夜12時",
+        "sub": [
+          "太陽は、真上にある"
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "file": "s08_fireworks_day.py",
+      "seconds": 5.0,
+      "camera": "低い位置から空を見上げる",
+      "hud": {
+        "clock": {
+          "label": "夜が消えてから",
+          "from_min": 526770,
+          "to_min": 526775,
+          "speed": 60
+        },
+        "place": "日本・夏祭り（夜7時半）",
+        "headline": "花火が、見えない",
+        "keyword": "花火",
+        "sub": [
+          "まぶしい空に、音だけが鳴る"
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "file": "s09_awa_day.py",
+      "seconds": 5.0,
+      "camera": "踊り手の列に並走",
+      "hud": {
+        "clock": {
+          "label": "夜が消えてから",
+          "from_min": 526800,
+          "to_min": 526805,
+          "speed": 60
+        },
+        "place": "徳島・阿波おどり（夜8時）",
+        "headline": "でも、徳島は踊っていた",
+        "keyword": "徳島",
+        "sub": [
+          "阿波おどりは本来、夜（演舞場は18〜22時）に踊る祭り"
+        ]
+      }
+    },
+    {
+      "id": "s10",
+      "file": "s10_crane_up.py",
+      "seconds": 5.0,
+      "camera": "踊りの列から上空へクレーンアップ",
+      "hud": {
+        "clock": {
+          "label": "夜が消えてから",
+          "from_min": 526805,
+          "to_min": 526810,
+          "speed": 60
+        },
+        "place": "徳島・阿波おどり（夜8時）",
+        "headline": "夜がなくても、踊る。",
+        "keyword": "踊る",
+        "sub": [],
+        "at": 0.3,
+        "end_card": [
+          "あなたが一番さみしい「夜」は？",
+          "コメントで教えてね"
+        ],
+        "end_at": 2.4
+      }
+    }
+  ]
+}

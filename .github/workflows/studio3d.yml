@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       project: {description: "プロジェクト名 (studio3d/projects/<name>)", required: true}
-      quality: {description: "final (1080x1920) / draft (540x960 拡大)", required: false, default: "final"}
+      quality: {description: "空欄=project.json の指定 / final (1080x1920) / hd (720x1280 拡大) / draft (540x960 拡大)", required: false, default: ""}
       reuse_run_id: {description: "やり直し時：前回の実行ID（描き終わったコマを再利用）", required: false, default: ""}
   push:
     branches: [main]
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       project: ${{ steps.p.outputs.project }}
-      quality: ${{ steps.p.outputs.quality }}
+      quality: ${{ steps.m.outputs.quality }}
       matrix: ${{ steps.m.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
@@ -34,9 +34,9 @@ jobs:
       - id: p
         run: |
           if [ -n "${{ github.event.inputs.project }}" ]; then p="${{ github.event.inputs.project }}"; q="${{ github.event.inputs.quality }}";
-          else p=$(git diff --name-only HEAD~1 HEAD -- 'studio3d/projects/*/04_blender/project.json' | head -1 | cut -d/ -f3); q=final; fi
+          else p=$(git diff --name-only HEAD~1 HEAD -- 'studio3d/projects/*/04_blender/project.json' | head -1 | cut -d/ -f3); q=""; fi
           [ -n "$p" ] || { echo "no project"; exit 1; }
-          echo "project=$p" >> "$GITHUB_OUTPUT"; echo "quality=${q:-final}" >> "$GITHUB_OUTPUT"
+          echo "project=$p" >> "$GITHUB_OUTPUT"; echo "quality=$q" >> "$GITHUB_OUTPUT"
       - id: m
         env: {GH_TOKEN: "${{ github.token }}"}
         run: |
@@ -44,7 +44,8 @@ jobs:
           if [ -n "${{ github.event.inputs.reuse_run_id }}" ]; then
             done=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.event.inputs.reuse_run_id }}/artifacts" --paginate -q '.artifacts[] | select(.expired == false) | .name' | tr '\n' ' ')
           fi
-          python studio3d/run.py matrix "${{ steps.p.outputs.project }}" --quality "${{ steps.p.outputs.quality }}" --done "$done"
+          q="${{ steps.p.outputs.quality }}"
+          python studio3d/run.py matrix "${{ steps.p.outputs.project }}" ${q:+--quality "$q"} --done "$done"
 
   render:
     needs: plan
