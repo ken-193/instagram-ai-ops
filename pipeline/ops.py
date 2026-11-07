@@ -110,6 +110,8 @@ def submit(post_id: str) -> None:
                       ("script.md", post_dir / "script.md"), ("script.json", post_dir / "script.json"),
                       ("caption.txt", post_dir / "caption.txt"), ("sources.md", post_dir / "sources.md"),
                       ("metadata.json", post_dir / "metadata.json"), ("quality_check.md", post_dir / "quality_check.md")]:
+        if name in ("script.md", "script.json") and not src.exists():  # 3D posts (studio3d) have no 2D script
+            continue
         files[name] = drive.upload(src, folder, name)
     extras = [("narration_check.md", post_dir / "out/narration_check.md"),
               ("subtitles.srt", post_dir / "out/subtitles.srt"), ("narration.wav", post_dir / "out/narration.wav"),
@@ -125,9 +127,10 @@ def submit(post_id: str) -> None:
     st["drive"] = {"folder_id": folder, "files": files}
     st["reel_sha256"] = meta["reel_sha256"]
 
-    script = json.loads((post_dir / "script.json").read_text(encoding="utf-8"))
+    sp = post_dir / "script.json"
+    title = json.loads(sp.read_text(encoding="utf-8"))["title"] if sp.exists() else meta["title"]
     body = "\n".join([
-        f"## {script['title']}", "",
+        f"## {title}", "",
         f"- 投稿ID: `{post_id}` / 版: rev {st['revision']} / 尺: {meta['duration_sec']:.1f}秒",
         f"- 動画（iPhoneのDriveアプリで再生）: {drive.web_link(files['reel.mp4'])}",
         f"- フォルダ: {drive.web_link(folder, folder=True)}",
@@ -141,12 +144,12 @@ def submit(post_id: str) -> None:
     if st.get("issue_number"):
         notify.issue_comment(st["issue_number"], "🔁 新しい版を作成しました。\n\n" + body)
     else:
-        st["issue_number"] = notify.create_issue(f"[承認待ち] {post_id} {script['title']}", body, ["approval"],
+        st["issue_number"] = notify.create_issue(f"[承認待ち] {post_id} {title}", body, ["approval"],
                                                  os.environ.get("APPROVER_LOGIN"))
     state.transition(st, "pending_approval", "pipeline", f"rev {st['revision']} sent for review")
     state.save(st)
     git_commit(f"{post_id}: rev {st['revision']} pending approval")
-    notify.push(f"承認待ち: {script['title']}", "GitHubアプリで確認して /approve /revise /reject を返信",
+    notify.push(f"承認待ち: {title}", "GitHubアプリで確認して /approve /revise /reject を返信",
                 f"https://github.com/{os.environ.get('GITHUB_REPOSITORY')}/issues/{st['issue_number']}")
 
 

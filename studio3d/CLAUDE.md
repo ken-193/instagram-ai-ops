@@ -103,3 +103,6 @@ Google Drive：`マイドライブ/instagram_reel_post/`（IDは `studio3d/confi
 - 自動チェック（解像度・fps・尺・コーデック・黒画面・静止）に合格したものだけを保存する。
 - 同名ファイルは新しい版として上書き（Driveの版履歴が残る）。既存ファイルの削除はしない。
 - `03_completed` に置いた動画は投稿候補。Instagram への投稿は、既存の承認フロー（直下の CLAUDE.md）を通すまで行わない。
+- 投稿に進めるとき：`posts/<投稿ID>/` に `caption.txt`（仮定・フィクションの明示と音読さんのクレジット）・`sources.md`・`post.json`（hook・categories・tokushima_ending_type・cover_at）を書いて main に入れ、
+  `studio3d-submit` ワークフローを手動実行（project・post_id・完成動画を作った studio3d の run_id）。Drive `06_承認待ち` と承認依頼 Issue ができ、
+  オーナーがその Issue に `/approve` と返信したときだけ `11_Muse投稿キュー` にコピーされる（チャットでの「承認」だけではキューに入れない）。

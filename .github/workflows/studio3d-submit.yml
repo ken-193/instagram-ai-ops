@@ -1,0 +1,44 @@
+name: studio3d-submit
+# Send a finished 3D reel (studio3d) into the normal approval flow: Drive 06_承認待ち + approval issue.
+# Posting still needs the owner's /approve on that issue (then publish.yml copies it to 11_Muse投稿キュー).
+on:
+  workflow_dispatch:
+    inputs:
+      project: {description: "studio3d プロジェクト名", required: true}
+      post_id: {description: "投稿ID (例 IG-20261107-001)。posts/<id>/caption.txt と sources.md が必要", required: true}
+      run_id: {description: "完成動画を作った studio3d の実行ID（Artifacts final-<project> を使う）", required: true}
+
+permissions:
+  contents: write
+  issues: write
+  actions: read
+
+concurrency:
+  group: produce-${{ github.event.inputs.post_id }}
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      APPROVER_LOGIN: ${{ vars.APPROVER_LOGIN || github.repository_owner }}
+      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+      GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+      GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+      GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12", cache: pip}
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install -r requirements.txt
+      - run: git config user.name "reel-bot" && git config user.email "reel-bot@users.noreply.github.com"
+      - name: Fetch the finished reel
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: gh run download "${{ github.event.inputs.run_id }}" -R "${{ github.repository }}" -n "final-${{ github.event.inputs.project }}" -D "studio3d/projects/${{ github.event.inputs.project }}/07_final"
+      - name: Prepare post files
+        run: python -m studio3d.submit "${{ github.event.inputs.project }}" "${{ github.event.inputs.post_id }}"
+      - name: Send for approval (Drive 06_承認待ち + GitHub issue)
+        run: python -m pipeline.ops submit "${{ github.event.inputs.post_id }}"
