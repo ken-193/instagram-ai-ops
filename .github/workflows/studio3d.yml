@@ -87,14 +87,17 @@ jobs:
         with: {python-version: "3.12", cache: pip}
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - run: pip install -r requirements.txt
-      - uses: actions/download-artifact@v4
+      - name: Frames from the earlier run (reuse_run_id)
         if: github.event.inputs.reuse_run_id != ''
-        with:
-          pattern: frames-*
-          path: studio3d/projects/${{ needs.plan.outputs.project }}/05_render/frames/
-          merge-multiple: true
-          run-id: ${{ github.event.inputs.reuse_run_id }}
-          github-token: ${{ github.token }}
+        # gh pages through every artifact (download-artifact stopped at 98 of 130 for another run's artifacts)
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          tmp=$(mktemp -d)
+          gh run download "${{ github.event.inputs.reuse_run_id }}" -R "${{ github.repository }}" -p 'frames-*' -D "$tmp"
+          dst="studio3d/projects/${{ needs.plan.outputs.project }}/05_render/frames"
+          mkdir -p "$dst"
+          for d in "$tmp"/frames-*; do cp -r "$d"/. "$dst"/; done
+          echo "artifacts: $(ls -d "$tmp"/frames-* | wc -l)  frames: $(find "$dst" -name '*.png' | wc -l)"
       - uses: actions/download-artifact@v4
         if: needs.render.result == 'success'
         with:
