@@ -1,6 +1,6 @@
 {
   "post_id": "IG-20261107-001",
-  "status": "handed_off",
+  "status": "published",
   "revision": 1,
   "history": [
     {
@@ -30,6 +30,13 @@
       "to": "handed_off",
       "actor": "pipeline",
       "note": "copied to 11_Muse投稿キュー"
+    },
+    {
+      "at": "2026-11-07T23:19:07+00:00",
+      "from": "handed_off",
+      "to": "published",
+      "actor": "ken-193",
+      "note": "posted by Muse (confirmed by owner)"
     }
   ],
   "render_attempts": 0,
@@ -46,7 +53,11 @@
       "narration_check.md": "1v9QCjkGabi7NstrwaDnYg93ONZhJOR6y"
     }
   },
-  "ig": {},
+  "ig": {
+    "permalink": "https://www.instagram.com/reel/DfcGIqTj_Ky/",
+    "published_at": "2026-11-07T23:19:07+00:00",
+    "via": "muse"
+  },
   "insights": {},
   "reel_sha256": "429d14b554138088ac7fabf6cd2dc3c020e4a6b2394ada266c08ba2df6df1a04",
   "issue_number": 47,
