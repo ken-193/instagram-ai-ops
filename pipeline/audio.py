@@ -161,7 +161,26 @@ def sfx_birds(dur=3.0):
     return out
 
 
-SFX = {"pon": sfx_pon, "sparkle": sfx_sparkle, "stream": sfx_stream, "birds": sfx_birds, "roar": sfx_roar, "stomp": sfx_stomp, "splash": sfx_splash, "boom": sfx_boom, "whoosh": sfx_whoosh, "impact": sfx_impact, "ding": sfx_ding, "tick": sfx_tick, "riser": sfx_riser,
+def sfx_firework(dur=2.4):
+    """Whistle up, pop, then crackle (original synthesis)."""
+    t = _t(dur)
+    out = np.zeros(len(t), np.float32)
+    w = int(0.7 * SR)
+    tw = _ts(w)
+    whistle = np.sin(2 * np.pi * np.cumsum(700 + 1500 * tw / 0.7) / SR) * (tw / 0.7) * 0.12
+    out[:w] += whistle.astype(np.float32)
+    pop = sfx_boom(dur - 0.7) * 0.55
+    out[w:w + len(pop)] += pop[: len(out) - w]
+    crng = np.random.default_rng(77)
+    for _ in range(70):
+        s = w + int(crng.uniform(0.15, 1.5) * SR)
+        m = min(int(0.012 * SR), len(out) - s)
+        if m > 0:
+            out[s:s + m] += (crng.standard_normal(m) * np.exp(-_ts(m) * 400) * 0.25).astype(np.float32)
+    return out
+
+
+SFX = {"firework": sfx_firework, "pon": sfx_pon, "sparkle": sfx_sparkle, "stream": sfx_stream, "birds": sfx_birds, "roar": sfx_roar, "stomp": sfx_stomp, "splash": sfx_splash, "boom": sfx_boom, "whoosh": sfx_whoosh, "impact": sfx_impact, "ding": sfx_ding, "tick": sfx_tick, "riser": sfx_riser,
        "rumble": sfx_rumble}
 
 

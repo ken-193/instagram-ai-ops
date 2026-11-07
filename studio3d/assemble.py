@@ -2,8 +2,9 @@
 
   python -m studio3d.assemble <project> [--quality final] [--no-upload]
 
-Steps: frames -> one mp4 per scene (05_render) -> concatenated final mp4 (07_final) -> automatic checks
-(resolution, fps, duration, codec, no black / frozen frames) -> contact sheet (one still per scene) ->
+Steps: frames -> one mp4 per scene (05_render) -> concatenated final mp4 (07_final) -> soundtrack if the
+project has 04_blender/audio.json (narration + effects + BGM, narration readback check) -> automatic checks
+(resolution, fps, duration, codec, audio, no black / frozen frames) -> contact sheet (one still per scene) ->
 upload to Drive instagram_reel_post/01_projects/<project>/... and a copy of the final to 03_completed.
 """
 from __future__ import annotations
@@ -13,6 +14,8 @@ import json
 import subprocess
 import sys
 from pathlib import Path
+
+from . import audio3d
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -44,7 +47,7 @@ def probe(p: Path) -> dict:
     return json.loads(r.stdout)
 
 
-def qc(final: Path, expect_seconds: float, fps: int) -> dict:
+def qc(final: Path, expect_seconds: float, fps: int, expect_audio: bool = False) -> dict:
     info = probe(final)
     v = next(s for s in info["streams"] if s["codec_type"] == "video")
     dur = float(info["format"]["duration"])
@@ -55,6 +58,10 @@ def qc(final: Path, expect_seconds: float, fps: int) -> dict:
         ("H.264 / yuv420p", v["codec_name"] == "h264" and v["pix_fmt"] == "yuv420p", f"{v['codec_name']} {v['pix_fmt']}"),
         ("duration matches the plan", abs(dur - expect_seconds) < 0.3, f"{dur:.2f}s / plan {expect_seconds:.2f}s"),
     ]
+    if expect_audio:
+        a = next((s for s in info["streams"] if s["codec_type"] == "audio"), None)
+        checks.append(("audio track (AAC)", bool(a) and a["codec_name"] == "aac",
+                       f"{a['codec_name']} {a.get('channels')}ch" if a else "no audio"))
     bd = subprocess.run(["ffmpeg", "-i", str(final), "-vf", "blackdetect=d=0.3:pix_th=0.05", "-an", "-f", "null", "-"],
                         capture_output=True, text=True).stderr
     checks.append(("no black segments", "black_start" not in bd, "ok" if "black_start" not in bd else "black detected"))
@@ -101,6 +108,8 @@ def main(argv=None):
     ap.add_argument("project")
     ap.add_argument("--quality", default="final")
     ap.add_argument("--no-upload", action="store_true")
+    ap.add_argument("--whisper-model", default="medium")
+    ap.add_argument("--skip-readback", action="store_true", help="local tests only: skip the Whisper check")
     a = ap.parse_args(argv)
     pdir = HERE / "projects" / a.project
     pr = json.loads((pdir / "04_blender" / "project.json").read_text(encoding="utf-8"))
@@ -125,8 +134,29 @@ def main(argv=None):
         encode_scene(frames, out, fps, 1080, 1920)
         parts.append(out)
     final = fin / f"{a.project}_final.mp4"
-    concat(parts, final)
-    report = qc(final, sum(s["seconds"] for s in pr["scenes"]), fps)
+    cfg = audio3d.load(pdir)
+    extra = []
+    if cfg:
+        silent = fin / f"{a.project}_picture.mp4"
+        concat(parts, silent)
+        aud = pdir / "06_audio"
+        aud.mkdir(parents=True, exist_ok=True)
+        stereo, rows = audio3d.build(pr, cfg, ROOT / ".cache" / "tts")
+        sys.path.insert(0, str(ROOT))
+        from pipeline import audio as amod
+        wav = aud / f"{a.project}_mix.wav"
+        amod.write_wav(wav, stereo)
+        if not a.skip_readback:
+            ok, md = audio3d.readback_check(rows, fin, a.whisper_model)
+            print(md)
+            if not ok:
+                raise SystemExit("narration readback check failed: not uploading")
+            extra = [fin / "narration_check.md"]
+        audio3d.mux(silent, wav, final)
+        silent.unlink()
+    else:
+        concat(parts, final)
+    report = qc(final, sum(s["seconds"] for s in pr["scenes"]), fps, expect_audio=bool(cfg))
     report["quality"] = a.quality
     (fin / "qc.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     contact_sheet(parts, fin / f"{a.project}_contact_sheet.jpg")
@@ -137,7 +167,9 @@ def main(argv=None):
         return
     docs = {k: sorted(p for p in (pdir / k).glob("*") if p.is_file()) for k in ("01_planning", "02_script", "03_storyboard")}
     files = {**docs, "04_blender": sorted((pdir / "04_blender").glob("*.py")) + [pdir / "04_blender" / "project.json"],
-             "05_render": parts, "07_final": [final, fin / "qc.json", fin / f"{a.project}_contact_sheet.jpg"]}
+             "05_render": parts, "07_final": [final, fin / "qc.json", fin / f"{a.project}_contact_sheet.jpg"] + extra}
+    if cfg:
+        files["04_blender"].append(pdir / "04_blender" / "audio.json")
     links = upload(a.project, pdir, files, final)
     (fin / "links.json").write_text(json.dumps(links, indent=2), encoding="utf-8")
     print(json.dumps(links, indent=2))

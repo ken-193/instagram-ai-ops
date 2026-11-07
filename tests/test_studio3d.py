@@ -70,3 +70,67 @@ def test_rerun_only_renders_missing_frames():
     s01 = [f for c in m if c["scene"] == "s01" for f in range(c["start"], c["end"])]
     assert not set(s01) & (set(range(0, 12)) | set(range(30, 60)))
     assert set(range(12, 30)) <= set(s01)
+
+
+# ---------------------------------------------------------------- soundtrack (audio3d)
+def _fake_synth(seconds_per_char=0.12):
+    import numpy as np
+
+    from pipeline import audio
+
+    def synth(text, backend, cache, **kw):
+        return np.full(int(len(text) * seconds_per_char * audio.SR), 0.1, np.float32)
+    return synth
+
+
+def test_no_night_soundtrack_fits_and_mixes(tmp_path):
+    import json
+
+    from pipeline import audio
+    from studio3d import audio3d
+    d = ROOT / "studio3d/projects/20261106_no_night"
+    pr = json.loads((d / "04_blender/project.json").read_text(encoding="utf-8"))
+    cfg = audio3d.load(d)
+    assert cfg and set(cfg["scenes"]) <= {s["id"] for s in pr["scenes"]}
+    for sc in cfg["scenes"].values():
+        for _at, name, _g in sc.get("sfx", []):
+            assert name in audio.SFX
+    stereo, rows = audio3d.build(pr, cfg, tmp_path, synth=_fake_synth())
+    assert stereo.shape == (int(50 * audio.SR), 2)
+    assert len(rows) == 11
+
+
+def test_soundtrack_rejects_narration_that_overruns(tmp_path):
+    import pytest
+
+    from studio3d import audio3d
+    pr = {"scenes": [{"id": "s01", "seconds": 5.0}, {"id": "s02", "seconds": 5.0}]}
+    cfg = {"scenes": {"s01": {"narration": [{"at": 1.0, "text": "あ" * 40}]}}}
+    with pytest.raises(SystemExit, match="ends at"):
+        audio3d.build(pr, cfg, tmp_path, synth=_fake_synth())
+
+
+def test_readback_check_report(tmp_path, monkeypatch):
+    import sys
+    import types
+
+    from studio3d import audio3d
+    heard = {"よるが、こなかった。": "夜が来なかった", "まぶしくて、ねむれない。": "ネコが走る"}
+
+    class FakeModel:
+        def __init__(self, *a, **k):
+            pass
+
+    monkeypatch.setitem(sys.modules, "faster_whisper", types.SimpleNamespace(WhisperModel=FakeModel))
+    from pipeline import narration_check as nc
+    monkeypatch.setattr(nc, "transcribe", lambda m, a, sr, vad=False: heard[a.tag])
+
+    class Clip(list):
+        tag = ""
+    rows = []
+    for t in heard:
+        c = Clip()
+        c.tag = t
+        rows.append({"scene": "s01", "text": t, "tts": t, "audio": c})
+    ok, md = audio3d.readback_check(rows, tmp_path)
+    assert not ok and "NG" in md and (tmp_path / "narration_check.md").exists()

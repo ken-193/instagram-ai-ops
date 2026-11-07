@@ -49,6 +49,7 @@ jobs:
 
   render:
     needs: plan
+    if: ${{ toJson(fromJson(needs.plan.outputs.matrix).include) != '[]' }}   # nothing left to draw (e.g. re-assembling with new sound)
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
@@ -71,9 +72,11 @@ jobs:
 
   assemble:
     needs: [plan, render]
+    if: ${{ !cancelled() && needs.plan.result == 'success' && (needs.render.result == 'success' || needs.render.result == 'skipped') }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
+      ONDOKU_TOKEN: ${{ secrets.ONDOKU_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
       GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
@@ -93,10 +96,21 @@ jobs:
           run-id: ${{ github.event.inputs.reuse_run_id }}
           github-token: ${{ github.token }}
       - uses: actions/download-artifact@v4
+        if: needs.render.result == 'success'
         with:
           pattern: frames-*
           path: studio3d/projects/${{ needs.plan.outputs.project }}/05_render/frames/
           merge-multiple: true
+      - uses: actions/cache@v4  # narration audio: re-assembling must not spend 音読さん characters again
+        with:
+          path: .cache/tts
+          key: tts3d-${{ needs.plan.outputs.project }}-${{ hashFiles(format('studio3d/projects/{0}/04_blender/audio.json', needs.plan.outputs.project)) }}
+          restore-keys: tts3d-${{ needs.plan.outputs.project }}-
+      - uses: actions/cache@v4  # Whisper model for the narration readback check
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-medium
+      - run: pip install -q faster-whisper==1.2.1
       - name: Assemble + QC + upload to Drive
         run: python -m studio3d.assemble "${{ needs.plan.outputs.project }}" --quality "${{ needs.plan.outputs.quality }}"
       - uses: actions/upload-artifact@v4
