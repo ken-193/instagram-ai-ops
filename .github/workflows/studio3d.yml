@@ -49,7 +49,7 @@ jobs:
 
   render:
     needs: plan
-    if: needs.plan.outputs.matrix != '{"include": []}'   # nothing left to draw (e.g. re-assembling with new sound)
+    if: ${{ toJson(fromJson(needs.plan.outputs.matrix).include) != '[]' }}   # nothing left to draw (e.g. re-assembling with new sound)
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
