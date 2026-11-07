@@ -1,0 +1,39 @@
+{
+  "post_id": "IG-20261107-001",
+  "status": "pending_approval",
+  "revision": 1,
+  "history": [
+    {
+      "at": "2026-11-07T11:36:15+00:00",
+      "from": "drafted",
+      "to": "rendered",
+      "actor": "pipeline",
+      "note": "build + QC passed"
+    },
+    {
+      "at": "2026-11-07T11:36:27+00:00",
+      "from": "rendered",
+      "to": "pending_approval",
+      "actor": "pipeline",
+      "note": "rev 1 sent for review"
+    }
+  ],
+  "render_attempts": 0,
+  "publish_attempts": 0,
+  "drive": {
+    "folder_id": "11xh9791wfx5RIKZjBhuerJGAO5aWqDFG",
+    "files": {
+      "reel.mp4": "1eqyvYao424-E4bCPzJrZF1pHjado4baG",
+      "thumbnail.jpg": "12skgihWfvZxenq60lWXK0QGfMqGRtNKe",
+      "caption.txt": "1Oad5Kued7-PxFGZ3tgR5ookTQiSFpR7Q",
+      "sources.md": "1YCUq4PAMwEoswD0VQwJRCvNJ3vdK9q9j",
+      "metadata.json": "1-Ww_EgIg6x6n9rB-lx663hfkdoJUa17R",
+      "quality_check.md": "1f5POqszuZTII1XtfOfAgkD6kliFRRNig",
+      "narration_check.md": "1v9QCjkGabi7NstrwaDnYg93ONZhJOR6y"
+    }
+  },
+  "ig": {},
+  "insights": {},
+  "reel_sha256": "429d14b554138088ac7fabf6cd2dc3c020e4a6b2394ada266c08ba2df6df1a04",
+  "issue_number": 47
+}
