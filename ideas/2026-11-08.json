@@ -1,0 +1,448 @@
+{
+ "date": "2026-11-08",
+ "weights_version": "v1",
+ "note": "世界の仕様外（3Dブロック調）向け。前回『夜がなくなったら？』（投稿済み）の続編として、同じ形式（もしも〇〇がなくなったら？＋早送り時計）と既存の人物・街・祭りセットを再利用できる案を多めにした。",
+ "ideas": [
+  {
+   "title": "もしも地球から「音」がなくなったら？",
+   "hypothesis": "もしも地球から「音」がなくなったら？",
+   "genre": "科学・物理/生活",
+   "hook": "世界が無音に",
+   "tokushima_idea": "阿波おどりの鳴り物が聞こえない→それでも踊りはそろう？",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 5,
+    "clarity": 5,
+    "surprise": 4,
+    "scale": 4,
+    "animation": 4,
+    "tokushima": 4,
+    "engagement": 4,
+    "credibility": 4,
+    "feasibility": 4,
+    "originality": 4
+   }
+  },
+  {
+   "title": "もしも重力が1日だけ半分になったら？",
+   "hypothesis": "もしも重力が1日だけ半分になったら？",
+   "genre": "科学・物理",
+   "hook": "人が月面ジャンプ",
+   "tokushima_idea": "阿波おどりが空中戦に",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 5,
+    "clarity": 5,
+    "surprise": 4,
+    "scale": 5,
+    "animation": 5,
+    "tokushima": 4,
+    "engagement": 4,
+    "credibility": 3,
+    "feasibility": 3,
+    "originality": 3
+   }
+  },
+  {
+   "title": "もしも地球の雨が全部すだち果汁になったら？",
+   "hypothesis": "もしも地球の雨が全部すだち果汁になったら？",
+   "genre": "食料・生活/徳島",
+   "hook": "すっぱい雨",
+   "tokushima_idea": "すだち生産量日本一の徳島だけ平常運転",
+   "ending_type": "前半の仮説が徳島で逆転",
+   "scores": {
+    "hook": 5,
+    "clarity": 5,
+    "surprise": 5,
+    "scale": 4,
+    "animation": 4,
+    "tokushima": 5,
+    "engagement": 4,
+    "credibility": 3,
+    "feasibility": 4,
+    "originality": 5
+   }
+  },
+  {
+   "title": "もしも人間が全員1cmになったら？",
+   "hypothesis": "もしも人間が全員1cmになったら？",
+   "genre": "人類・進化",
+   "hook": "小人の世界",
+   "tokushima_idea": "鳴門の渦潮が宇宙規模に見える",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 5,
+    "clarity": 5,
+    "surprise": 4,
+    "scale": 5,
+    "animation": 5,
+    "tokushima": 4,
+    "engagement": 4,
+    "credibility": 3,
+    "feasibility": 3,
+    "originality": 3
+   }
+  },
+  {
+   "title": "もしも地球から「冬」がなくなったら？",
+   "hypothesis": "もしも地球から「冬」がなくなったら？",
+   "genre": "自然・地球",
+   "hook": "雪が降らない",
+   "tokushima_idea": "",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 4,
+    "clarity": 5,
+    "surprise": 3,
+    "scale": 3,
+    "animation": 4,
+    "tokushima": 3,
+    "engagement": 4,
+    "credibility": 4,
+    "feasibility": 4,
+    "originality": 3
+   }
+  },
+  {
+   "title": "もしも地球から「雲」がなくなったら？",
+   "hypothesis": "もしも地球から「雲」がなくなったら？",
+   "genre": "自然・地球",
+   "hook": "青空しかない",
+   "tokushima_idea": "",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 4,
+    "clarity": 5,
+    "surprise": 3,
+    "scale": 3,
+    "animation": 4,
+    "tokushima": 2,
+    "engagement": 3,
+    "credibility": 4,
+    "feasibility": 4,
+    "originality": 2
+   }
+  },
+  {
+   "title": "もしも1日が48時間になったら？",
+   "hypothesis": "もしも1日が48時間になったら？",
+   "genre": "科学・物理/生活",
+   "hook": "時計がおかしい",
+   "tokushima_idea": "阿波おどりが2倍の長さに",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 4,
+    "clarity": 5,
+    "surprise": 3,
+    "scale": 3,
+    "animation": 4,
+    "tokushima": 3,
+    "engagement": 4,
+    "credibility": 3,
+    "feasibility": 4,
+    "originality": 3
+   }
+  },
+  {
+   "title": "もしも世界中の信号機が全部赤になったら？",
+   "hypothesis": "もしも世界中の信号機が全部赤になったら？",
+   "genre": "交通・物流",
+   "hook": "全世界大渋滞",
+   "tokushima_idea": "徳島は信号の少ない道で平常運転…ではなく",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 4,
+    "clarity": 5,
+    "surprise": 3,
+    "scale": 4,
+    "animation": 4,
+    "tokushima": 2,
+    "engagement": 3,
+    "credibility": 3,
+    "feasibility": 4,
+    "originality": 4
+   }
+  },
+  {
+   "title": "もしも鳴門の渦潮が地球の反対側までつながったら？",
+   "hypothesis": "もしも鳴門の渦潮が地球の反対側までつながったら？",
+   "genre": "自然・地球/徳島",
+   "hook": "渦の向こうはブラジル",
+   "tokushima_idea": "",
+   "ending_type": "徳島が題材",
+   "scores": {
+    "hook": 5,
+    "clarity": 4,
+    "surprise": 5,
+    "scale": 5,
+    "animation": 5,
+    "tokushima": 5,
+    "engagement": 4,
+    "credibility": 2,
+    "feasibility": 3,
+    "originality": 5
+   }
+  },
+  {
+   "title": "もしも地球から「色」がなくなったら？",
+   "hypothesis": "もしも地球から「色」がなくなったら？",
+   "genre": "科学・物理",
+   "hook": "世界がモノクロ",
+   "tokushima_idea": "藍染の藍だけが残る（徳島の藍）",
+   "ending_type": "前半の仮説が徳島で逆転",
+   "scores": {
+    "hook": 5,
+    "clarity": 5,
+    "surprise": 5,
+    "scale": 4,
+    "animation": 5,
+    "tokushima": 5,
+    "engagement": 4,
+    "credibility": 4,
+    "feasibility": 4,
+    "originality": 5
+   }
+  },
+  {
+   "title": "もしも海の水が全部真水になったら？",
+   "hypothesis": "もしも海の水が全部真水になったら？",
+   "genre": "自然・地球",
+   "hook": "海が川になる",
+   "tokushima_idea": "渦潮とわかめはどうなる",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 4,
+    "clarity": 4,
+    "surprise": 4,
+    "scale": 4,
+    "animation": 3,
+    "tokushima": 4,
+    "engagement": 3,
+    "credibility": 4,
+    "feasibility": 3,
+    "originality": 4
+   }
+  },
+  {
+   "title": "もしも人類がしゃべれなくなったら？",
+   "hypothesis": "もしも人類がしゃべれなくなったら？",
+   "genre": "人類・進化",
+   "hook": "全員ジェスチャー",
+   "tokushima_idea": "阿波おどりで会話する徳島",
+   "ending_type": "前半の仮説が徳島で逆転",
+   "scores": {
+    "hook": 4,
+    "clarity": 5,
+    "surprise": 4,
+    "scale": 3,
+    "animation": 4,
+    "tokushima": 4,
+    "engagement": 4,
+    "credibility": 3,
+    "feasibility": 4,
+    "originality": 4
+   }
+  },
+  {
+   "title": "もしも地球の木が全部1日で消えたら？",
+   "hypothesis": "もしも地球の木が全部1日で消えたら？",
+   "genre": "自然・地球/災害",
+   "hook": "森が消える",
+   "tokushima_idea": "",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 4,
+    "clarity": 5,
+    "surprise": 3,
+    "scale": 4,
+    "animation": 4,
+    "tokushima": 2,
+    "engagement": 3,
+    "credibility": 4,
+    "feasibility": 4,
+    "originality": 3
+   }
+  },
+  {
+   "title": "もしもスマホが空を飛ぶようになったら？",
+   "hypothesis": "もしもスマホが空を飛ぶようになったら？",
+   "genre": "テクノロジー・AI",
+   "hook": "スマホの群れ",
+   "tokushima_idea": "",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 4,
+    "clarity": 4,
+    "surprise": 4,
+    "scale": 3,
+    "animation": 4,
+    "tokushima": 2,
+    "engagement": 3,
+    "credibility": 2,
+    "feasibility": 4,
+    "originality": 4
+   }
+  },
+  {
+   "title": "もしも世界中の時計が止まったら？",
+   "hypothesis": "もしも世界中の時計が止まったら？",
+   "genre": "社会・経済",
+   "hook": "時間がわからない",
+   "tokushima_idea": "",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 4,
+    "clarity": 5,
+    "surprise": 3,
+    "scale": 3,
+    "animation": 4,
+    "tokushima": 2,
+    "engagement": 3,
+    "credibility": 3,
+    "feasibility": 4,
+    "originality": 3
+   }
+  },
+  {
+   "title": "もしも徳島の眉山が毎日1m伸びたら？",
+   "hypothesis": "もしも徳島の眉山が毎日1m伸びたら？",
+   "genre": "自然・地球/徳島",
+   "hook": "山が伸びる",
+   "tokushima_idea": "",
+   "ending_type": "徳島が題材",
+   "scores": {
+    "hook": 4,
+    "clarity": 5,
+    "surprise": 4,
+    "scale": 5,
+    "animation": 4,
+    "tokushima": 5,
+    "engagement": 4,
+    "credibility": 3,
+    "feasibility": 4,
+    "originality": 5
+   }
+  },
+  {
+   "title": "もしも地球から「影」がなくなったら？",
+   "hypothesis": "もしも地球から「影」がなくなったら？",
+   "genre": "科学・物理",
+   "hook": "影のない世界",
+   "tokushima_idea": "",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 4,
+    "clarity": 4,
+    "surprise": 4,
+    "scale": 3,
+    "animation": 4,
+    "tokushima": 2,
+    "engagement": 3,
+    "credibility": 3,
+    "feasibility": 3,
+    "originality": 4
+   }
+  },
+  {
+   "title": "もしも人間が冬眠するようになったら？",
+   "hypothesis": "もしも人間が冬眠するようになったら？",
+   "genre": "人類・進化",
+   "hook": "全人類冬眠",
+   "tokushima_idea": "",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 4,
+    "clarity": 5,
+    "surprise": 4,
+    "scale": 3,
+    "animation": 4,
+    "tokushima": 3,
+    "engagement": 4,
+    "credibility": 3,
+    "feasibility": 4,
+    "originality": 4
+   }
+  },
+  {
+   "title": "もしもお金がなくなって物々交換になったら？",
+   "hypothesis": "もしもお金がなくなって物々交換になったら？",
+   "genre": "社会・経済",
+   "hook": "財布が消える",
+   "tokushima_idea": "すだち・なると金時が最強通貨",
+   "ending_type": "前半の仮説が徳島で逆転",
+   "scores": {
+    "hook": 4,
+    "clarity": 5,
+    "surprise": 4,
+    "scale": 3,
+    "animation": 3,
+    "tokushima": 5,
+    "engagement": 4,
+    "credibility": 3,
+    "feasibility": 4,
+    "originality": 3
+   }
+  },
+  {
+   "title": "もしも地球が四角くなったら？",
+   "hypothesis": "もしも地球が四角くなったら？",
+   "genre": "科学・物理",
+   "hook": "箱の地球",
+   "tokushima_idea": "",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 5,
+    "clarity": 4,
+    "surprise": 5,
+    "scale": 5,
+    "animation": 5,
+    "tokushima": 2,
+    "engagement": 3,
+    "credibility": 2,
+    "feasibility": 3,
+    "originality": 4
+   }
+  },
+  {
+   "title": "もしも魚が空を泳ぐようになったら？",
+   "hypothesis": "もしも魚が空を泳ぐようになったら？",
+   "genre": "自然・地球",
+   "hook": "空に魚",
+   "tokushima_idea": "鳴門鯛が空を泳ぐ",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 5,
+    "clarity": 5,
+    "surprise": 4,
+    "scale": 4,
+    "animation": 5,
+    "tokushima": 3,
+    "engagement": 4,
+    "credibility": 2,
+    "feasibility": 3,
+    "originality": 4
+   }
+  },
+  {
+   "title": "もしも地球から「におい」がなくなったら？",
+   "hypothesis": "もしも地球から「におい」がなくなったら？",
+   "genre": "科学・物理/生活",
+   "hook": "においが消える",
+   "tokushima_idea": "",
+   "ending_type": "世界→徳島着地",
+   "scores": {
+    "hook": 4,
+    "clarity": 5,
+    "surprise": 3,
+    "scale": 3,
+    "animation": 3,
+    "tokushima": 3,
+    "engagement": 4,
+    "credibility": 4,
+    "feasibility": 4,
+    "originality": 4
+   }
+  }
+ ],
+ "decision": null
+}
