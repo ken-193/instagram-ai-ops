@@ -54,7 +54,7 @@ def joint(name, loc, parent=None):
 SKIN = [(0.95, 0.76, 0.6), (0.82, 0.6, 0.42), (0.55, 0.36, 0.24)]
 HAIR = [(0.08, 0.07, 0.07), (0.25, 0.15, 0.08), (0.75, 0.75, 0.75)]
 CLOTH = [(0.2, 0.45, 0.75), (0.85, 0.35, 0.3), (0.3, 0.6, 0.35), (0.9, 0.75, 0.3), (0.45, 0.35, 0.6),
-         (0.95, 0.95, 0.92), (0.15, 0.2, 0.35)]
+         (0.95, 0.95, 0.92), (0.15, 0.2, 0.35), (0.09, 0.14, 0.4)]          # [7] = 藍 (indigo)
 PANTS = [(0.12, 0.12, 0.15), (0.25, 0.3, 0.45), (0.45, 0.38, 0.3)]
 
 
@@ -231,3 +231,96 @@ def lantern(loc, parent=None, lit=0.0, col=(0.95, 0.35, 0.25)):
     o = box(loc, (0.28, 0.28, 0.42), col if lit == 0 else (1.0, 0.85, 0.6), parent, bevel=0.1, emit=emit)
     box((loc[0], loc[1], loc[2] + 0.25), (0.2, 0.2, 0.06), (0.15, 0.12, 0.1), parent, bevel=0)
     return o
+
+
+# ---------------------------------------------------------------- everyday props
+def traffic_signal(loc, yaw=0.0, lit="red"):
+    """Japanese horizontal signal: left to right blue(green) / yellow / red. Returns {colour: lamp}."""
+    root = joint("signal", loc)
+    root.rotation_euler = (0, 0, yaw)
+    box((0, 0, 2.6), (0.18, 0.18, 5.2), (0.55, 0.55, 0.52), root)                     # pole
+    box((-0.9, 0, 5.0), (1.9, 0.12, 0.12), (0.55, 0.55, 0.52), root)                 # arm
+    box((-1.6, -0.12, 5.0), (1.5, 0.3, 0.5), (0.3, 0.3, 0.32), root, bevel=0.06)    # housing
+    lamps = {}
+    for i, (k, col) in enumerate((("green", (0.1, 0.85, 0.6)), ("yellow", (1.0, 0.75, 0.1)), ("red", (1.0, 0.15, 0.1)))):
+        on = k == lit
+        lamps[k] = box((-2.1 + i * 0.5, -0.28, 5.0), (0.36, 0.04, 0.36), col if on else tuple(c * 0.25 for c in col),
+                       root, bevel=0.08, emit=(col, 12.0) if on else None)
+    return root, lamps
+
+
+def car(name, loc, yaw=0.0, col=(0.85, 0.2, 0.2)):
+    root = joint(name, loc)
+    root.rotation_euler = (0, 0, yaw)
+    box((0, 0, 0.45), (1.7, 3.8, 0.6), col, root, bevel=0.12)
+    box((0, 0.2, 0.95), (1.5, 2.0, 0.55), col, root, bevel=0.12)
+    box((0, -0.82, 0.95), (1.4, 0.04, 0.42), (0.6, 0.75, 0.85), root, bevel=0, rough=0.1)  # windscreen
+    for sx in (-1, 1):
+        for sy in (-1.2, 1.2):
+            box((sx * 0.85, sy, 0.3), (0.2, 0.6, 0.6), (0.08, 0.08, 0.09), root, bevel=0.1)
+    return root
+
+
+def chabudai_meal(loc):
+    """Low round-ish table with a colourful dinner (tomato, salad, rice, salmon, curry, juice)."""
+    root = joint("meal", loc)
+    box((0, 0, 0.35), (1.6, 1.1, 0.08), (0.5, 0.32, 0.18), root, bevel=0.1)
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            box((sx * 0.6, sy * 0.35, 0.16), (0.08, 0.08, 0.32), (0.4, 0.25, 0.14), root)
+    dishes = [((-0.45, -0.2), (0.9, 0.12, 0.1)), ((0.0, -0.25), (0.3, 0.65, 0.2)), ((0.45, -0.2), (0.97, 0.97, 0.95)),
+              ((-0.35, 0.25), (0.98, 0.5, 0.35)), ((0.15, 0.25), (0.75, 0.5, 0.1)), ((0.55, 0.25), (0.95, 0.6, 0.05))]
+    for (x, y), col in dishes:
+        box((x, y, 0.41), (0.3, 0.3, 0.03), (0.95, 0.95, 0.93), root, bevel=0.01)       # plate
+        box((x, y, 0.47), (0.2, 0.2, 0.1), col, root, bevel=0.05)
+    return root
+
+
+def flower(loc, col, h=0.5):
+    root = joint("flower", loc)
+    box((0, 0, h / 2), (0.04, 0.04, h), (0.2, 0.5, 0.2), root, bevel=0)
+    for k in range(4):
+        a = k * math.pi / 2
+        box((math.cos(a) * 0.09, math.sin(a) * 0.09, h), (0.12, 0.12, 0.04), col, root, bevel=0.03)
+    box((0, 0, h + 0.02), (0.08, 0.08, 0.05), (0.98, 0.85, 0.2), root, bevel=0.02)
+    return root
+
+
+def bee(name, loc, s=0.12):
+    root = joint(name, loc)
+    for i, col in enumerate(((0.95, 0.75, 0.1), (0.1, 0.08, 0.06), (0.95, 0.75, 0.1))):
+        box((0, (i - 1) * s * 0.5, 0), (s, s * 0.5, s), col, root, bevel=0.02)
+    wings = []
+    for sd in (-1, 1):
+        j = joint(name + "_w", (sd * s * 0.5, 0, s * 0.5), root)
+        box((sd * s * 0.4, 0, 0), (s * 0.8, s * 0.5, 0.01), (0.9, 0.95, 1.0), j, bevel=0, rough=0.2)
+        wings.append(j)
+    return root, wings
+
+
+RAINBOW = [(0.9, 0.15, 0.15), (0.97, 0.5, 0.1), (0.98, 0.85, 0.15), (0.2, 0.7, 0.3), (0.15, 0.45, 0.9),
+           (0.25, 0.2, 0.7), (0.55, 0.25, 0.75)]
+
+
+def rainbow(center, r=30.0, band=1.2, segs=40):
+    """Seven-band blocky arc in the x-z plane (faces -y)."""
+    root = joint("rainbow", center)
+    for i, col in enumerate(RAINBOW):
+        rr = r - i * band
+        for k in range(segs):
+            a = math.pi * (k + 0.5) / segs
+            b = box((math.cos(a) * rr, 0, math.sin(a) * rr), (band, 0.5, 2 * math.pi * rr / segs / 2 + 0.1), col, root,
+                    bevel=0, emit=(col, 1.5))
+            b.rotation_euler = (0, -a + math.pi / 2, 0)
+    return root
+
+
+def noren(loc, w=1.6, yaw=0.0, col=(0.09, 0.14, 0.4)):
+    """Shop curtain (split into panels) hung over a doorway."""
+    root = joint("noren", loc)
+    root.rotation_euler = (0, 0, yaw)
+    n = 3
+    for k in range(n):
+        box(((k - (n - 1) / 2) * w / n, 0, -0.45), (w / n - 0.04, 0.03, 0.9), col, root, bevel=0.01)
+        box(((k - (n - 1) / 2) * w / n, -0.02, -0.4), (0.18, 0.01, 0.18), (0.95, 0.95, 0.92), root, bevel=0)
+    return root

@@ -38,11 +38,11 @@ def ease(x):
     return 1 - (1 - x) ** 3
 
 
-def _runs(text: str, keyword: str | None):
+def _runs(text: str, keyword: str | None, color=None):
     if not keyword or keyword not in text:
         return [(text, WHITE)]
     a, b = text.split(keyword, 1)
-    return [(a, WHITE), (keyword, ACCENT), (b, WHITE)]
+    return [(a, WHITE), (keyword, tuple(color) if color else ACCENT), (b, WHITE)]
 
 
 def _text(layer: ImageDraw.ImageDraw, shadow: ImageDraw.ImageDraw, cx, y, runs, size, weight=800, alpha=1.0,
@@ -131,7 +131,7 @@ def draw(img: Image.Image, t: float, dur: float, hud: dict, series: dict) -> Ima
     p = ease((t - at) / 0.45)
     if hud.get("headline") and p > 0:
         rise = (1 - p) * 24
-        _text(dl, ds, W / 2 - 40, 1130 + rise, _runs(hud["headline"], hud.get("keyword")), 70, 900, alpha=p)
+        _text(dl, ds, W / 2 - 40, 1130 + rise, _runs(hud["headline"], hud.get("keyword"), hud.get("keyword_color")), 70, 900, alpha=p)
         for i, line in enumerate(hud.get("sub", [])):
             _text(dl, ds, W / 2 - 40, 1214 + i * 52 + rise, [(line, WHITE)], 38, 800, alpha=p)
     if hud.get("end_card") and t >= hud.get("end_at", 2.0):
@@ -162,4 +162,7 @@ def apply(frames_dir: Path, out_dir: Path, fps: int, hud: dict, series: dict):
         im = Image.open(f).convert("RGB")
         if im.size != (W, H):
             im = im.resize((W, H), Image.LANCZOS)
+        if hud.get("grade"):                                  # colour grade (e.g. the world loses its colour)
+            from . import grade
+            im = grade.apply(im, i / fps, hud["grade"])
         draw(im, i / fps, dur, hud, series).save(out_dir / f"{i:04d}.png")
