@@ -54,7 +54,7 @@
 5. 利用規約・クレジット表記の条件はプランにより異なるため、音読さんの公式ページで確認してください。キャプションには「ナレーション音声: 音読さん（ondoku3.com）」を入れます。
 
 ### C2. Gemini 音声（任意・現在は未使用）
-1. https://aistudio.google.com/apikey を開き、flyingbird0526@gmail.com でログイン → 「APIキーを作成」。
+1. https://aistudio.google.com/apikey を開き、オーナーの Google アカウントでログイン → 「APIキーを作成」。
 2. 既存のGoogle Cloudプロジェクト（`reel-ops`）を選ぶか、新規作成でOK。
 3. 表示されたキーを `GEMINI_API_KEY` として Secrets に保存。
 4. 無料枠の有無・料金はモデルにより変わります。課金を有効にしない限り請求は発生しません（無料枠を超えるとエラーになります）。
