@@ -1,0 +1,29 @@
+{
+  "post_id": "IG-20261108-001",
+  "title": "もしも地球から「色」がなくなったら？",
+  "built_at": "2026-11-10T15:43:18+00:00",
+  "duration_sec": 50.0,
+  "source": "studio3d/20261108_no_color",
+  "quality": "hd",
+  "tts_backend": "ondoku",
+  "tts_options": {
+    "backend": "ondoku",
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1
+  },
+  "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
+  "render": {
+    "engine": "Blender (Cycles) via studio3d",
+    "fps": 30,
+    "size": "1080x1920"
+  },
+  "reel_sha256": "707ad537284726f1edf242e931a3c15bd19d835e5166334557d0cd634974c1d4",
+  "reel_bytes": 22270441,
+  "qc_passed": true,
+  "cost_usd": 0.0,
+  "categories": [
+    "fiction"
+  ],
+  "hook": "カラフルな街から、3秒で色が消える",
+  "tokushima_ending_type": "色のない世界で、徳島の藍だけが残り、藍色の阿波おどりが踊る"
+}
