@@ -1,0 +1,41 @@
+name: competitors
+# Weekly snapshot of competitor Instagram accounts (Business Discovery) into the 競合リサーチ spreadsheet.
+on:
+  schedule:
+    - cron: "23 0 * * 1"   # Mondays 09:23 JST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: competitors
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      IG_FB_USER_ID: ${{ secrets.IG_FB_USER_ID }}
+      IG_FB_ACCESS_TOKEN: ${{ secrets.IG_FB_ACCESS_TOKEN }}
+      IG_API_VERSION: ${{ vars.IG_API_VERSION || 'v23.0' }}
+      GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+      GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
+      GDRIVE_REFRESH_TOKEN: ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install requests
+      - run: git config user.name "reel-bot" && git config user.email "reel-bot@users.noreply.github.com"
+      - name: Snapshot
+        run: |
+          if [ -z "$IG_FB_ACCESS_TOKEN" ] || [ -z "$IG_FB_USER_ID" ]; then
+            echo "::warning::IG_FB_USER_ID / IG_FB_ACCESS_TOKEN が未設定のため競合の取得をスキップします（docs/ENV_TEMPLATE.md D）"; exit 0
+          fi
+          python -m pipeline.competitors
+      - name: Keep the raw snapshot
+        run: |
+          git add reports/competitors
+          git diff --cached --quiet || (git commit -m "competitors: weekly snapshot" && git push)

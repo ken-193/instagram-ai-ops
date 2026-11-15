@@ -14,6 +14,8 @@
 | `GDRIVE_REFRESH_TOKEN` | 必須 | あなたのDriveに書き込むための更新トークン（scope: `https://www.googleapis.com/auth/drive`） | OAuth 2.0 Playground |
 | `IG_USER_ID` | 任意（Muse投稿のため現在不要。API投稿・インサイト取得に切り替える場合のみ） | InstagramのユーザーID | Meta for Developers（アプリのInstagram設定画面） |
 | `IG_ACCESS_TOKEN` | 任意（同上） | 長期アクセストークン（60日） | 同上 |
+| `IG_FB_USER_ID` | 任意（競合の数値取得） | Facebookログイン版APIでの、あなたのInstagramビジネスアカウントID | Graph API エクスプローラ（下の D） |
+| `IG_FB_ACCESS_TOKEN` | 任意（同上） | 競合アカウントの数値取得（Business Discovery）用の長期トークン（60日） | 同上 |
 | `ONDOKU_TOKEN` | 必須（ナレーション） | 音読さんのアクセストークン。ナレーション音声の生成 | 音読さん（https://ondoku3.com/ja/users/setting/）※無料登録 |
 | `GEMINI_API_KEY` | 任意 | Geminiの音声合成（男性ナレーション）。未設定なら無料のOpen JTalk | Google AI Studio（https://aistudio.google.com/apikey） |
 | `GOOGLE_TTS_API_KEY` | 任意 | 自然な日本語ナレーション（Chirp 3 HD）。未設定なら無料のOpen JTalk | Google Cloud Console（Text-to-Speech APIを有効化） |
@@ -45,6 +47,21 @@
 3. 自分のInstagramアカウントを追加し、権限 `instagram_business_basic`, `instagram_business_content_publish`, `instagram_business_manage_insights` でトークンを生成。
 4. 表示される **ユーザーID** と **アクセストークン（長期）** を Secrets に保存。
    - 自分のアカウントだけで使う場合、アプリは開発モードのままで利用できる想定です（初回の接続テストで確認します）。
+
+### D. 競合アカウントの数値取得（任意・約20分）
+競合の Instagram アカウントのフォロワー数・投稿数・最近の投稿の「いいね」「コメント」数を、毎週月曜に自動でスプレッドシート「競合リサーチ（世界の仕様外）」のタブ「Instagram数値」に追記します（`.github/workflows/competitors.yml`）。
+この機能（Business Discovery）は「Facebookログイン版」の Instagram API でしか使えないため、B とは別に設定します。画面名は変更されることがあります。
+1. Instagramアプリ → 設定 → アカウントの種類 → **プロアカウント**（クリエイターまたはビジネス）にする。
+2. Facebookページを1つ用意し（新規作成でよい）、Instagramアカウントとリンクする（Meta Business Suite、または Instagram の「アカウントセンター」から）。
+3. Meta for Developers（https://developers.facebook.com）でアプリを作る（種類はビジネス）。開発モードのままで、自分のアカウントには使える想定です。
+4. Graph API エクスプローラ（https://developers.facebook.com/tools/explorer/）で 3. のアプリを選び、「ユーザーアクセストークン」に次の権限を付けて発行する：`instagram_basic`、`pages_show_list`、`pages_read_engagement`、`business_management`。
+5. 同じ画面で `me/accounts?fields=name,instagram_business_account` を実行し、表示された `instagram_business_account` の `id` を控える → `IG_FB_USER_ID`。
+6. アクセストークンデバッガー（https://developers.facebook.com/tools/debug/accesstoken/）でトークンを貼り付け、「アクセストークンを延長」で長期トークン（約60日）にする → `IG_FB_ACCESS_TOKEN`。
+7. 2つを Secrets に保存。Actions → `competitors` → Run workflow で試す。
+- 取得できるのは相手がプロアカウントの場合だけ。個人アカウントや非公開アカウントはシートに「取得できず」と記録されます。
+- 他人のリールの**再生数は公式APIでは取得できません**（いいね・コメント数のみ。いいねを非表示にしている投稿は空欄）。
+- トークンは約60日で切れるので、切れたら 4〜6 をやり直して Secrets を更新します。
+- 追跡するアカウントは `config/competitors.json` の `accounts` に追加します。
 
 ### C. 音読さん（ナレーション）
 1. https://ondoku3.com で無料登録してログイン。
