@@ -1,0 +1,10 @@
+{
+  "comment": "Instagram usernames to track (no @). Only professional (Business/Creator) accounts can be read by Business Discovery. The spreadsheet is the owner's 競合リサーチ（世界の仕様外）.",
+  "spreadsheet_id": "1qAcJ-8xUBmPGwZWrBoDivUl0CniLERL2raPK-JfkMWE",
+  "sheet": "Instagram数値",
+  "recent_posts": 12,
+  "accounts": [
+    {"username": "zackdfilms", "label": "Zack D. Films"},
+    {"username": "yoneapp", "label": "yoneapp（参考リール）"}
+  ]
+}
