@@ -36,7 +36,7 @@ iPhoneから「テーマ」を受け取ったら、このルールに従って �
 2. 企画 `01_planning/plan.md`
 3. 台本 `02_script/script.md`（シーン・秒数・内容・ナレーション案）
 4. 絵コンテ `03_storyboard/storyboard.md`（シーンごとのカメラ・被写体・狙い）
-5. シーン仕様 `04_blender/project.json`（**1シーン5〜10秒**、合計30〜50秒）
+5. シーン仕様 `04_blender/project.json`（**1シーン5〜10秒**、合計30〜50秒。オーナーの指示書が秒数を決めている場合はそれに従い、`"owner_timing"` に理由を書く＝3秒から可）
 6. シーンごとの Blender Python `04_blender/sNN_<内容>.py`
 7. ドラフト確認：このセッションで `python studio3d/run.py render <project> <scene> --start N --end N+1 --quality draft` を数フレーム実行し、目視で品質確認（下記8）
 8. 問題があれば原因を特定してスクリプトを修正 → 7へ

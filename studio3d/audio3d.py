@@ -78,7 +78,8 @@ def build(pr: dict, cfg: dict, cache: Path, synth=None) -> tuple[np.ndarray, lis
     b = cfg.get("bgm", {})
     stereo = audio.mix(total, [(r["start"], r["audio"]) for r in rows], sfx_events(pr, cfg), bpm=b.get("bpm", 96),
                        climax=b.get("climax"), bgm_gain=b.get("gain", 0.3), duck=b.get("duck", 0.5),
-                       matsuri_from=b.get("matsuri_from"), matsuri_full=b.get("matsuri_full"))
+                       matsuri_from=b.get("matsuri_from"), matsuri_full=b.get("matsuri_full"),
+                       music_env=b.get("music_env"), fade_out=b.get("fade_out", 1.2))
     return stereo, rows
 
 

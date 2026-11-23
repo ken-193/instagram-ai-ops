@@ -1,0 +1,45 @@
+{
+  "name": "20261123_maneki_neko",
+  "title": "もしも商店街に巨大な招き猫が現れたら？",
+  "account": "世界の仕様外",
+  "quality": "final",
+  "scenes": [
+    {
+      "id": "s01",
+      "file": "s01_appear.py",
+      "seconds": 5.0,
+      "camera": "地面すれすれ → 急上昇・ティルトアップ"
+    },
+    {
+      "id": "s02",
+      "file": "s02_attack.py",
+      "seconds": 6.0,
+      "camera": "高速オービット"
+    },
+    {
+      "id": "s03",
+      "file": "s03_panic.py",
+      "seconds": 7.0,
+      "camera": "手持ち風トラッキング＋スローモーション"
+    },
+    {
+      "id": "s04",
+      "file": "s04_dancers.py",
+      "seconds": 4.0,
+      "camera": "ホイップパン → 足元から顔へティルトアップ"
+    },
+    {
+      "id": "s05",
+      "file": "s05_imitate.py",
+      "seconds": 5.0,
+      "camera": "超ローアングル → 俯瞰へクレーン"
+    },
+    {
+      "id": "s06",
+      "file": "s06_finale.py",
+      "seconds": 3.0,
+      "camera": "ドローン風の急上昇"
+    }
+  ],
+  "owner_timing": "オーナーの制作指示書の秒数（0-5/5-11/11-18/18-22/22-27/27-30）"
+}

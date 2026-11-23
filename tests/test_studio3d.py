@@ -19,8 +19,9 @@ def test_projects_follow_the_rules():
         pr = json.loads(p.read_text(encoding="utf-8"))
         assert pr["name"] == p.parents[1].name
         assert re.fullmatch(r"\d{8}_[a-z0-9_]+", pr["name"])
+        lo = 3.0 if pr.get("owner_timing") else 5.0          # the owner's brief may fix shorter beats
         for sc in pr["scenes"]:
-            assert 5.0 <= sc["seconds"] <= 10.0, "1シーン5〜10秒"
+            assert lo <= sc["seconds"] <= 10.0, "1シーン5〜10秒（owner_timing のときは3秒から）"
             src = (p.parent / sc["file"]).read_text(encoding="utf-8")
             m = re.search(r"^SECONDS = ([\d.]+)", src, re.M)
             assert m and float(m.group(1)) == sc["seconds"]
