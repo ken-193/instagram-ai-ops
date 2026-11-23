@@ -1,0 +1,213 @@
+{
+  "name": "20261123_tiny_humans",
+  "title": "もしも人間が全員1cmになったら？",
+  "account": "世界の仕様外",
+  "quality": "hd",
+  "series": {
+    "question": "もしも人間が1cmになったら？",
+    "keyword": "1cm"
+  },
+  "scenes": [
+    {
+      "id": "s01",
+      "file": "s01_shrink.py",
+      "seconds": 5.0,
+      "camera": "住宅街 → 人が縮む（カメラが地面まで降りる）",
+      "hud": {
+        "big_title": true,
+        "clock": {
+          "label": "人間が縮むまで",
+          "countdown": 3.0
+        },
+        "place": "日本・住宅街（午後2時）",
+        "headline": "人間が、1cmになった。",
+        "keyword": "1cm",
+        "sub": [
+          "身長170cmの人なら、約170分の1"
+        ],
+        "at": 3.2
+      }
+    },
+    {
+      "id": "s02",
+      "file": "s02_cup.py",
+      "seconds": 5.0,
+      "camera": "食卓の上 → コップを見上げる（ティルトアップ）",
+      "hud": {
+        "clock": {
+          "label": "1cmになってから",
+          "from_min": 5,
+          "to_min": 10,
+          "speed": 60
+        },
+        "place": "日本・食卓の上",
+        "headline": "コップが、5階建てのビル",
+        "sub": [
+          "高さ10cmのコップ → 約17m"
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "file": "s03_cat.py",
+      "seconds": 5.0,
+      "camera": "ネコの顔が迫る（ローアングル）",
+      "hud": {
+        "clock": {
+          "label": "1cmになってから",
+          "from_min": 130,
+          "to_min": 135,
+          "speed": 60
+        },
+        "place": "日本・リビング",
+        "headline": "ネコが、怪獣になった",
+        "keyword": "怪獣",
+        "sub": [
+          "体高25cmのネコ → 約42m"
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "file": "s04_rain.py",
+      "seconds": 5.0,
+      "camera": "葉っぱの下で雨宿り（ロー）",
+      "hud": {
+        "clock": {
+          "label": "1cmになってから",
+          "from_min": 1500,
+          "to_min": 1505,
+          "speed": 60
+        },
+        "place": "日本・公園の草むら",
+        "headline": "雨粒が、直径1mの水の玉",
+        "sub": [
+          "大きな雨粒は直径4〜6mm（NASA）",
+          "→ 1cmの人には約1m"
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "file": "s05_phone.py",
+      "seconds": 5.0,
+      "camera": "スマホの前に座る人々（ドリーバック）",
+      "hud": {
+        "clock": {
+          "label": "1cmになってから",
+          "from_min": 4320,
+          "to_min": 4325,
+          "speed": 60
+        },
+        "place": "日本・机の上",
+        "headline": "スマホが、映画館のスクリーン",
+        "sub": [
+          "長さ15cmのスマホ → 約25m"
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "file": "s06_tatami.py",
+      "seconds": 5.0,
+      "camera": "たたみの上を歩く人々（クレーン）",
+      "hud": {
+        "clock": {
+          "label": "1cmになってから",
+          "from_min": 14400,
+          "to_min": 14405,
+          "speed": 60
+        },
+        "place": "日本・和室",
+        "headline": "たたみ1枚が、サッカー場より広い",
+        "sub": [
+          "たたみ1枚（約180×90cm）→ 約306×153m"
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "file": "s07_world.py",
+      "seconds": 5.0,
+      "camera": "家が山脈のよう（ワイドクレーン）",
+      "hud": {
+        "clock": {
+          "label": "1cmになってから",
+          "from_min": 43200,
+          "to_min": 43205,
+          "speed": 60
+        },
+        "place": "世界中",
+        "headline": "世界が、170倍の大きさになった",
+        "keyword": "170倍",
+        "sub": [
+          "となりの家まで、歩いて半日"
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "file": "s08_sudachi.py",
+      "seconds": 5.0,
+      "camera": "巨大なすだちを囲む人々（オービット）",
+      "hud": {
+        "clock": {
+          "label": "1cmになってから",
+          "from_min": 525600,
+          "to_min": 525605,
+          "speed": 60
+        },
+        "place": "徳島・すだち畑",
+        "headline": "でも徳島には、家ほどのすだちがある",
+        "keyword": "徳島",
+        "sub": [
+          "すだち1個（約3〜4cm）→ 約5〜7m",
+          "すだちは全国の約98%が徳島産"
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "file": "s09_feast.py",
+      "seconds": 5.0,
+      "camera": "すだちを運ぶ人々（トラッキング）",
+      "hud": {
+        "clock": {
+          "label": "1cmになってから",
+          "from_min": 526200,
+          "to_min": 526205,
+          "speed": 60
+        },
+        "place": "徳島・すだち畑",
+        "headline": "1個で、町じゅうの晩ごはん",
+        "sub": [
+          "焼き魚にも、おそばにも"
+        ]
+      }
+    },
+    {
+      "id": "s10",
+      "file": "s10_awa_sudachi.py",
+      "seconds": 5.0,
+      "camera": "すだちのまわりで阿波おどり（クレーンアップ）",
+      "hud": {
+        "clock": {
+          "label": "1cmになってから",
+          "from_min": 526800,
+          "to_min": 526805,
+          "speed": 60
+        },
+        "place": "徳島・阿波おどり",
+        "headline": "小さくなっても、踊る。",
+        "keyword": "踊る",
+        "sub": [],
+        "at": 0.3,
+        "end_card": [
+          "1cmになったら、何をしたい？",
+          "コメントで教えてね"
+        ],
+        "end_at": 2.4
+      }
+    }
+  ]
+}

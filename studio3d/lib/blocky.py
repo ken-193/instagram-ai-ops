@@ -324,3 +324,72 @@ def noren(loc, w=1.6, yaw=0.0, col=(0.09, 0.14, 0.4)):
         box(((k - (n - 1) / 2) * w / n, 0, -0.45), (w / n - 0.04, 0.03, 0.9), col, root, bevel=0.01)
         box(((k - (n - 1) / 2) * w / n, -0.02, -0.4), (0.18, 0.01, 0.18), (0.95, 0.95, 0.92), root, bevel=0)
     return root
+
+
+# ---------------------------------------------------------------- giant everyday objects (people-scale world, objects x170)
+def cup(loc, h=17.0, r=4.0, col=(0.92, 0.94, 0.97)):
+    root = joint("cup", loc)
+    box((0, 0, h / 2), (2 * r, 2 * r, h), col, root, bevel=0.6, rough=0.15)
+    box((0, 0, h - 0.4), (2 * r - 1.2, 2 * r - 1.2, 0.9), (0.55, 0.32, 0.18), root, bevel=0.2, rough=0.1)  # tea
+    box((r + 1.2, 0, h * 0.55), (1.0, 1.4, h * 0.45), col, root, bevel=0.4)                               # handle
+    return root
+
+
+def cat_head(loc, s=1.0, fur=(0.95, 0.62, 0.3)):
+    """Huge blocky cat face (faces -y): big pointed ears, white muzzle, yellow eyes with slit pupils.
+    Returns (root, eyes)."""
+    root = joint("cat", loc)
+    box((0, 0, 0), (24 * s, 18 * s, 18 * s), fur, root, bevel=2.0 * s)
+    for sx in (-1, 1):                                                    # ears: stacked boxes = a pointed shape
+        for k, (w, hgt) in enumerate(((8, 4), (5.5, 4), (3, 3))):
+            box((sx * (8.5 - k * 0.6) * s, 2 * s, (10.5 + k * 3.6) * s), (w * s, 4 * s, hgt * s), fur, root, bevel=0.4 * s)
+        box((sx * 8.3 * s, -0.2 * s, 12 * s), (3.5 * s, 0.6 * s, 4 * s), (0.98, 0.72, 0.75), root, bevel=0.3 * s)
+    box((0, -9.2 * s, -4 * s), (11 * s, 1.5 * s, 7 * s), (0.98, 0.96, 0.92), root, bevel=1.0 * s)        # muzzle
+    eyes = [box((sx * 6 * s, -9.2 * s, 2.5 * s), (5 * s, 0.6 * s, 5 * s), (0.95, 0.85, 0.2), root, bevel=0.5 * s,
+                emit=((0.95, 0.85, 0.3), 0.6)) for sx in (-1, 1)]
+    for sx in (-1, 1):
+        box((sx * 6 * s, -9.6 * s, 2.5 * s), (1.0 * s, 0.3 * s, 4.2 * s), (0.05, 0.05, 0.05), root, bevel=0)
+    box((0, -10.1 * s, -1.6 * s), (2.4 * s, 0.8 * s, 1.6 * s), (0.95, 0.5, 0.55), root, bevel=0.3 * s)  # nose
+    for sx in (-1, 1):
+        for k in (-1, 1):
+            w = box((sx * 12 * s, -10.2 * s, -3.5 * s + k * 1.2 * s), (10 * s, 0.2 * s, 0.25 * s), (0.2, 0.2, 0.2),
+                    root, bevel=0)
+            w.rotation_euler = (0, sx * k * 0.12, 0)
+    return root, eyes
+
+
+def smartphone(loc, length=25.5, yaw=0.0):
+    """Upright phone (screen faces -y) with a colourful app grid lit up."""
+    root = joint("phone", loc)
+    root.rotation_euler = (0, 0, yaw)
+    w = length * 0.47
+    box((0, 0, length / 2), (w, 1.4, length), (0.08, 0.08, 0.1), root, bevel=1.2, rough=0.2)
+    box((0, -0.72, length / 2), (w - 1.0, 0.05, length - 2.0), (0.1, 0.2, 0.45), root, bevel=0,
+        emit=((0.2, 0.4, 0.95), 1.2))
+    cols = [(0.95, 0.35, 0.3), (0.3, 0.8, 0.45), (0.98, 0.8, 0.2), (0.4, 0.6, 0.98), (0.85, 0.4, 0.85)]
+    k = 0
+    for row in range(5):
+        for c in range(4):
+            col = cols[k % len(cols)]
+            box(((c - 1.5) * w * 0.22, -0.78, length * 0.85 - row * length * 0.14), (w * 0.15, 0.05, w * 0.15),
+                col, root, bevel=0.3, emit=(col, 2.0))
+            k += 1
+    return root
+
+
+def raindrop(name, loc, r=0.5):
+    from .core import mat, sphere
+    if "raindrop" not in _MATS:
+        _MATS["raindrop"] = mat("raindrop", (0.75, 0.88, 0.98), rough=0.03, transmission=0.85, ior=1.33)
+    return sphere(name, loc, (r, r, r * 1.05), _MATS["raindrop"], seg=32)
+
+
+def tatami_floor(n=3, w=306.0, d=153.0):
+    """Huge tatami mats (each ~1.8 x 0.9 m at x170) with dark borders."""
+    for i in range(n):
+        for j in range(2):
+            x, y = (i - (n - 1) / 2) * w, j * d * 2 - d / 2
+            box((x, y, -0.05), (w - 2, d * 2 - 2, 0.1), (0.72, 0.68, 0.42), bevel=0, rough=0.9)
+            for sx in (-1, 1):
+                box((x, y + sx * (d - 1.5), 0.0), (w, 3.0, 0.12), (0.12, 0.14, 0.12), bevel=0)
+    return None
