@@ -146,7 +146,7 @@ def main(argv=None):
         from pipeline import audio as amod
         wav = aud / f"{a.project}_mix.wav"
         amod.write_wav(wav, stereo)
-        if not a.skip_readback:
+        if rows and not a.skip_readback:                    # nothing to check when the film has no narration
             ok, md = audio3d.readback_check(rows, fin, a.whisper_model)
             print(md)
             if not ok:

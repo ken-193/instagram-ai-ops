@@ -180,12 +180,40 @@ def sfx_firework(dur=2.4):
     return out
 
 
-SFX = {"firework": sfx_firework, "pon": sfx_pon, "sparkle": sfx_sparkle, "stream": sfx_stream, "birds": sfx_birds, "roar": sfx_roar, "stomp": sfx_stomp, "splash": sfx_splash, "boom": sfx_boom, "whoosh": sfx_whoosh, "impact": sfx_impact, "ding": sfx_ding, "tick": sfx_tick, "riser": sfx_riser,
+def sfx_crowd(dur=5.0):
+    """Shopping-street murmur: many soft voice-band noises fading in and out (original synthesis)."""
+    t = _t(dur)
+    out = np.zeros(len(t), np.float32)
+    crng = np.random.default_rng(91)
+    base = bandpass(crng.standard_normal(len(t)).astype(np.float32), 250, 1800) * 0.25
+    out += base * (0.6 + 0.4 * np.sin(2 * np.pi * 0.4 * t)).astype(np.float32)
+    for _ in range(14):
+        s = int(crng.uniform(0, dur - 0.6) * SR)
+        m_ = int(crng.uniform(0.25, 0.6) * SR)
+        f0 = crng.uniform(140, 260)
+        tt = _ts(m_)
+        v = np.sin(2 * np.pi * (f0 + 30 * np.sin(2 * np.pi * 5 * tt)) * tt) * np.sin(np.pi * tt / tt[-1]) * 0.05
+        out[s:s + m_] += lowpass(v.astype(np.float32), 1200)
+    fade = int(0.4 * SR)
+    out[:fade] *= np.linspace(0, 1, fade)
+    out[-fade:] *= np.linspace(1, 0, fade)
+    return out
+
+
+def sfx_wind(dur=3.0):
+    """Gusting wind (band-passed noise with a slow swell)."""
+    t = _t(dur)
+    n = bandpass(np.random.default_rng(92).standard_normal(len(t)).astype(np.float32), 300, 2500)
+    env = np.sin(np.pi * t / dur) ** 1.5 * (0.7 + 0.3 * np.sin(2 * np.pi * 1.3 * t))
+    return (n * env * 0.6).astype(np.float32)
+
+
+SFX = {"crowd": sfx_crowd, "wind": sfx_wind, "firework": sfx_firework, "pon": sfx_pon, "sparkle": sfx_sparkle, "stream": sfx_stream, "birds": sfx_birds, "roar": sfx_roar, "stomp": sfx_stomp, "splash": sfx_splash, "boom": sfx_boom, "whoosh": sfx_whoosh, "impact": sfx_impact, "ding": sfx_ding, "tick": sfx_tick, "riser": sfx_riser,
        "rumble": sfx_rumble}
 
 
 # ---------------------------------------------------------------- BGM
-def bgm(total: float, bpm: float = 112, climax: float | None = None, mood: str = "epic") -> np.ndarray:
+def bgm(total: float, bpm: float = 112, climax: float | None = None, mood: str = "epic", fade_out: float = 1.2) -> np.ndarray:
     """Pulsing cinematic loop in A minor (Am-F-C-G), intensity rising toward `climax`."""
     n = int(total * SR)
     out = np.zeros(n, np.float32)
@@ -252,7 +280,7 @@ def bgm(total: float, bpm: float = 112, climax: float | None = None, mood: str =
         out[a:a + len(tt)] += seg_mix[: n - a]
         t_bar += bar
         i += 1
-    fade = int(1.2 * SR)
+    fade = max(1, int(fade_out * SR))
     out[-fade:] *= np.linspace(1, 0, fade)
     out[: int(0.3 * SR)] *= np.linspace(0, 1, int(0.3 * SR))
     return out
@@ -343,7 +371,7 @@ def _ramp(n, a: float, b: float) -> np.ndarray:
 
 def mix(total: float, voice_events, sfx_events, bpm=112, climax=None, bgm_gain=0.32, duck=0.45,
         matsuri_from: float | None = None, matsuri_full: float | None = None, stems: bool = False,
-        music_env: list[tuple[float, float]] | None = None):
+        music_env: list[tuple[float, float]] | None = None, fade_out: float = 1.2):
     """voice_events: [(start_sec, samples)], sfx_events: [(start_sec, name, gain)]. Returns stereo float32
     (and {"voice", "music_sfx"} stems when stems=True).
     matsuri_from/full: the festival band fades in from far away (low-passed) at `matsuri_from` and takes
@@ -355,14 +383,14 @@ def mix(total: float, voice_events, sfx_events, bpm=112, climax=None, bgm_gain=0
     fx = np.zeros(n, np.float32)
     for at, name, g in sfx_events:
         place(fx, SFX[name](), at, g)
-    music = bgm(total, bpm=bpm, climax=climax)
+    music = bgm(total, bpm=bpm, climax=climax, fade_out=fade_out)
     if matsuri_from is not None:
         full = matsuri_full if matsuri_full is not None else matsuri_from + 10
         perc, flute = matsuri(total, bpm)
         near = _ramp(n, matsuri_from + (full - matsuri_from) * 0.25, full)
         far = _ramp(n, matsuri_from, matsuri_from + 1.5) * (1 - near)
         band = lowpass(perc, 350) * 1.6 * far + perc * near + flute * _ramp(n, full - 1.0, full + 0.5)
-        fade = int(1.2 * SR)
+        fade = max(1, int(fade_out * SR))
         band[-fade:] *= np.linspace(1, 0, fade)
         music = music * (1 - 0.8 * near) + band * 1.1
     if music_env:  # scripted music level: [(time, gain)], linear in between (e.g. a silence before a hit)
