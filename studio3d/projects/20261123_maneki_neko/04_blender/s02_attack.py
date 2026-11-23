@@ -14,7 +14,7 @@ def build(ctx):
     rnd = random.Random(12)
     flyers = [{"o": p, "home": tuple(p.location), "t0": rnd.uniform(0.6, 2.5), "v": (rnd.uniform(-3, 3), rnd.uniform(-10, -5),
                rnd.uniform(4, 8)), "spin": rnd.uniform(4, 10)} for p in st["props"] if p.location.y > 20]
-    return {"neko": neko, "st": st, "flyers": flyers, "cam": camera(22)}
+    return {"neko": neko, "st": st, "flyers": flyers, "cam": camera(18)}
 
 
 def pose(ctx, h, t):
@@ -38,6 +38,7 @@ def pose(ctx, h, t):
     amp = 0.04 + (0.25 if 3.5 < t < 4.1 else 0.0)
     (sx, sy, sz), roll = shake(t, amp)
     a = lerp(-2.4, -0.6, ease(t / SECONDS))
-    r = lerp(42, 34, ease(t / SECONDS))
+    # keep the camera over the open plaza (52 < y < 112): a wider orbit passes through the town blocks
+    r = lerp(27, 29, ease(t / SECONDS))
     aim(h["cam"], (math.cos(a) * r + sx, CAT_Y + math.sin(a) * r + sy, lerp(6, 22, ease(t / SECONDS)) + sz),
         (0, CAT_Y, 16), roll=roll)

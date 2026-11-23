@@ -8,6 +8,7 @@ on:
       project: {description: "プロジェクト名 (studio3d/projects/<name>)", required: true}
       quality: {description: "空欄=project.json の指定 / final (1080x1920) / hd (720x1280 拡大) / draft (540x960 拡大)", required: false, default: ""}
       reuse_run_id: {description: "やり直し時：前回の実行ID（描き終わったコマを再利用）", required: false, default: ""}
+      rerender: {description: "reuse_run_id と併用：描き直すシーンID（空白区切り。例 s02）。それ以外のシーンは前回のコマを使う", required: false, default: ""}
   push:
     branches: [main]
     paths: ["studio3d/projects/*/04_blender/project.json"]
@@ -43,6 +44,7 @@ jobs:
           done=""
           if [ -n "${{ github.event.inputs.reuse_run_id }}" ]; then
             done=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.event.inputs.reuse_run_id }}/artifacts" --paginate -q '.artifacts[] | select(.expired == false) | .name' | tr '\n' ' ')
+            for sc in ${{ github.event.inputs.rerender }}; do done=$(echo "$done" | tr ' ' '\n' | grep -v "^frames-$sc-" | tr '\n' ' '); done
           fi
           q="${{ steps.p.outputs.quality }}"
           python studio3d/run.py matrix "${{ steps.p.outputs.project }}" ${q:+--quality "$q"} --done "$done"
@@ -96,6 +98,7 @@ jobs:
           gh run download "${{ github.event.inputs.reuse_run_id }}" -R "${{ github.repository }}" -p 'frames-*' -D "$tmp"
           dst="studio3d/projects/${{ needs.plan.outputs.project }}/05_render/frames"
           mkdir -p "$dst"
+          for sc in ${{ github.event.inputs.rerender }}; do rm -rf "$tmp"/frames-"$sc"-*; done   # scenes being redrawn
           for d in "$tmp"/frames-*; do cp -r "$d"/. "$dst"/; done
           echo "artifacts: $(ls -d "$tmp"/frames-* | wc -l)  frames: $(find "$dst" -name '*.png' | wc -l)"
       - uses: actions/download-artifact@v4
