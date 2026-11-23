@@ -1,0 +1,30 @@
+{
+  "post_id": "IG-20261123-001",
+  "title": "もしも人間が全員1cmになったら？",
+  "built_at": "2026-11-23T04:07:06+00:00",
+  "duration_sec": 50.0,
+  "source": "studio3d/20261123_tiny_humans",
+  "quality": "hd",
+  "tts_backend": "ondoku",
+  "tts_options": {
+    "backend": "ondoku",
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1
+  },
+  "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
+  "render": {
+    "engine": "Blender (Cycles) via studio3d",
+    "fps": 30,
+    "size": "1080x1920"
+  },
+  "reel_sha256": "e4a0e0ebda2894908e68dc036dfa5a7791553378528c0ebb9037242ad66114f2",
+  "reel_bytes": 19129742,
+  "qc_passed": true,
+  "cost_usd": 0.0,
+  "categories": [
+    "fiction",
+    "estimate"
+  ],
+  "hook": "ふつうの街で、3秒後に人間が1cmに縮む",
+  "tokushima_ending_type": "1cmの世界では、徳島のすだちが家ほどの大きさ。すだちのまわりで阿波おどり"
+}
