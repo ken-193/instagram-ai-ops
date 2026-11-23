@@ -1,6 +1,6 @@
 {
   "post_id": "IG-20261123-001",
-  "status": "approved",
+  "status": "handed_off",
   "revision": 1,
   "history": [
     {
@@ -23,6 +23,13 @@
       "to": "approved",
       "actor": "ken-193",
       "note": "approved via GitHub issue comment"
+    },
+    {
+      "at": "2026-11-23T04:09:22+00:00",
+      "from": "approved",
+      "to": "handed_off",
+      "actor": "pipeline",
+      "note": "copied to 11_Muse投稿キュー"
     }
   ],
   "render_attempts": 0,
@@ -46,5 +53,14 @@
   "approved_sha256": "e4a0e0ebda2894908e68dc036dfa5a7791553378528c0ebb9037242ad66114f2",
   "approved_by": "ken-193",
   "approved_at": "2026-11-23T04:09:01+00:00",
-  "approved_revision": 1
+  "approved_revision": 1,
+  "muse": {
+    "queue_folder_id": "1ZN7E164f6IXZMR9ZWeelW5v7nEisAHxN",
+    "files": {
+      "reel.mp4": "1snijJAF7H_H2pRoqVVYmbv05lDSdaVmR",
+      "caption.txt": "1jWq1omfV9GaH1YMAlAzMl6RbEqzrDkSy",
+      "thumbnail.jpg": "1eNm05BLdNzGaLe8C_TjQvsN3Bf-Mik_A"
+    },
+    "handed_off_at": "2026-11-23T04:09:22+00:00"
+  }
 }
