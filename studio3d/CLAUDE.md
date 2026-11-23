@@ -97,6 +97,8 @@ Google Drive：`マイドライブ/instagram_reel_post/`（IDは `studio3d/confi
   - そのため、まず draft で全編を確認 → 問題がなければ final、の順に進める。尺の長い動画や作り直しは、残りの無料枠を考えて先にオーナーに確認する。
 - 12フレーム単位のチャンクに分け、最大20並列で実行（1ジョブ約15分、上限120分）。
 - 途中で失敗したときは、`studio3d` ワークフローを手動実行し `reuse_run_id` に前回の実行IDを入れる。描き終わったコマは再利用され、残りだけを描く。
+- 一部のシーンだけ直したときは、`reuse_run_id` に加えて `rerender` に描き直すシーンID（例 `s02`）を入れる。そのシーンだけ描き直し、他は前回のコマを使う。
+- 自動チェックの「黒画面」は、カメラが建物や地面の中に入ったときによく起きる。qc.json の detail に黒い区間の秒数が出る。
 
 ## 11. Google Drive 保存ルール
 - 保存は `studio3d.assemble` が GitHub Actions 上で行う（認証情報は GitHub Secrets の `GDRIVE_*` のみ。コードやDriveに秘密情報を書かない）。

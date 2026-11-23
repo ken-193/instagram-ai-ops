@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -64,7 +65,9 @@ def qc(final: Path, expect_seconds: float, fps: int, expect_audio: bool = False)
                        f"{a['codec_name']} {a.get('channels')}ch" if a else "no audio"))
     bd = subprocess.run(["ffmpeg", "-i", str(final), "-vf", "blackdetect=d=0.3:pix_th=0.05", "-an", "-f", "null", "-"],
                         capture_output=True, text=True).stderr
-    checks.append(("no black segments", "black_start" not in bd, "ok" if "black_start" not in bd else "black detected"))
+    spans = re.findall(r"black_start:([\d.]+) black_end:([\d.]+)", bd)
+    checks.append(("no black segments", "black_start" not in bd,
+                   "ok" if "black_start" not in bd else "black detected at " + ", ".join(f"{a}-{b}s" for a, b in spans)))
     fz = subprocess.run(["ffmpeg", "-i", str(final), "-vf", "freezedetect=n=0.0005:d=1.5", "-an", "-f", "null", "-"],
                         capture_output=True, text=True).stderr
     checks.append(("no frozen segments > 1.5s", "freeze_start" not in fz, "ok" if "freeze_start" not in fz else "freeze detected"))
