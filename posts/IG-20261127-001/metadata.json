@@ -1,0 +1,31 @@
+{
+  "post_id": "IG-20261127-001",
+  "title": "もしも浦島太郎の話を、現実でやったら？",
+  "built_at": "2026-11-27T03:46:21+00:00",
+  "duration_sec": 63.4,
+  "source": "studio3d/20261127_urashima_light",
+  "quality": "final",
+  "tts_backend": "ondoku",
+  "tts_options": {
+    "backend": "ondoku",
+    "voice": "ja-JP-MasaruMultilingualNeural",
+    "speed": 1.1
+  },
+  "tts_credit": "ナレーション音声: 音読さん（ondoku3.com）",
+  "render": {
+    "engine": "Blender (Cycles) via studio3d",
+    "fps": 30,
+    "size": "1080x1920"
+  },
+  "reel_sha256": "422700042d5ee3c754632f7825a068ed769b3c1ba5638b3a7bb4f7c6e00162d1",
+  "reel_bytes": 30683240,
+  "qc_passed": true,
+  "cost_usd": 0.0,
+  "categories": [
+    "fiction",
+    "estimate",
+    "scientific"
+  ],
+  "hook": "夕暮れの浜で亀が背中を見せた瞬間、カメラが亀の顔に寄る「でもこれ、現実でやったら？」",
+  "tokushima_ending_type": "なし（昔話を物理で検証し「結論、乗るな亀」→ 玉手箱の煙＝300年分の時間で着地）"
+}

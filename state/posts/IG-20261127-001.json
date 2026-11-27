@@ -1,0 +1,39 @@
+{
+  "post_id": "IG-20261127-001",
+  "status": "pending_approval",
+  "revision": 1,
+  "history": [
+    {
+      "at": "2026-11-27T03:46:21+00:00",
+      "from": "drafted",
+      "to": "rendered",
+      "actor": "pipeline",
+      "note": "build + QC passed"
+    },
+    {
+      "at": "2026-11-27T03:46:34+00:00",
+      "from": "rendered",
+      "to": "pending_approval",
+      "actor": "pipeline",
+      "note": "rev 1 sent for review"
+    }
+  ],
+  "render_attempts": 0,
+  "publish_attempts": 0,
+  "drive": {
+    "folder_id": "1ZXXR1GxdPeQKmQAqiJL_8XdtrnYwvSe_",
+    "files": {
+      "reel.mp4": "1DQ4RHgur006GzM8KMhRtPpaot1WuRgPP",
+      "thumbnail.jpg": "1y98CEtnJdfLxw_EoA2upJ_t8hPJ9DU_V",
+      "caption.txt": "1m9tp3ZyV3r_qt-JUXixz1G4cXH2ct2kH",
+      "sources.md": "1fP8ick1mR0EGNIcEU-Z3_iJKKdE8jQA3",
+      "metadata.json": "1ryv_pW-6mEAk7hqK5luhohmEhhfdhKy4",
+      "quality_check.md": "1FpcDKcqeeC58tR2_vk-Dfb9ypeaxWzJ4",
+      "narration_check.md": "1JX_cK6szZCnPlUHEXl5Y2S7Awv9RbJYV"
+    }
+  },
+  "ig": {},
+  "insights": {},
+  "reel_sha256": "422700042d5ee3c754632f7825a068ed769b3c1ba5638b3a7bb4f7c6e00162d1",
+  "issue_number": 63
+}
