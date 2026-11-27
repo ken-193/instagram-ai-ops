@@ -26,7 +26,7 @@ def pose(ctx, h, t):
         L.scale = (0.6 * (1 + 0.05 * math.sin(t * 7 + j)),) * 2 + (0.8,)
     k = ease(t / 3.6)
     tu = h["t"]
-    tu.root.location = (lerp(-16, -5, k), lerp(-30, -19, k), lerp(9, 3.5, k))
+    tu.root.location = (lerp(-10, -3, k), lerp(-14, -18, k), lerp(10, 4.5, k))
     tu.root.rotation_euler = (0, 0, math.radians(lerp(140, 160, k)))
     tu.swim(t, 0.8)
     a = lerp(-2.05, -1.62, ease(t / SECONDS))

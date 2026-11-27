@@ -41,7 +41,7 @@ def pose(ctx, h, t):
     else:                                                         # snap zoom onto the face, then hold
         hx, hy, hz = world_pos(tu.head)
         k = ease((t - 3.7) / 0.22)
-        d = lerp(3.0, 1.45, k)
+        d = lerp(4.2, 2.7, k)
         (sx, sy, sz), roll = shake(t, 0.03 if t < 4.0 else 0.004)
-        aim(h["cam"], (hx + 0.55 * d + sx, hy - 0.85 * d + sy, hz + 0.25 + sz), (hx, hy - 0.45, hz + 0.08),
-            roll=roll, lens=lerp(32, 45, k))
+        aim(h["cam"], (hx + 0.55 * d + sx, hy - 0.85 * d + sy, hz + 0.35 + sz), (hx + 0.15, hy - 0.3, hz),
+            roll=roll, lens=lerp(32, 40, k))

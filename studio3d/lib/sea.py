@@ -166,7 +166,7 @@ class Taro(SoftPerson):
 
     def flatten(self, k):
         """Cartoon squash (k=1: pancake). No gore: the whole figure just goes flat and wide."""
-        self.root.scale = (1 + 0.9 * k, 1 + 0.9 * k, max(0.08, 1 - 0.9 * k))
+        self.root.scale = (1 + 0.6 * k, 1 + 0.6 * k, 1 - 0.72 * k)
 
     def sit(self, amount=1.0):
         """Astride (on the turtle's shell): thighs forward, knees out."""
@@ -659,9 +659,9 @@ class Tamatebako:
             if q <= 0:
                 p.scale = (0.001,) * 3
                 continue
-            r = 0.25 * s * q * sp
-            p.location = (math.cos(a + q) * r, math.sin(a + q) * r, (0.35 + 0.9 * q * sp) * s)
-            g = 0.12 * s * min(1.0, q * 1.2) * (1 + 1.2 * q)
+            r = 0.45 * s * q * sp                                  # spreads out and thins away above the head
+            p.location = (math.cos(a + q) * r, math.sin(a + q) * r, (0.35 + 1.1 * q * sp) * s)
+            g = 0.12 * s * min(1.0, q * 1.2) * (1 + 0.8 * q) * max(0.0, 1 - max(0.0, q - 1.2) / 1.8) + 0.001
             p.scale = (g, g, g)
         for o, a, sp, d in self.bits:
             q = tau - d
